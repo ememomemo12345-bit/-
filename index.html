@@ -1,2263 +1,305 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Messenger AI</title>
-
-<style>
-:root{
-  --primary:#1877f2;
-  --primary2:#0d6efd;
-  --bg:#f0f2f5;
-  --card:#fff;
-  --text:#111827;
-  --muted:#65676b;
-  --border:#dddfe2;
-  --msg:#e4e6eb;
-  --mine:#1877f2;
-  --danger:#e53935;
-  --success:#31a24c;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,Tahoma,sans-serif;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  height:100vh;
-  overflow:hidden;
-}
-
-button,input,textarea{
-  font:inherit;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* AUTH */
-
-#auth{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:linear-gradient(135deg,#1877f2,#6c5ce7);
-}
-
-.auth-box{
-  width:100%;
-  max-width:420px;
-  background:white;
-  border-radius:20px;
-  padding:30px;
-  box-shadow:0 20px 60px #0003;
-}
-
-.logo{
-  text-align:center;
-  font-size:34px;
-  font-weight:bold;
-  color:var(--primary);
-  margin-bottom:8px;
-}
-
-.auth-sub{
-  text-align:center;
-  color:var(--muted);
-  margin-bottom:25px;
-}
-
-.input{
-  width:100%;
-  padding:14px 15px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-bottom:12px;
-  outline:none;
-}
-
-.input:focus{
-  border-color:var(--primary);
-}
-
-.btn{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  background:var(--primary);
-  color:white;
-  font-weight:bold;
-  margin-top:5px;
-}
-
-.btn.secondary{
-  background:#e4e6eb;
-  color:#111;
-}
-
-.auth-switch{
-  text-align:center;
-  margin-top:20px;
-  color:var(--primary);
-  cursor:pointer;
-}
-
-/* APP */
-
-#app{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-.topbar{
-  height:64px;
-  background:white;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  z-index:10;
-}
-
-.brand{
-  font-size:23px;
-  font-weight:bold;
-  color:var(--primary);
-}
-
-.top-actions{
-  display:flex;
-  gap:8px;
-}
-
-.icon-btn{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:#e4e6eb;
-  font-size:20px;
-}
-
-.layout{
-  flex:1;
-  display:flex;
-  min-height:0;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-  width:350px;
-  background:white;
-  border-left:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-}
-
-.sidebar-header{
-  padding:18px;
-}
-
-.sidebar-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.sidebar-title h2{
-  font-size:25px;
-}
-
-.search{
-  width:100%;
-  border:0;
-  background:#f0f2f5;
-  border-radius:20px;
-  padding:12px 16px;
-  outline:none;
-}
-
-.user-list{
-  overflow-y:auto;
-  flex:1;
-}
-
-.user-item{
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  cursor:pointer;
-}
-
-.user-item:hover{
-  background:#f0f2f5;
-}
-
-.user-item.active{
-  background:#e7f3ff;
-}
-
-.avatar{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#ddd;
-}
-
-.user-info{
-  min-width:0;
-  flex:1;
-}
-
-.user-name{
-  font-weight:bold;
-}
-
-.last-msg{
-  color:var(--muted);
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.online{
-  width:11px;
-  height:11px;
-  background:var(--success);
-  border-radius:50%;
-  border:2px solid white;
-  margin-right:-16px;
-  margin-top:34px;
-  z-index:2;
-}
-
-/* CHAT */
-
-.chat{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  min-width:0;
-}
-
-.chat-empty{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--muted);
-  text-align:center;
-}
-
-.chat-header{
-  height:70px;
-  background:white;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:10px 18px;
-}
-
-.chat-user-info{
-  flex:1;
-}
-
-.chat-name{
-  font-weight:bold;
-  font-size:17px;
-}
-
-.chat-status{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:3px;
-}
-
-.messages{
-  flex:1;
-  overflow-y:auto;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:5px;
-}
-
-.message-row{
-  display:flex;
-}
-
-.message-row.mine{
-  justify-content:flex-start;
-}
-
-.message-row.theirs{
-  justify-content:flex-end;
-}
-
-.message{
-  max-width:min(70%,600px);
-  padding:10px 14px;
-  border-radius:18px;
-  position:relative;
-  word-break:break-word;
-}
-
-.mine .message{
-  background:var(--mine);
-  color:white;
-  border-bottom-left-radius:5px;
-}
-
-.theirs .message{
-  background:var(--msg);
-  color:var(--text);
-  border-bottom-right-radius:5px;
-}
-
-.msg-time{
-  font-size:10px;
-  opacity:.7;
-  margin-top:4px;
-}
-
-.msg-reactions{
-  display:flex;
-  gap:3px;
-  position:absolute;
-  bottom:-10px;
-  background:white;
-  border-radius:20px;
-  padding:2px 5px;
-  box-shadow:0 1px 5px #0002;
-  color:#111;
-}
-
-.mine .msg-reactions{
-  left:8px;
-}
-
-.theirs .msg-reactions{
-  right:8px;
-}
-
-.typing{
-  height:25px;
-  padding:0 20px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.composer{
-  background:white;
-  border-top:1px solid var(--border);
-  padding:10px;
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
-
-.composer textarea{
-  flex:1;
-  resize:none;
-  border:0;
-  background:#f0f2f5;
-  border-radius:20px;
-  padding:11px 15px;
-  max-height:100px;
-  outline:none;
-}
-
-.send-btn{
-  width:43px;
-  height:43px;
-  border-radius:50%;
-  background:var(--primary);
-  color:white;
-  font-size:18px;
-}
-
-.file-btn{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:#e4e6eb;
-}
-
-/* PROFILE */
-
-.profile-panel{
-  position:fixed;
-  top:0;
-  bottom:0;
-  left:0;
-  width:360px;
-  background:white;
-  z-index:100;
-  box-shadow:5px 0 30px #0002;
-  padding:25px;
-  overflow:auto;
-}
-
-.profile-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:25px;
-}
-
-.profile-big-avatar{
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  object-fit:cover;
-  display:block;
-  margin:10px auto 15px;
-}
-
-.profile-center{
-  text-align:center;
-}
-
-.profile-center h2{
-  margin-bottom:5px;
-}
-
-.profile-center p{
-  color:var(--muted);
-}
-
-.settings-row{
-  padding:15px 0;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* AI */
-
-.ai-panel{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  width:360px;
-  height:500px;
-  background:white;
-  border-radius:18px;
-  box-shadow:0 10px 50px #0004;
-  z-index:200;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
-
-.ai-head{
-  background:linear-gradient(135deg,#1877f2,#8e44ad);
-  color:white;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-}
-
-.ai-messages{
-  flex:1;
-  overflow-y:auto;
-  padding:15px;
-}
-
-.ai-msg{
-  padding:10px 12px;
-  border-radius:15px;
-  margin-bottom:8px;
-  max-width:85%;
-}
-
-.ai-user{
-  background:#1877f2;
-  color:white;
-  margin-right:auto;
-}
-
-.ai-bot{
-  background:#e4e6eb;
-  margin-left:auto;
-}
-
-.ai-input{
-  padding:10px;
-  border-top:1px solid var(--border);
-  display:flex;
-  gap:5px;
-}
-
-.ai-input input{
-  flex:1;
-  padding:10px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  outline:none;
-}
-
-/* MOBILE */
-
-@media(max-width:800px){
-
-  .sidebar{
-    width:100%;
-  }
-
-  .chat{
-    display:none;
-  }
-
-  .layout.chat-open .sidebar{
-    display:none;
-  }
-
-  .layout.chat-open .chat{
-    display:flex;
-  }
-
-  .back-mobile{
-    display:block!important;
-  }
-
-  .message{
-    max-width:82%;
-  }
-
-  .ai-panel{
-    left:10px;
-    right:10px;
-    width:auto;
-    bottom:10px;
-  }
-}
-
-@media(min-width:801px){
-  .back-mobile{
-    display:none!important;
-  }
-}
-</style>
+    <meta charset="UTF-8">
+    <title>تطبيق المحادثة - وضع عدم الاتصال</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        #messagesBox { max-width: 600px; height: 400px; background: #fff; margin: auto; overflow-y: auto; padding: 15px; border: 1px solid #ddd; border-radius: 8px; display: flex; flex-direction: column; }
+        .message-row { margin-bottom: 10px; display: flex; }
+        .message-row.mine { justify-content: flex-end; }
+        .message { background: #e3f2fd; padding: 10px; border-radius: 8px; max-width: 70%; word-break: break-word; }
+        .message-row.mine .message { background: #dcf8c6; }
+        .msg-time { font-size: 10px; color: #777; margin-top: 4px; text-align: left; }
+        .chat-input-area { max-width: 600px; margin: 10px auto; display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .chat-input-area button { padding: 10px 20px; background: #0084ff; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    </style>
 </head>
-
 <body>
 
-<!-- AUTH -->
-<section id="auth">
-
-  <div class="auth-box">
-
-    <div class="logo">Messenger AI</div>
-    <div class="auth-sub">تواصل مع الآخرين بطريقة أسرع وأذكى</div>
-
-    <div id="loginForm">
-
-      <input id="loginEmail"
-             class="input"
-             type="email"
-             placeholder="البريد الإلكتروني">
-
-      <input id="loginPassword"
-             class="input"
-             type="password"
-             placeholder="كلمة المرور">
-
-      <button class="btn" onclick="login()">
-        تسجيل الدخول
-      </button>
-
-      <div class="auth-switch"
-           onclick="showRegister()">
-        إنشاء حساب جديد
-      </div>
-
+    <div id="messagesBox"></div>
+    
+    <div class="chat-input-area">
+        <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا...">
+        <button onclick="window.sendMessage()">إرسال</button>
     </div>
 
-    <div id="registerForm" class="hidden">
-
-      <input id="regName"
-             class="input"
-             placeholder="اسمك">
-
-      <input id="regEmail"
-             class="input"
-             type="email"
-             placeholder="البريد الإلكتروني">
-
-      <input id="regPassword"
-             class="input"
-             type="password"
-             placeholder="كلمة المرور">
-
-      <button class="btn" onclick="register()">
-        إنشاء الحساب
-      </button>
-
-      <div class="auth-switch"
-           onclick="showLogin()">
-        لدي حساب بالفعل
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- APP -->
-<section id="app" class="hidden">
-
-  <header class="topbar">
-
-    <div class="brand">
-      Messenger AI
-    </div>
-
-    <div class="top-actions">
-
-      <button class="icon-btn"
-              onclick="openAI()">
-        🤖
-      </button>
-
-      <button class="icon-btn"
-              onclick="openProfile()">
-        👤
-      </button>
-
-      <button class="icon-btn"
-              onclick="logout()">
-        🚪
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <div id="layout" class="layout">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-      <div class="sidebar-header">
-
-        <div class="sidebar-title">
-
-          <h2>المحادثات</h2>
-
-          <button class="icon-btn"
-                  onclick="searchUsers()">
-            🔍
-          </button>
-
-        </div>
-
-        <input id="userSearch"
-               class="search"
-               placeholder="البحث عن شخص..."
-               oninput="searchUsers()">
-
-      </div>
-
-      <div id="userList"
-           class="user-list">
-      </div>
-
-    </aside>
-
-
-    <!-- CHAT -->
-
-    <main class="chat">
-
-      <div id="chatEmpty"
-           class="chat-empty">
-
-        <div>
-          <div style="font-size:60px">💬</div>
-          <h2>اختر محادثة</h2>
-          <p>ابدأ التواصل مع أصدقائك</p>
-        </div>
-
-      </div>
-
-
-      <div id="chatContent"
-           class="hidden"
-           style="height:100%;display:flex;flex-direction:column;">
-
-        <div class="chat-header">
-
-          <button class="icon-btn back-mobile"
-                  onclick="closeMobileChat()">
-            ←
-          </button>
-
-          <img id="chatAvatar"
-               class="avatar">
-
-          <div class="chat-user-info">
-
-            <div id="chatName"
-                 class="chat-name">
-            </div>
-
-            <div id="chatStatus"
-                 class="chat-status">
-            </div>
-
-          </div>
-
-          <button class="icon-btn"
-                  onclick="openProfile()">
-            ℹ️
-          </button>
-
-        </div>
-
-
-        <div id="messages"
-             class="messages">
-        </div>
-
-
-        <div id="typing"
-             class="typing">
-        </div>
-
-
-        <div class="composer">
-
-          <input id="fileInput"
-                 type="file"
-                 class="hidden"
-                 onchange="sendFile(event)">
-
-          <button class="file-btn"
-                  onclick="document.getElementById('fileInput').click()">
-            📎
-          </button>
-
-          <button class="file-btn"
-                  onclick="toggleEmoji()">
-            😊
-          </button>
-
-          <textarea id="messageInput"
-                    rows="1"
-                    placeholder="اكتب رسالة..."
-                    oninput="handleTyping()"
-                    onkeydown="messageKey(event)"></textarea>
-
-          <button class="file-btn"
-                  onclick="toggleRecording()">
-            🎤
-          </button>
-
-          <button class="send-btn"
-                  onclick="sendMessage()">
-            ➤
-          </button>
-
-        </div>
-
-      </div>
-
-    </main>
-
-  </div>
-
-</section>
-
-
-<!-- PROFILE -->
-
-<div id="profilePanel"
-     class="profile-panel hidden">
-
-  <div class="profile-header">
-
-    <h2>الملف الشخصي</h2>
-
-    <button class="icon-btn"
-            onclick="closeProfile()">
-      ✕
-    </button>
-
-  </div>
-
-  <div class="profile-center">
-
-    <img id="profileAvatar"
-         class="profile-big-avatar">
-
-    <h2 id="profileName"></h2>
-
-    <p id="profileEmail"></p>
-
-  </div>
-
-  <br>
-
-  <input id="newName"
-         class="input"
-         placeholder="تغيير الاسم">
-
-  <button class="btn"
-          onclick="updateProfile()">
-    حفظ التغييرات
-  </button>
-
-  <br><br>
-
-  <div class="settings-row">
-    <span>الوضع الليلي</span>
-    <button class="icon-btn"
-            onclick="toggleDarkMode()">
-      🌙
-    </button>
-  </div>
-
-  <div class="settings-row">
-    <span>اللغة</span>
-    <button class="btn secondary"
-            style="width:auto"
-            onclick="toggleLanguage()">
-      عربي / English
-    </button>
-  </div>
-
-</div>
-
-
-<!-- AI -->
-
-<div id="aiPanel"
-     class="ai-panel hidden">
-
-  <div class="ai-head">
-
-    <strong>🤖 مساعد الذكاء الاصطناعي</strong>
-
-    <button onclick="closeAI"
-            style="background:none;color:white;font-size:20px"
-            onclick="closeAI()">
-      ✕
-    </button>
-
-  </div>
-
-  <div id="aiMessages"
-       class="ai-messages">
-
-    <div class="ai-msg ai-bot">
-      مرحباً 👋 كيف يمكنني مساعدتك؟
-    </div>
-
-  </div>
-
-  <div class="ai-input">
-
-    <input id="aiInput"
-           placeholder="اسأل الذكاء الاصطناعي..."
-           onkeydown="if(event.key==='Enter')sendAI()">
-
-    <button class="send-btn"
-            onclick="sendAI()">
-      ➤
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- Firebase -->
-
-<script type="module">
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  updateProfile as firebaseUpdateProfile
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-
-/* =====================================================
-   ضع بيانات Firebase الخاصة بك هنا
-===================================================== */
-
-const firebaseConfig = {
-
-  apiKey:
-    "ضع_API_KEY_هنا",
-
-  authDomain:
-    "ضع_PROJECT_ID.firebaseapp.com",
-
-  projectId:
-    "ضع_PROJECT_ID_هنا",
-
-  storageBucket:
-    "ضع_PROJECT_ID.firebasestorage.app",
-
-  messagingSenderId:
-    "ضع_SENDER_ID_هنا",
-
-  appId:
-    "ضع_APP_ID_هنا"
-
-};
-
-
-/* Firebase */
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-
-/* =====================================================
-   GLOBAL
-===================================================== */
-
-let currentUser = null;
-
-let selectedUser = null;
-
-let messagesUnsubscribe = null;
-
-let usersUnsubscribe = null;
-
-let typingTimer = null;
-
-let isRecording = false;
-
-let mediaRecorder = null;
-
-let audioChunks = [];
-
-let currentLang = "ar";
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const authScreen =
-  document.getElementById("auth");
-
-const appScreen =
-  document.getElementById("app");
-
-const loginForm =
-  document.getElementById("loginForm");
-
-const registerForm =
-  document.getElementById("registerForm");
-
-const layout =
-  document.getElementById("layout");
-
-const userList =
-  document.getElementById("userList");
-
-const messagesBox =
-  document.getElementById("messages");
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-onAuthStateChanged(auth, async user => {
-
-  if(user){
-
-    currentUser = user;
-
-    authScreen.classList.add("hidden");
-
-    appScreen.classList.remove("hidden");
-
-    await createUserDocument();
-
-    loadUsers();
-
-    setOnline(true);
-
-    loadMyProfile();
-
-  }else{
-
-    currentUser = null;
-
-    authScreen.classList.remove("hidden");
-
-    appScreen.classList.add("hidden");
-
-  }
-
-});
-
-
-/* =====================================================
-   AUTH UI
-===================================================== */
-
-window.showRegister = function(){
-
-  loginForm.classList.add("hidden");
-
-  registerForm.classList.remove("hidden");
-
-};
-
-
-window.showLogin = function(){
-
-  registerForm.classList.add("hidden");
-
-  loginForm.classList.remove("hidden");
-
-};
-
-
-/* =====================================================
-   REGISTER
-===================================================== */
-
-window.register = async function(){
-
-  const name =
-    document.getElementById("regName").value.trim();
-
-  const email =
-    document.getElementById("regEmail").value.trim();
-
-  const password =
-    document.getElementById("regPassword").value;
-
-  if(!name || !email || !password){
-
-    alert("أكمل جميع البيانات");
-
-    return;
-
-  }
-
-  if(password.length < 6){
-
-    alert("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
-
-    return;
-
-  }
-
-  try{
-
-    const result =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-    await firebaseUpdateProfile(
-      result.user,
-      {
-        displayName:name
-      }
-    );
-
-    await setDoc(
-      doc(db,"users",result.user.uid),
-      {
-        uid:result.user.uid,
-        name:name,
-        email:email,
-        photo:"",
-        online:true,
-        lastSeen:serverTimestamp(),
-        createdAt:serverTimestamp()
-      }
-    );
-
-  }catch(error){
-
-    alert(firebaseError(error));
-
-  }
-
-};
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-window.login = async function(){
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  if(!email || !password){
-
-    alert("أدخل البريد وكلمة المرور");
-
-    return;
-
-  }
-
-  try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-  }catch(error){
-
-    alert(firebaseError(error));
-
-  }
-
-};
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-window.logout = async function(){
-
-  if(currentUser){
-
-    await setOnline(false);
-
-  }
-
-  await signOut(auth);
-
-};
-
-
-/* =====================================================
-   CREATE USER
-===================================================== */
-
-async function createUserDocument(){
-
-  if(!currentUser)return;
-
-  const ref =
-    doc(db,"users",currentUser.uid);
-
-  const snap =
-    await getDoc(ref);
-
-  if(!snap.exists()){
-
-    await setDoc(ref,{
-      uid:currentUser.uid,
-      name:currentUser.displayName || "مستخدم",
-      email:currentUser.email || "",
-      photo:"",
-      online:true,
-      lastSeen:serverTimestamp(),
-      createdAt:serverTimestamp()
-    });
-
-  }
-
-}
-
-
-/* =====================================================
-   USERS
-===================================================== */
-
-function loadUsers(){
-
-  if(usersUnsubscribe)
-    usersUnsubscribe();
-
-  usersUnsubscribe =
-    onSnapshot(
-      collection(db,"users"),
-      snapshot => {
-
-        const search =
-          document
-          .getElementById("userSearch")
-          .value
-          .trim()
-          .toLowerCase();
-
-        const users = [];
-
-        snapshot.forEach(item => {
-
-          const user = item.data();
-
-          if(user.uid === currentUser.uid)
-            return;
-
-          if(search){
-
-            const text =
-              `${user.name || ""} ${user.email || ""}`
-              .toLowerCase();
-
-            if(!text.includes(search))
-              return;
-
-          }
-
-          users.push(user);
-
-        });
-
-        users.sort((a,b) =>
-          (a.name || "").localeCompare(
-            b.name || "",
-            "ar"
-          )
-        );
-
-        renderUsers(users);
-
-      }
-    );
-
-}
-
-
-window.searchUsers = function(){
-
-  loadUsers();
-
-};
-
-
-function renderUsers(users){
-
-  userList.innerHTML = "";
-
-  if(!users.length){
-
-    userList.innerHTML = `
-      <div style="padding:30px;text-align:center;color:#777">
-        لا يوجد مستخدمون
-      </div>
-    `;
-
-    return;
-
-  }
-
-  users.forEach(user => {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "user-item";
-
-    if(selectedUser &&
-       selectedUser.uid === user.uid){
-
-      item.classList.add("active");
-
-    }
-
-    item.innerHTML = `
-
-      <img
-        class="avatar"
-        src="${escapeAttr(
-          user.photo ||
-          "https://i.pravatar.cc/100?u="+user.uid
-        )}">
-
-      ${user.online ? `<span class="online"></span>` : ""}
-
-      <div class="user-info">
-
-        <div class="user-name">
-          ${escapeHTML(user.name || "مستخدم")}
-        </div>
-
-        <div class="last-msg">
-          ${user.online ? "🟢 متصل الآن" : "آخر ظهور"}
-        </div>
-
-      </div>
-
-    `;
-
-    item.onclick =
-      () => openChat(user);
-
-    userList.appendChild(item);
-
-  });
-
-}
-
-
-/* =====================================================
-   OPEN CHAT
-===================================================== */
-
-window.openChat = function(user){
-
-  selectedUser = user;
-
-  layout.classList.add("chat-open");
-
-  document
-    .getElementById("chatEmpty")
-    .classList.add("hidden");
-
-  document
-    .getElementById("chatContent")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("chatName")
-    .textContent =
-      user.name || "مستخدم";
-
-  document
-    .getElementById("chatAvatar")
-    .src =
-      user.photo ||
-      "https://i.pravatar.cc/100?u="+user.uid;
-
-  updateChatStatus();
-
-  loadMessages();
-
-};
-
-
-/* =====================================================
-   CHAT STATUS
-===================================================== */
-
-function updateChatStatus(){
-
-  if(!selectedUser)return;
-
-  document
-    .getElementById("chatStatus")
-    .textContent =
-      selectedUser.online
-      ? "🟢 متصل الآن"
-      : "غير متصل";
-
-}
-
-
-/* =====================================================
-   CONVERSATION ID
-===================================================== */
-
-function conversationId(){
-
-  if(!selectedUser || !currentUser)
-    return "";
-
-  return [
-    currentUser.uid,
-    selectedUser.uid
-  ].sort().join("_");
-
-}
-
-
-/* =====================================================
-   MESSAGES
-===================================================== */
-
-function loadMessages(){
-
-  if(messagesUnsubscribe)
-    messagesUnsubscribe();
-
-  messagesBox.innerHTML = "";
-
-  const conversation =
-    conversationId();
-
-  const messagesRef =
-    collection(
-      db,
-      "conversations",
-      conversation,
-      "messages"
-    );
-
-  const q =
-    query(
-      messagesRef,
-      orderBy("createdAt","asc")
-    );
-
-  messagesUnsubscribe =
-    onSnapshot(q,snapshot => {
-
-      messagesBox.innerHTML = "";
-
-      snapshot.forEach(item => {
-
-        renderMessage(
-          item.id,
-          item.data()
-        );
-
-      });
-
-      messagesBox.scrollTop =
-        messagesBox.scrollHeight;
-
-    });
-
-}
-
-
-/* =====================================================
-   SEND MESSAGE
-===================================================== */
-
-window.sendMessage = async function(){
-
-  if(!selectedUser)return;
-
-  const input =
-    document.getElementById("messageInput");
-
-  const text =
-    input.value.trim();
-
-  if(!text)return;
-
-  const conversation =
-    conversationId();
-
-  await addDoc(
-    collection(
-      db,
-      "conversations",
-      conversation,
-      "messages"
-    ),
-    {
-      senderId:currentUser.uid,
-      receiverId:selectedUser.uid,
-      text:text,
-      type:"text",
-      createdAt:serverTimestamp(),
-      read:false,
-      reactions:{}
-    }
-  );
-
-  input.value = "";
-
-  await updateDoc(
-    doc(db,"conversations",conversation),
-    {
-      lastMessage:text,
-      lastMessageAt:serverTimestamp()
-    }
-  ).catch(async ()=>{
-
-    await setDoc(
-      doc(db,"conversations",conversation),
-      {
-        users:[
-          currentUser.uid,
-          selectedUser.uid
-        ],
-        lastMessage:text,
-        lastMessageAt:serverTimestamp()
-      }
-    );
-
-  });
-
-  stopTyping();
-
-};
-
-
-/* =====================================================
-   RENDER MESSAGE
-===================================================== */
-
-function renderMessage(id,message){
-
-  const mine =
-    message.senderId === currentUser.uid;
-
-  const row =
-    document.createElement("div");
-
-  row.className =
-    "message-row " +
-    (mine ? "mine" : "theirs");
-
-  const bubble =
-    document.createElement("div");
-
-  bubble.className =
-    "message";
-
-  let content = "";
-
-  if(message.type === "text"){
-
-    content =
-      escapeHTML(message.text || "");
-
-  }else if(message.type === "image"){
-
-    content = `
-      <img
-        src="${escapeAttr(message.url)}"
-        style="max-width:260px;border-radius:12px">
-    `;
-
-  }else if(message.type === "file"){
-
-    content = `
-      <a
-        href="${escapeAttr(message.url)}"
-        target="_blank"
-        style="color:inherit">
-        📎 ${escapeHTML(message.name || "ملف")}
-      </a>
-    `;
-
-  }else if(message.type === "audio"){
-
-    content = `
-      <audio controls src="${escapeAttr(message.url)}"></audio>
-    `;
-
-  }
-
-  bubble.innerHTML = `
-    <div>${content}</div>
-
-    <div class="msg-time">
-      ${message.createdAt
-        ? formatTime(message.createdAt)
-        : "..."}
-      ${mine
-        ? (message.read ? " ✔✔" : " ✔")
-        : ""}
-    </div>
-
-    <div style="margin-top:5px">
-      <button
-        onclick="reactMessage('${id}','❤️')"
-        style="background:none;color:inherit">
-        ❤️
-      </button>
-
-      <button
-        onclick="deleteMessage('${id}')"
-        style="background:none;color:inherit">
-        🗑️
-      </button>
-    </div>
-  `;
-
-  row.appendChild(bubble);
-
-  messagesBox.appendChild(row);
-
-}
-
-
-/* =====================================================
-   DELETE MESSAGE
-===================================================== */
-
-window.deleteMessage =
-  async function(id){
-
-    if(!selectedUser)return;
-
-    if(!confirm("حذف هذه الرسالة؟"))
-      return;
-
-    await deleteDoc(
-      doc(
-        db,
-        "conversations",
-        conversationId(),
-        "messages",
-        id
-      )
-    );
-
-  };
-
-
-/* =====================================================
-   REACTION
-===================================================== */
-
-window.reactMessage =
-  async function(id,emoji){
-
-    if(!selectedUser)return;
-
-    await updateDoc(
-      doc(
-        db,
-        "conversations",
-        conversationId(),
-        "messages",
-        id
-      ),
-      {
-        [`reactions.${currentUser.uid}`]:emoji
-      }
-    );
-
-  };
-
-
-/* =====================================================
-   TYPING
-===================================================== */
-
-window.handleTyping = function(){
-
-  if(!selectedUser)return;
-
-  setTyping(true);
-
-  clearTimeout(typingTimer);
-
-  typingTimer =
-    setTimeout(
-      stopTyping,
-      1500
-    );
-
-};
-
-
-async function setTyping(value){
-
-  if(!selectedUser)return;
-
-  await setDoc(
-    doc(
-      db,
-      "typing",
-      conversationId()
-    ),
-    {
-      [currentUser.uid]:value
-    },
-    {merge:true}
-  );
-
-}
-
-
-async function stopTyping(){
-
-  await setTyping(false);
-
-}
-
-
-/* =====================================================
-   KEYBOARD
-===================================================== */
-
-window.messageKey =
-  function(event){
-
-    if(event.key === "Enter" &&
-       !event.shiftKey){
-
-      event.preventDefault();
-
-      sendMessage();
-
-    }
-
-  };
-
-
-/* =====================================================
-   FILES
-===================================================== */
-
-/*
-  الرفع الحقيقي للصور والملفات يحتاج Firebase Storage.
-  هذه الدالة مجهزة لتوصيل Storage.
-*/
-
-window.sendFile =
-  async function(event){
-
-    const file =
-      event.target.files[0];
-
-    if(!file || !selectedUser)
-      return;
-
-    alert(
-      "تم اختيار الملف. اربط Firebase Storage لرفع الملفات فعلياً."
-    );
-
-    event.target.value = "";
-
-  };
-
-
-/* =====================================================
-   AUDIO
-===================================================== */
-
-window.toggleRecording =
-  async function(){
-
-    if(isRecording){
-
-      mediaRecorder.stop();
-
-      isRecording = false;
-
-      return;
-
-    }
-
-    try{
-
-      const stream =
-        await navigator.mediaDevices.getUserMedia({
-          audio:true
-        });
-
-      audioChunks = [];
-
-      mediaRecorder =
-        new MediaRecorder(stream);
-
-      mediaRecorder.ondataavailable =
-        e => audioChunks.push(e.data);
-
-      mediaRecorder.onstop =
-        async () => {
-
-          stream
-            .getTracks()
-            .forEach(track => track.stop());
-
-          alert(
-            "تم تسجيل الصوت. اربط Firebase Storage لإرساله."
-          );
-
+    <!-- استدعاء مكتبات Firebase (CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // إعدادات Firebase الخاصة بك
+        const firebaseConfig = {
+          apiKey: "...",
+          authDomain: "...",
+          projectId: "...",
+          storageBucket: "...",
+          messagingSenderId: "...",
+          appId: "..."
         };
 
-      mediaRecorder.start();
-
-      isRecording = true;
-
-    }catch(error){
-
-      alert(
-        "لم يتم السماح باستخدام الميكروفون."
-      );
-
-    }
-
-  };
-
-
-/* =====================================================
-   PROFILE
-===================================================== */
-
-async function loadMyProfile(){
-
-  const snap =
-    await getDoc(
-      doc(db,"users",currentUser.uid)
-    );
-
-  if(!snap.exists())return;
-
-  const user =
-    snap.data();
-
-  document
-    .getElementById("profileName")
-    .textContent =
-      user.name || currentUser.displayName;
-
-  document
-    .getElementById("profileEmail")
-    .textContent =
-      user.email || currentUser.email;
-
-  document
-    .getElementById("profileAvatar")
-    .src =
-      user.photo ||
-      "https://i.pravatar.cc/200?u="+currentUser.uid;
-
-}
-
-
-window.openProfile =
-  function(){
-
-    document
-      .getElementById("profilePanel")
-      .classList.remove("hidden");
-
-  };
-
-
-window.closeProfile =
-  function(){
-
-    document
-      .getElementById("profilePanel")
-      .classList.add("hidden");
-
-  };
-
-
-window.updateProfile =
-  async function(){
-
-    const name =
-      document
-      .getElementById("newName")
-      .value.trim();
-
-    if(!name)return;
-
-    await firebaseUpdateProfile(
-      currentUser,
-      {
-        displayName:name
-      }
-    );
-
-    await updateDoc(
-      doc(db,"users",currentUser.uid),
-      {
-        name:name
-      }
-    );
-
-    document
-      .getElementById("profileName")
-      .textContent = name;
-
-    document
-      .getElementById("newName")
-      .value = "";
-
-    alert("تم تحديث الاسم");
-
-  };
-
-
-/* =====================================================
-   ONLINE / LAST SEEN
-===================================================== */
-
-async function setOnline(value){
-
-  if(!currentUser)return;
-
-  await updateDoc(
-    doc(db,"users",currentUser.uid),
-    {
-      online:value,
-      lastSeen:serverTimestamp()
-    }
-  ).catch(()=>{});
-
-}
-
-window.addEventListener(
-  "beforeunload",
-  () => setOnline(false)
-);
-
-
-/* =====================================================
-   DARK MODE
-===================================================== */
-
-window.toggleDarkMode =
-  function(){
-
-    const dark =
-      document.body.dataset.dark === "1";
-
-    if(!dark){
-
-      document.body.dataset.dark = "1";
-
-      document.documentElement.style.setProperty(
-        "--bg",
-        "#18191a"
-      );
-
-      document.documentElement.style.setProperty(
-        "--card",
-        "#242526"
-      );
-
-      document.documentElement.style.setProperty(
-        "--text",
-        "#e4e6eb"
-      );
-
-      document.documentElement.style.setProperty(
-        "--msg",
-        "#3a3b3c"
-      );
-
-      document.body.style.background =
-        "#18191a";
-
-    }else{
-
-      document.body.dataset.dark = "0";
-
-      document.documentElement.style.setProperty(
-        "--bg",
-        "#f0f2f5"
-      );
-
-      document.documentElement.style.setProperty(
-        "--card",
-        "#fff"
-      );
-
-      document.documentElement.style.setProperty(
-        "--text",
-        "#111827"
-      );
-
-      document.documentElement.style.setProperty(
-        "--msg",
-        "#e4e6eb"
-      );
-
-      document.body.style.background =
-        "#f0f2f5";
-
-    }
-
-  };
-
-
-/* =====================================================
-   LANGUAGE
-===================================================== */
-
-window.toggleLanguage =
-  function(){
-
-    currentLang =
-      currentLang === "ar"
-      ? "en"
-      : "ar";
-
-    document.documentElement.lang =
-      currentLang;
-
-    document.documentElement.dir =
-      currentLang === "ar"
-      ? "rtl"
-      : "ltr";
-
-    if(currentLang === "en"){
-
-      alert(
-        "English mode enabled. You can translate the interface strings later."
-      );
-
-    }else{
-
-      alert("تم تفعيل العربية");
-
-    }
-
-  };
-
-
-/* =====================================================
-   AI PANEL
-===================================================== */
-
-window.openAI =
-  function(){
-
-    document
-      .getElementById("aiPanel")
-      .classList.remove("hidden");
-
-  };
-
-
-window.closeAI =
-  function(){
-
-    document
-      .getElementById("aiPanel")
-      .classList.add("hidden");
-
-  };
-
-
-/* =====================================================
-   AI
-===================================================== */
-
-window.sendAI =
-  async function(){
-
-    const input =
-      document.getElementById("aiInput");
-
-    const text =
-      input.value.trim();
-
-    if(!text)return;
-
-    addAIMessage(
-      text,
-      true
-    );
-
-    input.value = "";
-
-    /*
-      لا تضع API Key للذكاء الاصطناعي هنا.
-
-      اربط هذا الطلب بـ Firebase Cloud Function
-      أو Backend خاص بك.
-
-      مثال:
-
-      POST /api/ai
-      {
-        "message": text
-      }
-    */
-
-    addAIMessage(
-      "🤖 مساعد AI جاهز. اربطه الآن بـ Cloud Function الخاصة بك حتى يتم تشغيل الذكاء الاصطناعي الحقيقي.",
-      false
-    );
-
-  };
-
-
-function addAIMessage(text,user){
-
-  const box =
-    document.getElementById("aiMessages");
-
-  const div =
-    document.createElement("div");
-
-  div.className =
-    "ai-msg " +
-    (user ? "ai-user" : "ai-bot");
-
-  div.textContent = text;
-
-  box.appendChild(div);
-
-  box.scrollTop =
-    box.scrollHeight;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-window.closeMobileChat =
-  function(){
-
-    layout.classList.remove("chat-open");
-
-  };
-
-
-/* =====================================================
-   EMOJI
-===================================================== */
-
-window.toggleEmoji =
-  function(){
-
-    const input =
-      document.getElementById("messageInput");
-
-    input.value += " 😊";
-
-    input.focus();
-
-  };
-
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function formatTime(timestamp){
-
-  try{
-
-    return timestamp
-      .toDate()
-      .toLocaleTimeString(
-        [],
-        {
-          hour:"2-digit",
-          minute:"2-digit"
+        // تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ربط المتغيرات بنطاق عام (Window) ليستخدمها نظام الأوفلاين لاحقاً
+        window.db = db;
+        window.auth = auth;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+
+        // متغيرات افتراضية للمستخدم والمحادثة (يجب ربطها بنظام تسجيل الدخول لديك)
+        window.currentUser = null;
+        window.selectedUser = null;
+
+        // دالة الإرسال الأصلية الافتراضية (يمكنك استبدالها بدالتك الحقيقية لاحقاً)
+        window.originalSendMessage = async function() {
+            const input = document.getElementById("messageInput");
+            const text = input.value.trim();
+            if (!text || !window.currentUser || !window.selectedUser) return;
+
+            const conversation = [window.currentUser.uid, window.selectedUser.uid].sort().join("_");
+            
+            await addDoc(collection(window.db, "conversations", conversation, "messages"), {
+                senderId: window.currentUser.uid,
+                receiverId: window.selectedUser.uid,
+                text: text,
+                type: "text",
+                createdAt: window.serverTimestamp(),
+                read: false,
+                reactions: {}
+            });
+
+            input.value = "";
+        };
+
+        // دالة فحص الهروب من HTML للحماية
+        window.escapeHTML = function(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        };
+
+        // تهيئة نظام الأوفلاين بعد تحميل Firebase بنجاح
+        if (typeof Network !== "undefined") {
+            Network.init();
         }
-      );
+    </script>
 
-  }catch{
+    <!-- سكربت نظام الأوفلاين والـ LocalStorage -->
+    <script>
+        const messagesBox = document.getElementById("messagesBox");
 
-    return "";
+        /* =========================================
+           OFFLINE / ONLINE SYSTEM
+        ========================================= */
+        const Network = {
+            online: navigator.onLine,
+            init() {
+                this.updateStatus();
+                window.addEventListener("online", async () => {
+                    this.online = true;
+                    this.updateStatus();
+                    if (typeof syncOfflineMessages === "function") {
+                        await syncOfflineMessages();
+                    }
+                });
+                window.addEventListener("offline", () => {
+                    this.online = false;
+                    this.updateStatus();
+                });
+            },
+            updateStatus() {
+                let bar = document.getElementById("networkStatus");
+                if (!bar) {
+                    bar = document.createElement("div");
+                    bar.id = "networkStatus";
+                    bar.style.cssText = `
+                        position:fixed; top:0; left:0; right:0; z-index:9999;
+                        padding:6px; text-align:center; font-size:12px; font-weight:bold; transition:.3s;
+                    `;
+                    document.body.appendChild(bar);
+                }
+                if (navigator.onLine) {
+                    bar.textContent = "🟢 متصل بالإنترنت";
+                    bar.style.background = "#31a24c";
+                    bar.style.color = "#fff";
+                    setTimeout(() => {
+                        if (navigator.onLine) {
+                            bar.style.transform = "translateY(-100%)";
+                        }
+                    }, 2500);
+                } else {
+                    bar.textContent = "🔴 لا يوجد إنترنت — سيتم حفظ الرسائل ومزامنتها لاحقًا";
+                    bar.style.background = "#e53935";
+                    bar.style.color = "#fff";
+                    bar.style.transform = "translateY(0)";
+                }
+            }
+        };
 
-  }
+        /* =========================================
+           LOCAL STORAGE DATABASE
+        ========================================= */
+        const OfflineDB = {
+            messagesKey: "messenger_offline_messages",
+            getMessages() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.messagesKey) || "[]");
+                } catch {
+                    return [];
+                }
+            },
+            saveMessages(messages) {
+                localStorage.setItem(this.messagesKey, JSON.stringify(messages));
+            },
+            addMessage(message) {
+                const messages = this.getMessages();
+                messages.push(message);
+                this.saveMessages(messages);
+            },
+            removeMessage(localId) {
+                const messages = this.getMessages().filter(x => x.localId !== localId);
+                this.saveMessages(messages);
+            }
+        };
 
-}
+        /* =========================================
+           OFFLINE MESSAGE QUEUE
+        ========================================= */
+        async function saveOfflineMessage(text) {
+            if (!selectedUser || !currentUser) return;
 
+            const localMessage = {
+                localId: "local_" + Date.now() + "_" + Math.random().toString(36).slice(2),
+                senderId: currentUser.uid,
+                receiverId: selectedUser.uid,
+                text: text,
+                type: "text",
+                createdAt: Date.now(),
+                synced: false
+            };
 
-function escapeHTML(text){
+            OfflineDB.addMessage(localMessage);
+            renderOfflineMessage(localMessage);
+        }
 
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+        /* =========================================
+           SHOW OFFLINE MESSAGE
+        ========================================= */
+        function renderOfflineMessage(message) {
+            const row = document.createElement("div");
+            row.className = "message-row mine";
+            row.dataset.localId = message.localId;
 
-}
+            const bubble = document.createElement("div");
+            bubble.className = "message";
+            bubble.innerHTML = `
+                <div>${escapeHTML(message.text)}</div>
+                <div class="msg-time">
+                    ${new Date(message.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} ⏳
+                </div>
+            `;
 
+            row.appendChild(bubble);
+            messagesBox.appendChild(row);
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+        }
 
-function escapeAttr(text){
+        /* =========================================
+           SYNC
+        ========================================= */
+        async function syncOfflineMessages() {
+            if (!navigator.onLine || !currentUser || typeof db === 'undefined') return;
 
-  return String(text)
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+            const pending = OfflineDB.getMessages();
+            if (!pending.length) return;
 
-}
+            for (const message of pending) {
+                try {
+                    const conversation = [message.senderId, message.receiverId].sort().join("_");
 
+                    await addDoc(collection(db, "conversations", conversation, "messages"), {
+                        senderId: message.senderId,
+                        receiverId: message.receiverId,
+                        text: message.text,
+                        type: message.type,
+                        createdAt: serverTimestamp(),
+                        read: false,
+                        reactions: {}
+                    });
 
-function firebaseError(error){
+                    OfflineDB.removeMessage(message.localId);
 
-  const code =
-    error.code || "";
+                    const element = document.querySelector(`[data-local-id="${message.localId}"]`);
+                    if (element) {
+                        const time = element.querySelector(".msg-time");
+                        if (time) {
+                            time.textContent = new Date(message.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + " ✔";
+                        }
+                    }
+                } catch (error) {
+                    console.log("Offline sync waiting:", error);
+                }
+            }
+        }
 
-  const errors = {
+        /* =========================================
+           OVERRIDE SEND MESSAGE
+        ========================================= */
+        window.sendMessage = async function() {
+            if (!selectedUser) return;
 
-    "auth/email-already-in-use":
-      "هذا البريد مستخدم بالفعل.",
+            const input = document.getElementById("messageInput");
+            const text = input.value.trim();
+            if (!text) return;
 
-    "auth/invalid-email":
-      "البريد الإلكتروني غير صحيح.",
+            if (!navigator.onLine) {
+                await saveOfflineMessage(text);
+                input.value = "";
+                return;
+            }
 
-    "auth/weak-password":
-      "كلمة المرور ضعيفة.",
+            try {
+                if (typeof originalSendMessage === "function") {
+                    await originalSendMessage();
+                }
+            } catch (error) {
+                await saveOfflineMessage(text);
+                input.value = "";
+                console.log("Saved because connection failed", error);
+            }
+        };
 
-    "auth/invalid-credential":
-      "البريد أو كلمة المرور غير صحيحة.",
+        /* =========================================
+           RESTORE LOCAL MESSAGES
+        ========================================= */
+        function restoreOfflineMessages() {
+            if (!currentUser || !selectedUser) return;
+            const messages = OfflineDB.getMessages();
+            messages
+                .filter(message => message.senderId === currentUser.uid && message.receiverId === selectedUser.uid)
+                .forEach(renderOfflineMessage);
+        }
 
-    "auth/network-request-failed":
-      "تحقق من اتصال الإنترنت."
-
-  };
-
-  return errors[code] ||
-    "حدث خطأ: " + code;
-
-}
-
-</script>
-
+        /* =========================================
+           SERVICE WORKER
+        ========================================= */
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", async () => {
+                try {
+                    await navigator.serviceWorker.register("./sw.js");
+                    console.log("Offline system enabled");
+                } catch (error) {
+                    console.log("Service Worker error:", error);
+                }
+            });
+        }
+    </script>
 </body>
 </html>
