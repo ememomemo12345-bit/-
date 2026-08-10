@@ -2,3559 +2,2260 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050816">
-<meta name="description" content="ToolBox - أدواتك اليومية وذكاء يومي جديد">
-<title>ToolBox — اكتشف شيئًا جديدًا كل يوم</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Messenger AI</title>
 
 <style>
 :root{
---bg:#050816;
---bg2:#08101f;
---card:#0c1527;
---card2:#101d33;
---line:rgba(255,255,255,.09);
---text:#f8fafc;
---muted:#94a3b8;
---blue:#4f8cff;
---purple:#7c3aed;
---cyan:#06b6d4;
---green:#22c55e;
---red:#ef4444;
---yellow:#f59e0b;
---radius:22px;
---shadow:0 25px 80px rgba(0,0,0,.35);
+  --primary:#1877f2;
+  --primary2:#0d6efd;
+  --bg:#f0f2f5;
+  --card:#fff;
+  --text:#111827;
+  --muted:#65676b;
+  --border:#dddfe2;
+  --msg:#e4e6eb;
+  --mine:#1877f2;
+  --danger:#e53935;
+  --success:#31a24c;
 }
 
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-html{
-scroll-behavior:smooth;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Tahoma,sans-serif;
 }
 
 body{
-min-height:100vh;
-font-family:
-system-ui,
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-Tahoma,
-Arial,
-sans-serif;
-background:
-radial-gradient(
-circle at 0% 0%,
-rgba(79,140,255,.20),
-transparent 28%
-),
-radial-gradient(
-circle at 100% 100%,
-rgba(124,58,237,.18),
-transparent 30%
-),
-var(--bg);
-color:var(--text);
+  background:var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
 }
 
-button,
-input,
-textarea,
-select{
-font:inherit;
+button,input,textarea{
+  font:inherit;
 }
 
 button{
-cursor:pointer;
+  border:0;
+  cursor:pointer;
 }
 
-.container{
-width:min(1180px,calc(100% - 28px));
-margin:auto;
+.hidden{
+  display:none!important;
 }
 
-/* =========================
-HEADER
-========================= */
+/* AUTH */
 
-header{
-padding:25px 0 10px;
+#auth{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:linear-gradient(135deg,#1877f2,#6c5ce7);
 }
 
-.header{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:20px;
+.auth-box{
+  width:100%;
+  max-width:420px;
+  background:white;
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 20px 60px #0003;
+}
+
+.logo{
+  text-align:center;
+  font-size:34px;
+  font-weight:bold;
+  color:var(--primary);
+  margin-bottom:8px;
+}
+
+.auth-sub{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:25px;
+}
+
+.input{
+  width:100%;
+  padding:14px 15px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  margin-bottom:12px;
+  outline:none;
+}
+
+.input:focus{
+  border-color:var(--primary);
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  background:var(--primary);
+  color:white;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.btn.secondary{
+  background:#e4e6eb;
+  color:#111;
+}
+
+.auth-switch{
+  text-align:center;
+  margin-top:20px;
+  color:var(--primary);
+  cursor:pointer;
+}
+
+/* APP */
+
+#app{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar{
+  height:64px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  z-index:10;
 }
 
 .brand{
-display:flex;
-align-items:center;
-gap:13px;
+  font-size:23px;
+  font-weight:bold;
+  color:var(--primary);
 }
 
-.logo{
-width:52px;
-height:52px;
-border-radius:17px;
-display:grid;
-place-items:center;
-font-size:25px;
-background:
-linear-gradient(
-135deg,
-#4f8cff,
-#7c3aed
-);
-box-shadow:
-0 15px 45px rgba(79,140,255,.35);
-}
-
-.brand h1{
-font-size:clamp(27px,5vw,40px);
-line-height:1;
-}
-
-.brand p{
-color:var(--muted);
-font-size:13px;
-margin-top:7px;
-}
-
-.header-actions{
-display:flex;
-align-items:center;
-gap:8px;
+.top-actions{
+  display:flex;
+  gap:8px;
 }
 
 .icon-btn{
-border:1px solid var(--line);
-background:var(--card);
-color:white;
-padding:10px 13px;
-border-radius:13px;
-}
-
-/* =========================
-HERO
-========================= */
-
-.hero{
-margin-top:20px;
-padding:30px;
-border-radius:28px;
-border:1px solid var(--line);
-background:
-linear-gradient(
-135deg,
-rgba(79,140,255,.17),
-rgba(124,58,237,.10)
-);
-box-shadow:var(--shadow);
-position:relative;
-overflow:hidden;
-}
-
-.hero:before{
-content:"";
-position:absolute;
-width:220px;
-height:220px;
-background:#4f8cff;
-filter:blur(100px);
-opacity:.15;
-left:-80px;
-top:-80px;
-}
-
-.hero-content{
-position:relative;
-z-index:2;
-}
-
-.badge{
-display:inline-flex;
-align-items:center;
-gap:7px;
-padding:7px 11px;
-border-radius:999px;
-background:rgba(255,255,255,.07);
-border:1px solid var(--line);
-color:#c9d7ee;
-font-size:12px;
-margin-bottom:13px;
-}
-
-.hero h2{
-font-size:clamp(25px,5vw,39px);
-line-height:1.2;
-margin-bottom:10px;
-}
-
-.hero p{
-color:var(--muted);
-line-height:1.9;
-max-width:760px;
-}
-
-.hero-buttons{
-display:flex;
-gap:9px;
-flex-wrap:wrap;
-margin-top:20px;
-}
-
-/* =========================
-BUTTONS
-========================= */
-
-.btn{
-border:0;
-border-radius:13px;
-padding:12px 17px;
-color:white;
-transition:.2s;
-}
-
-.btn:hover{
-transform:translateY(-2px);
-}
-
-.primary{
-background:
-linear-gradient(
-135deg,
-var(--blue),
-var(--purple)
-);
-}
-
-.secondary{
-background:#19263b;
-border:1px solid var(--line);
-}
-
-.green{
-background:var(--green);
-}
-
-.red{
-background:var(--red);
-}
-
-/* =========================
-DAILY
-========================= */
-
-.section{
-margin-top:22px;
-}
-
-.section-title{
-display:flex;
-align-items:end;
-justify-content:space-between;
-gap:15px;
-margin-bottom:12px;
-}
-
-.section-title h2{
-font-size:21px;
-}
-
-.section-title span{
-font-size:12px;
-color:var(--muted);
-}
-
-.daily-grid{
-display:grid;
-grid-template-columns:
-1.3fr
-.7fr;
-gap:16px;
-}
-
-.daily-card{
-background:
-linear-gradient(
-145deg,
-rgba(16,29,51,.96),
-rgba(10,19,35,.96)
-);
-border:1px solid var(--line);
-border-radius:var(--radius);
-padding:22px;
-box-shadow:var(--shadow);
-}
-
-.daily-main{
-min-height:250px;
-}
-
-.daily-icon{
-font-size:34px;
-margin-bottom:13px;
-}
-
-.daily-card h3{
-font-size:22px;
-margin-bottom:8px;
-}
-
-.daily-card p{
-color:#c5d1e1;
-line-height:1.9;
-}
-
-.ai-label{
-display:inline-flex;
-color:#c4b5fd;
-font-size:11px;
-background:rgba(124,58,237,.14);
-border:1px solid rgba(124,58,237,.3);
-padding:5px 9px;
-border-radius:999px;
-margin-bottom:12px;
-}
-
-.daily-side{
-display:grid;
-gap:12px;
-}
-
-.mini-card{
-padding:18px;
-border-radius:18px;
-background:#0b1729;
-border:1px solid var(--line);
-}
-
-.mini-card strong{
-display:block;
-font-size:13px;
-margin-bottom:7px;
-}
-
-.mini-card span{
-color:var(--muted);
-font-size:13px;
-line-height:1.7;
-}
-
-/* =========================
-CURRENCY
-========================= */
-
-.currency-box{
-margin-top:20px;
-padding:22px;
-background:rgba(12,21,39,.95);
-border:1px solid var(--line);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-}
-
-.currency-top{
-display:flex;
-justify-content:space-between;
-gap:15px;
-align-items:flex-start;
-margin-bottom:17px;
-}
-
-.currency-top h3{
-font-size:20px;
-}
-
-.update{
-color:var(--muted);
-font-size:11px;
-margin-top:5px;
-}
-
-.currency-form{
-display:grid;
-grid-template-columns:
-1fr
-150px
-150px
-auto;
-gap:9px;
-}
-
-input,
-select,
-textarea{
-width:100%;
-padding:12px;
-border-radius:12px;
-background:#071120;
-border:1px solid var(--line);
-color:white;
-outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-border-color:var(--blue);
-box-shadow:
-0 0 0 3px rgba(79,140,255,.1);
-}
-
-.currency-result{
-margin-top:15px;
-padding:18px;
-border-radius:15px;
-background:#071120;
-border:1px dashed var(--line);
-text-align:center;
-font-size:25px;
-font-weight:800;
-}
-
-.currency-note{
-font-size:11px;
-color:var(--muted);
-margin-top:9px;
-}
-
-/* =========================
-CURRENCY CARDS
-========================= */
-
-.currency-list{
-display:grid;
-grid-template-columns:
-repeat(4,1fr);
-gap:10px;
-margin-top:15px;
-}
-
-.currency-card{
-padding:15px;
-border-radius:15px;
-background:#0a1628;
-border:1px solid var(--line);
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#e4e6eb;
+  font-size:20px;
 }
 
-.currency-card .code{
-font-weight:800;
+.layout{
+  flex:1;
+  display:flex;
+  min-height:0;
 }
 
-.currency-card .price{
-font-size:19px;
-font-weight:800;
-margin-top:7px;
-}
+/* SIDEBAR */
 
-.currency-card .date{
-font-size:10px;
-color:var(--muted);
-margin-top:5px;
+.sidebar{
+  width:350px;
+  background:white;
+  border-left:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
 }
 
-/* =========================
-TOOLS
-========================= */
-
-.navigation{
-display:flex;
-gap:8px;
-overflow:auto;
-padding-bottom:8px;
-scrollbar-width:thin;
+.sidebar-header{
+  padding:18px;
 }
 
-.nav-btn{
-white-space:nowrap;
-border:1px solid var(--line);
-background:var(--card);
-color:var(--muted);
-padding:10px 13px;
-border-radius:12px;
+.sidebar-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
 }
 
-.nav-btn.active{
-color:white;
-background:
-linear-gradient(
-135deg,
-var(--blue),
-var(--purple)
-);
-border-color:transparent;
+.sidebar-title h2{
+  font-size:25px;
 }
 
-.tools-grid{
-display:grid;
-grid-template-columns:
-repeat(2,minmax(0,1fr));
-gap:15px;
+.search{
+  width:100%;
+  border:0;
+  background:#f0f2f5;
+  border-radius:20px;
+  padding:12px 16px;
+  outline:none;
 }
 
-.tool{
-display:none;
-padding:21px;
-background:rgba(12,21,39,.95);
-border:1px solid var(--line);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
+.user-list{
+  overflow-y:auto;
+  flex:1;
 }
 
-.tool.active{
-display:block;
-animation:appear .2s ease;
+.user-item{
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
 }
 
-@keyframes appear{
-from{
-opacity:0;
-transform:translateY(8px);
-}
-to{
-opacity:1;
-transform:none;
+.user-item:hover{
+  background:#f0f2f5;
 }
-}
 
-.tool h3{
-font-size:19px;
-margin-bottom:6px;
+.user-item.active{
+  background:#e7f3ff;
 }
 
-.tool-desc{
-font-size:12px;
-color:var(--muted);
-margin-bottom:15px;
-line-height:1.7;
+.avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#ddd;
 }
 
-.row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:9px;
+.user-info{
+  min-width:0;
+  flex:1;
 }
 
-.form{
-display:grid;
-gap:7px;
-margin-bottom:10px;
+.user-name{
+  font-weight:bold;
 }
 
-.form label{
-font-size:12px;
-color:var(--muted);
+.last-msg{
+  color:var(--muted);
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.result{
-margin-top:12px;
-min-height:50px;
-display:grid;
-place-items:center;
-padding:14px;
-border-radius:13px;
-background:#071120;
-border:1px dashed var(--line);
-text-align:center;
-word-break:break-word;
+.online{
+  width:11px;
+  height:11px;
+  background:var(--success);
+  border-radius:50%;
+  border:2px solid white;
+  margin-right:-16px;
+  margin-top:34px;
+  z-index:2;
 }
 
-/* =========================
-AI
-========================= */
+/* CHAT */
 
-.ai-box{
-margin-top:15px;
-padding:18px;
-border-radius:18px;
-background:
-linear-gradient(
-135deg,
-rgba(124,58,237,.13),
-rgba(79,140,255,.08)
-);
-border:1px solid rgba(124,58,237,.2);
+.chat{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
 }
 
-.ai-box textarea{
-min-height:90px;
-margin-top:10px;
+.chat-empty{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  text-align:center;
 }
 
-.ai-answer{
-margin-top:12px;
-line-height:1.9;
-color:#dce7f5;
-white-space:pre-wrap;
+.chat-header{
+  height:70px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 18px;
 }
 
-.ai-loading{
-color:#c4b5fd;
+.chat-user-info{
+  flex:1;
 }
 
-/* =========================
-PASSWORD
-========================= */
-
-.password-line{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:13px;
+.chat-name{
+  font-weight:bold;
+  font-size:17px;
 }
 
-.password-line input{
-padding:0;
-accent-color:var(--blue);
+.chat-status{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:3px;
 }
-
-/* =========================
-STATS
-========================= */
 
-.stats{
-display:grid;
-grid-template-columns:
-repeat(3,1fr);
-gap:8px;
-margin-top:10px;
+.messages{
+  flex:1;
+  overflow-y:auto;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
 }
 
-.stat{
-text-align:center;
-padding:13px;
-border-radius:12px;
-background:#071120;
-border:1px solid var(--line);
+.message-row{
+  display:flex;
 }
 
-.stat strong{
-display:block;
-font-size:22px;
+.message-row.mine{
+  justify-content:flex-start;
 }
 
-.stat span{
-font-size:10px;
-color:var(--muted);
+.message-row.theirs{
+  justify-content:flex-end;
 }
 
-/* =========================
-TIMER
-========================= */
-
-.timer{
-font-size:58px;
-text-align:center;
-font-weight:900;
-padding:20px 0;
-font-variant-numeric:tabular-nums;
+.message{
+  max-width:min(70%,600px);
+  padding:10px 14px;
+  border-radius:18px;
+  position:relative;
+  word-break:break-word;
 }
-
-/* =========================
-TASKS
-========================= */
 
-.task-input{
-display:grid;
-grid-template-columns:1fr auto;
-gap:8px;
+.mine .message{
+  background:var(--mine);
+  color:white;
+  border-bottom-left-radius:5px;
 }
 
-.tasks{
-list-style:none;
-display:grid;
-gap:8px;
-margin-top:13px;
+.theirs .message{
+  background:var(--msg);
+  color:var(--text);
+  border-bottom-right-radius:5px;
 }
 
-.task{
-display:flex;
-align-items:center;
-gap:10px;
-padding:11px;
-background:#071120;
-border:1px solid var(--line);
-border-radius:12px;
+.msg-time{
+  font-size:10px;
+  opacity:.7;
+  margin-top:4px;
 }
 
-.task span{
-flex:1;
-word-break:break-word;
+.msg-reactions{
+  display:flex;
+  gap:3px;
+  position:absolute;
+  bottom:-10px;
+  background:white;
+  border-radius:20px;
+  padding:2px 5px;
+  box-shadow:0 1px 5px #0002;
+  color:#111;
 }
 
-.task.done span{
-text-decoration:line-through;
-color:#64748b;
+.mine .msg-reactions{
+  left:8px;
 }
 
-.delete{
-border:0;
-background:transparent;
-color:#fb7185;
-font-size:19px;
+.theirs .msg-reactions{
+  right:8px;
 }
 
-/* =========================
-DONATION
-========================= */
-
-.donation-overlay{
-position:fixed;
-inset:0;
-z-index:9999;
-display:none;
-place-items:center;
-padding:18px;
-background:
-rgba(2,6,23,.86);
-backdrop-filter:blur(14px);
+.typing{
+  height:25px;
+  padding:0 20px;
+  color:var(--muted);
+  font-size:13px;
 }
 
-.donation-overlay.show{
-display:grid;
+.composer{
+  background:white;
+  border-top:1px solid var(--border);
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:7px;
 }
 
-.donation{
-width:min(520px,100%);
-padding:30px;
-border-radius:30px;
-background:
-linear-gradient(
-145deg,
-#101d33,
-#080f1d
-);
-border:1px solid rgba(255,255,255,.12);
-box-shadow:
-0 40px 120px rgba(0,0,0,.6);
-text-align:center;
-animation:donateIn .35s ease;
+.composer textarea{
+  flex:1;
+  resize:none;
+  border:0;
+  background:#f0f2f5;
+  border-radius:20px;
+  padding:11px 15px;
+  max-height:100px;
+  outline:none;
 }
 
-@keyframes donateIn{
-from{
-opacity:0;
-transform:scale(.94) translateY(20px);
-}
-to{
-opacity:1;
-transform:none;
+.send-btn{
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  background:var(--primary);
+  color:white;
+  font-size:18px;
 }
-}
 
-.donation-heart{
-font-size:50px;
-margin-bottom:10px;
+.file-btn{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#e4e6eb;
 }
 
-.donation h2{
-font-size:27px;
-margin-bottom:10px;
-}
+/* PROFILE */
 
-.donation p{
-color:#aebdd0;
-line-height:1.9;
+.profile-panel{
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  width:360px;
+  background:white;
+  z-index:100;
+  box-shadow:5px 0 30px #0002;
+  padding:25px;
+  overflow:auto;
 }
 
-.donation-buttons{
-display:grid;
-gap:8px;
-margin-top:20px;
+.profile-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
 }
 
-.donation-small{
-margin-top:13px;
-color:#64748b;
-font-size:10px;
+.profile-big-avatar{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin:10px auto 15px;
 }
-
-/* =========================
-FOOTER
-========================= */
 
-footer{
-text-align:center;
-padding:35px 0;
-color:var(--muted);
-font-size:11px;
+.profile-center{
+  text-align:center;
 }
 
-/* =========================
-MOBILE
-========================= */
-
-@media(max-width:850px){
-
-.daily-grid{
-grid-template-columns:1fr;
+.profile-center h2{
+  margin-bottom:5px;
 }
 
-.currency-form{
-grid-template-columns:
-1fr 1fr;
+.profile-center p{
+  color:var(--muted);
 }
 
-.currency-form .amount{
-grid-column:1/-1;
+.settings-row{
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.currency-list{
-grid-template-columns:
-repeat(2,1fr);
-}
+/* AI */
 
+.ai-panel{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  width:360px;
+  height:500px;
+  background:white;
+  border-radius:18px;
+  box-shadow:0 10px 50px #0004;
+  z-index:200;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
-
-@media(max-width:700px){
 
-.header{
-align-items:flex-start;
+.ai-head{
+  background:linear-gradient(135deg,#1877f2,#8e44ad);
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
 }
 
-.tools-grid{
-grid-template-columns:1fr;
+.ai-messages{
+  flex:1;
+  overflow-y:auto;
+  padding:15px;
 }
 
-.currency-form{
-grid-template-columns:1fr;
+.ai-msg{
+  padding:10px 12px;
+  border-radius:15px;
+  margin-bottom:8px;
+  max-width:85%;
 }
 
-.currency-form .amount{
-grid-column:auto;
+.ai-user{
+  background:#1877f2;
+  color:white;
+  margin-right:auto;
 }
 
-.row{
-grid-template-columns:1fr;
+.ai-bot{
+  background:#e4e6eb;
+  margin-left:auto;
 }
 
-.hero{
-padding:22px;
+.ai-input{
+  padding:10px;
+  border-top:1px solid var(--border);
+  display:flex;
+  gap:5px;
 }
 
-.daily-card{
-padding:19px;
+.ai-input input{
+  flex:1;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  outline:none;
 }
 
-}
+/* MOBILE */
 
-@media(max-width:450px){
+@media(max-width:800px){
 
-.header-actions{
-flex-wrap:wrap;
-justify-content:flex-end;
-}
+  .sidebar{
+    width:100%;
+  }
 
-.logo{
-width:45px;
-height:45px;
-}
+  .chat{
+    display:none;
+  }
 
-.brand h1{
-font-size:28px;
-}
+  .layout.chat-open .sidebar{
+    display:none;
+  }
 
-.currency-list{
-grid-template-columns:1fr;
-}
+  .layout.chat-open .chat{
+    display:flex;
+  }
 
-.stats{
-grid-template-columns:1fr;
-}
+  .back-mobile{
+    display:block!important;
+  }
 
-.timer{
-font-size:48px;
-}
+  .message{
+    max-width:82%;
+  }
 
-.donation{
-padding:23px;
+  .ai-panel{
+    left:10px;
+    right:10px;
+    width:auto;
+    bottom:10px;
+  }
 }
 
+@media(min-width:801px){
+  .back-mobile{
+    display:none!important;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-DONATION
-========================= -->
+<!-- AUTH -->
+<section id="auth">
 
-<div
-id="donationOverlay"
-class="donation-overlay">
+  <div class="auth-box">
 
-<div class="donation">
+    <div class="logo">Messenger AI</div>
+    <div class="auth-sub">تواصل مع الآخرين بطريقة أسرع وأذكى</div>
 
-<div class="donation-heart">
-❤️
-</div>
+    <div id="loginForm">
 
-<h2>
-ساهم في استمرار المشروع
-</h2>
+      <input id="loginEmail"
+             class="input"
+             type="email"
+             placeholder="البريد الإلكتروني">
 
-<p>
-هذا الموقع نحاول أن نجعله مكانًا مفيدًا يعود إليه الناس كل يوم.
-إذا أعجبك المشروع وتستطيع المساهمة، دعمك يساعدنا على تطوير
-الأدوات والذكاء الاصطناعي والمحتوى اليومي.
-</p>
+      <input id="loginPassword"
+             class="input"
+             type="password"
+             placeholder="كلمة المرور">
 
-<div class="donation-buttons">
+      <button class="btn" onclick="login()">
+        تسجيل الدخول
+      </button>
 
-<a
-id="donationLink"
-href="#"
-class="btn green"
-target="_blank"
-rel="noopener">
-❤️ ساهم الآن
-</a>
+      <div class="auth-switch"
+           onclick="showRegister()">
+        إنشاء حساب جديد
+      </div>
 
-<button
-id="continueButton"
-class="btn secondary">
-متابعة إلى الموقع
-</button>
+    </div>
 
-</div>
+    <div id="registerForm" class="hidden">
 
-<div class="donation-small">
-يمكنك إغلاق الرسالة والمتابعة بدون تبرع.
-</div>
+      <input id="regName"
+             class="input"
+             placeholder="اسمك">
 
-</div>
-</div>
+      <input id="regEmail"
+             class="input"
+             type="email"
+             placeholder="البريد الإلكتروني">
 
+      <input id="regPassword"
+             class="input"
+             type="password"
+             placeholder="كلمة المرور">
 
-<header class="container">
+      <button class="btn" onclick="register()">
+        إنشاء الحساب
+      </button>
 
-<div class="header">
+      <div class="auth-switch"
+           onclick="showLogin()">
+        لدي حساب بالفعل
+      </div>
 
-<div class="brand">
+    </div>
 
-<div class="logo">
-⚡
-</div>
-
-<div>
-
-<h1>
-ToolBox
-</h1>
-
-<p>
-اكتشف شيئًا جديدًا كل يوم
-</p>
-
-</div>
-
-</div>
-
-<div class="header-actions">
-
-<button
-class="icon-btn"
-id="languageButton">
-العربية / English
-</button>
-
-<button
-class="icon-btn"
-id="donationButton">
-❤️ دعم
-</button>
-
-</div>
-
-</div>
-
-<section class="hero">
-
-<div class="hero-content">
-
-<div class="badge">
-🤖 ذكاء يومي • أدوات • اكتشاف
-</div>
-
-<h2>
-كل يوم شيء جديد يستحق أن تكتشفه
-</h2>
-
-<p>
-ToolBox ليس مجرد مجموعة أدوات.
-نريد أن يكون مكانًا تفتحه كل يوم لتعرف شيئًا جديدًا،
-تجرب أداة مفيدة، تتابع العملات، تنجز مهمة، وتسأل الذكاء الاصطناعي.
-</p>
-
-<div class="hero-buttons">
-
-<button
-class="btn primary"
-id="discoverButton">
-✨ اكتشف اليوم
-</button>
-
-<button
-class="btn secondary"
-id="askAIButton">
-🤖 اسأل الذكاء الاصطناعي
-</button>
-
-</div>
-
-</div>
-</section>
-
-</header>
-
-
-<main class="container">
-
-<!-- DAILY -->
-
-<section class="section">
-
-<div class="section-title">
-
-<h2>
-🔥 اكتشاف اليوم
-</h2>
-
-<span id="todayDate">
-اليوم
-</span>
-
-</div>
-
-<div class="daily-grid">
-
-<div class="daily-card daily-main">
-
-<div class="ai-label">
-🤖 مولد بالذكاء الاصطناعي
-</div>
-
-<div
-class="daily-icon"
-id="dailyIcon">
-💡
-</div>
-
-<h3
-id="dailyTitle">
-جارٍ تجهيز اكتشاف اليوم...
-</h3>
-
-<p
-id="dailyText">
-الذكاء الاصطناعي يحضر لك شيئًا جديدًا.
-</p>
-
-<div
-class="hero-buttons">
-
-<button
-class="btn primary"
-id="newAIButton">
-✨ تحديث اكتشاف اليوم
-</button>
-
-</div>
-
-</div>
-
-<div class="daily-side">
-
-<div class="mini-card">
-
-<strong>
-🎯 تحدي اليوم
-</strong>
-
-<span id="dailyChallenge">
-افعل شيئًا مفيدًا لم تجربه من قبل.
-</span>
-
-</div>
-
-<div class="mini-card">
-
-<strong>
-🧠 معلومة سريعة
-</strong>
-
-<span id="dailyFact">
-سيتم تحديثها يوميًا.
-</span>
-
-</div>
-
-<div class="mini-card">
-
-<strong>
-🔥 ارجع غدًا
-</strong>
-
-<span>
-سيتم إنشاء محتوى جديد مع اليوم الجديد.
-</span>
-
-</div>
-
-</div>
-
-</div>
+  </div>
 
 </section>
 
 
-<!-- CURRENCY -->
+<!-- APP -->
+<section id="app" class="hidden">
 
-<section class="section">
+  <header class="topbar">
 
-<div class="section-title">
+    <div class="brand">
+      Messenger AI
+    </div>
 
-<h2>
-💱 العملات الآن
-</h2>
+    <div class="top-actions">
 
-<span id="currencyStatus">
-جاري تحديث الأسعار...
-</span>
+      <button class="icon-btn"
+              onclick="openAI()">
+        🤖
+      </button>
 
-</div>
+      <button class="icon-btn"
+              onclick="openProfile()">
+        👤
+      </button>
 
-<div class="currency-box">
+      <button class="icon-btn"
+              onclick="logout()">
+        🚪
+      </button>
 
-<div class="currency-top">
+    </div>
 
-<div>
+  </header>
 
-<h3>
-محول العملات الذكي
-</h3>
 
-<div class="update"
-id="currencyUpdate">
-جاري جلب آخر الأسعار...
-</div>
+  <div id="layout" class="layout">
 
-</div>
+    <!-- SIDEBAR -->
 
-<button
-class="btn secondary"
-id="refreshCurrency">
-↻ تحديث
-</button>
+    <aside class="sidebar">
 
-</div>
+      <div class="sidebar-header">
 
-<div class="currency-form">
+        <div class="sidebar-title">
 
-<div class="form amount">
+          <h2>المحادثات</h2>
 
-<input
-id="currencyAmount"
-type="number"
-value="100"
-min="0"
-step="any">
+          <button class="icon-btn"
+                  onclick="searchUsers()">
+            🔍
+          </button>
 
-</div>
+        </div>
 
-<select
-id="currencyFrom">
-<option value="USD">
-USD — دولار
-</option>
-<option value="EUR">
-EUR — يورو
-</option>
-<option value="ILS">
-ILS — شيكل
-</option>
-<option value="GBP">
-GBP — جنيه إسترليني
-</option>
-<option value="SAR">
-SAR — ريال سعودي
-</option>
-<option value="AED">
-AED — درهم إماراتي
-</option>
-<option value="JOD">
-JOD — دينار أردني
-</option>
-<option value="EGP">
-EGP — جنيه مصري
-</option>
-</select>
+        <input id="userSearch"
+               class="search"
+               placeholder="البحث عن شخص..."
+               oninput="searchUsers()">
 
-<select
-id="currencyTo">
-<option value="ILS">
-ILS — شيكل
-</option>
-<option value="USD">
-USD — دولار
-</option>
-<option value="EUR">
-EUR — يورو
-</option>
-<option value="GBP">
-GBP — جنيه إسترليني
-</option>
-<option value="SAR">
-SAR — ريال سعودي
-</option>
-<option value="AED">
-AED — درهم إماراتي
-</option>
-<option value="JOD">
-JOD — دينار أردني
-</option>
-<option value="EGP">
-EGP — جنيه مصري
-</option>
-</select>
+      </div>
 
-<button
-class="btn primary"
-id="convertCurrency">
-تحويل
-</button>
+      <div id="userList"
+           class="user-list">
+      </div>
 
-</div>
+    </aside>
 
-<div
-class="currency-result"
-id="currencyResult">
-جاري التحميل...
-</div>
 
-<div
-class="currency-note">
-الأسعار المعروضة أسعار مرجعية من مزود البيانات وليست بالضرورة سعر الصرافة المحلي.
-</div>
+    <!-- CHAT -->
 
-<div
-class="currency-list"
-id="currencyList">
-</div>
+    <main class="chat">
 
-</div>
+      <div id="chatEmpty"
+           class="chat-empty">
+
+        <div>
+          <div style="font-size:60px">💬</div>
+          <h2>اختر محادثة</h2>
+          <p>ابدأ التواصل مع أصدقائك</p>
+        </div>
+
+      </div>
+
+
+      <div id="chatContent"
+           class="hidden"
+           style="height:100%;display:flex;flex-direction:column;">
+
+        <div class="chat-header">
+
+          <button class="icon-btn back-mobile"
+                  onclick="closeMobileChat()">
+            ←
+          </button>
+
+          <img id="chatAvatar"
+               class="avatar">
+
+          <div class="chat-user-info">
+
+            <div id="chatName"
+                 class="chat-name">
+            </div>
+
+            <div id="chatStatus"
+                 class="chat-status">
+            </div>
+
+          </div>
+
+          <button class="icon-btn"
+                  onclick="openProfile()">
+            ℹ️
+          </button>
+
+        </div>
+
+
+        <div id="messages"
+             class="messages">
+        </div>
+
+
+        <div id="typing"
+             class="typing">
+        </div>
+
+
+        <div class="composer">
+
+          <input id="fileInput"
+                 type="file"
+                 class="hidden"
+                 onchange="sendFile(event)">
+
+          <button class="file-btn"
+                  onclick="document.getElementById('fileInput').click()">
+            📎
+          </button>
+
+          <button class="file-btn"
+                  onclick="toggleEmoji()">
+            😊
+          </button>
+
+          <textarea id="messageInput"
+                    rows="1"
+                    placeholder="اكتب رسالة..."
+                    oninput="handleTyping()"
+                    onkeydown="messageKey(event)"></textarea>
+
+          <button class="file-btn"
+                  onclick="toggleRecording()">
+            🎤
+          </button>
+
+          <button class="send-btn"
+                  onclick="sendMessage()">
+            ➤
+          </button>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
 
 </section>
 
 
-<!-- TOOLS -->
+<!-- PROFILE -->
 
-<section
-class="section"
-id="toolsSection">
+<div id="profilePanel"
+     class="profile-panel hidden">
 
-<div class="section-title">
+  <div class="profile-header">
 
-<h2>
-🧰 الأدوات
-</h2>
+    <h2>الملف الشخصي</h2>
 
-<span>
-كل ما تحتاجه في مكان واحد
-</span>
+    <button class="icon-btn"
+            onclick="closeProfile()">
+      ✕
+    </button>
 
-</div>
+  </div>
 
-<nav class="navigation">
+  <div class="profile-center">
 
-<button
-class="nav-btn active"
-data-tool="password">
-🔐 كلمة مرور
-</button>
+    <img id="profileAvatar"
+         class="profile-big-avatar">
 
-<button
-class="nav-btn"
-data-tool="qr">
-▣ QR
-</button>
+    <h2 id="profileName"></h2>
 
-<button
-class="nav-btn"
-data-tool="text">
-📝 النص
-</button>
+    <p id="profileEmail"></p>
 
-<button
-class="nav-btn"
-data-tool="units">
-📏 الوحدات
-</button>
+  </div>
 
-<button
-class="nav-btn"
-data-tool="bmi">
-⚖️ BMI
-</button>
+  <br>
 
-<button
-class="nav-btn"
-data-tool="timer">
-⏱️ المؤقت
-</button>
+  <input id="newName"
+         class="input"
+         placeholder="تغيير الاسم">
 
-<button
-class="nav-btn"
-data-tool="tasks">
-✅ المهام
-</button>
+  <button class="btn"
+          onclick="updateProfile()">
+    حفظ التغييرات
+  </button>
 
-<button
-class="nav-btn"
-data-tool="age">
-🎂 العمر
-</button>
+  <br><br>
 
-</nav>
+  <div class="settings-row">
+    <span>الوضع الليلي</span>
+    <button class="icon-btn"
+            onclick="toggleDarkMode()">
+      🌙
+    </button>
+  </div>
 
-
-<div class="tools-grid">
-
-
-<!-- PASSWORD -->
-
-<article
-class="tool active"
-id="tool-password">
-
-<h3>
-🔐 مولد كلمة مرور
-</h3>
-
-<p class="tool-desc">
-أنشئ كلمة مرور عشوائية قوية.
-</p>
-
-<div class="password-line">
-
-<span>
-الطول
-</span>
-
-<strong id="passwordLengthLabel">
-16
-</strong>
-
-<input
-id="passwordLength"
-type="range"
-min="6"
-max="64"
-value="16">
+  <div class="settings-row">
+    <span>اللغة</span>
+    <button class="btn secondary"
+            style="width:auto"
+            onclick="toggleLanguage()">
+      عربي / English
+    </button>
+  </div>
 
 </div>
-
-<div class="hero-buttons">
-
-<button
-class="btn primary"
-id="generatePassword">
-توليد
-</button>
-
-<button
-class="btn secondary"
-id="copyPassword">
-نسخ
-</button>
-
-</div>
-
-<div
-class="result"
-id="passwordResult">
-اضغط توليد
-</div>
-
-</article>
-
-
-<!-- QR -->
-
-<article
-class="tool"
-id="tool-qr">
-
-<h3>
-▣ مولد QR
-</h3>
-
-<p class="tool-desc">
-حول أي نص أو رابط إلى QR Code.
-</p>
-
-<textarea
-id="qrInput"
-placeholder="اكتب الرابط أو النص..."></textarea>
-
-<div class="hero-buttons">
-
-<button
-class="btn primary"
-id="generateQR">
-إنشاء QR
-</button>
-
-</div>
-
-<div
-class="result"
-id="qrResult">
-—
-</div>
-
-</article>
-
-
-<!-- TEXT -->
-
-<article
-class="tool"
-id="tool-text">
-
-<h3>
-📝 إحصائيات النص
-</h3>
-
-<p class="tool-desc">
-اعرف عدد الكلمات والحروف والأسطر.
-</p>
-
-<textarea
-id="textInput"
-placeholder="اكتب النص هنا..."></textarea>
-
-<div class="stats">
-
-<div class="stat">
-<strong id="wordCount">0</strong>
-<span>كلمات</span>
-</div>
-
-<div class="stat">
-<strong id="characterCount">0</strong>
-<span>حروف</span>
-</div>
-
-<div class="stat">
-<strong id="lineCount">0</strong>
-<span>أسطر</span>
-</div>
-
-</div>
-
-</article>
-
-
-<!-- UNITS -->
-
-<article
-class="tool"
-id="tool-units">
-
-<h3>
-📏 محول الوحدات
-</h3>
-
-<p class="tool-desc">
-طول ووزن وحرارة.
-</p>
-
-<div class="form">
-<label>القيمة</label>
-<input
-id="unitValue"
-type="number"
-value="1"
-step="any">
-</div>
-
-<div class="form">
-<label>النوع</label>
-
-<select id="unitCategory">
-
-<option value="length">
-طول
-</option>
-
-<option value="weight">
-وزن
-</option>
-
-<option value="temperature">
-حرارة
-</option>
-
-</select>
-
-</div>
-
-<div class="row">
-
-<select id="unitFrom"></select>
-
-<select id="unitTo"></select>
-
-</div>
-
-<button
-class="btn primary"
-id="convertUnit"
-style="margin-top:10px">
-تحويل
-</button>
-
-<div
-class="result"
-id="unitResult">
-—
-</div>
-
-</article>
-
-
-<!-- BMI -->
-
-<article
-class="tool"
-id="tool-bmi">
-
-<h3>
-⚖️ حاسبة BMI
-</h3>
-
-<p class="tool-desc">
-حساب تقريبي لمؤشر كتلة الجسم.
-</p>
-
-<div class="row">
-
-<div class="form">
-
-<label>
-الوزن كغ
-</label>
-
-<input
-id="bmiWeight"
-type="number"
-min="1"
-step="any">
-
-</div>
-
-<div class="form">
-
-<label>
-الطول سم
-</label>
-
-<input
-id="bmiHeight"
-type="number"
-min="1"
-step="any">
-
-</div>
-
-</div>
-
-<button
-class="btn primary"
-id="calculateBMI">
-احسب
-</button>
-
-<div class="result">
-
-<strong
-id="bmiValue"
-style="font-size:30px">
-—
-</strong>
-
-<span id="bmiMessage">
-</span>
-
-</div>
-
-</article>
-
-
-<!-- TIMER -->
-
-<article
-class="tool"
-id="tool-timer">
-
-<h3>
-⏱️ مؤقت التركيز
-</h3>
-
-<p class="tool-desc">
-جلسة تركيز لمدة 25 دقيقة.
-</p>
-
-<div
-class="timer"
-id="timerDisplay">
-25:00
-</div>
-
-<div class="hero-buttons">
-
-<button
-class="btn primary"
-id="timerStart">
-ابدأ
-</button>
-
-<button
-class="btn secondary"
-id="timerReset">
-إعادة
-</button>
-
-</div>
-
-</article>
-
-
-<!-- TASKS -->
-
-<article
-class="tool"
-id="tool-tasks">
-
-<h3>
-✅ قائمة المهام
-</h3>
-
-<p class="tool-desc">
-احفظ مهامك على جهازك.
-</p>
-
-<div class="task-input">
-
-<input
-id="taskInput"
-placeholder="مهمة جديدة...">
-
-<button
-class="btn primary"
-id="addTask">
-إضافة
-</button>
-
-</div>
-
-<ul
-class="tasks"
-id="taskList">
-</ul>
-
-</article>
-
-
-<!-- AGE -->
-
-<article
-class="tool"
-id="tool-age">
-
-<h3>
-🎂 حاسبة العمر
-</h3>
-
-<p class="tool-desc">
-احسب عمرك بالتفصيل.
-</p>
-
-<div class="form">
-
-<label>
-تاريخ الميلاد
-</label>
-
-<input
-id="birthDate"
-type="date">
-
-</div>
-
-<button
-class="btn primary"
-id="calculateAge">
-احسب
-</button>
-
-<div class="result">
-
-<strong id="ageResult">
-—
-</strong>
-
-<span id="ageDetails">
-</span>
-
-</div>
-
-</article>
-
-
-</div>
-
-</section>
 
 
 <!-- AI -->
 
-<section
-class="section"
-id="aiSection">
+<div id="aiPanel"
+     class="ai-panel hidden">
 
-<div class="section-title">
+  <div class="ai-head">
 
-<h2>
-🤖 اسأل الذكاء الاصطناعي
-</h2>
+    <strong>🤖 مساعد الذكاء الاصطناعي</strong>
 
-<span>
-مساعدك داخل الموقع
-</span>
+    <button onclick="closeAI"
+            style="background:none;color:white;font-size:20px"
+            onclick="closeAI()">
+      ✕
+    </button>
 
-</div>
+  </div>
 
-<div class="daily-card">
+  <div id="aiMessages"
+       class="ai-messages">
 
-<p>
-اسأل عن فكرة، معلومة، شرح، نص، حساب، أو أي شيء مفيد.
-</p>
+    <div class="ai-msg ai-bot">
+      مرحباً 👋 كيف يمكنني مساعدتك؟
+    </div>
 
-<div class="ai-box">
+  </div>
 
-<textarea
-id="aiQuestion"
-placeholder="مثال: أعطني فكرة مفيدة أطبقها اليوم..."></textarea>
+  <div class="ai-input">
 
-<div class="hero-buttons">
+    <input id="aiInput"
+           placeholder="اسأل الذكاء الاصطناعي..."
+           onkeydown="if(event.key==='Enter')sendAI()">
 
-<button
-class="btn primary"
-id="sendAI">
-🤖 اسأل الآن
-</button>
+    <button class="send-btn"
+            onclick="sendAI()">
+      ➤
+    </button>
 
-</div>
-
-<div
-class="ai-answer"
-id="aiAnswer">
-</div>
+  </div>
 
 </div>
 
-</div>
 
-</section>
+<!-- Firebase -->
 
-</main>
+<script type="module">
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile as firebaseUpdateProfile
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-<footer>
-ToolBox © 2026 — اكتشف شيئًا جديدًا كل يوم
-</footer>
+/* =====================================================
+   ضع بيانات Firebase الخاصة بك هنا
+===================================================== */
 
+const firebaseConfig = {
 
-<script>
+  apiKey:
+    "ضع_API_KEY_هنا",
 
-"use strict";
+  authDomain:
+    "ضع_PROJECT_ID.firebaseapp.com",
 
-/* =========================
-CONFIG
-========================= */
+  projectId:
+    "ضع_PROJECT_ID_هنا",
 
-const CONFIG = {
+  storageBucket:
+    "ضع_PROJECT_ID.firebasestorage.app",
 
-DONATION_URL:
-"https://example.com/donate",
+  messagingSenderId:
+    "ضع_SENDER_ID_هنا",
 
-AI_ENDPOINT:
-"/api/daily-ai",
-
-CURRENCY_API:
-"https://api.frankfurter.dev/v2",
-
-CURRENCY_PROVIDER:
-"ECB"
+  appId:
+    "ضع_APP_ID_هنا"
 
 };
 
 
-/* =========================
-DONATION
-========================= */
-
-const donationOverlay =
-document.getElementById(
-"donationOverlay"
-);
-
-function openDonation(){
-
-donationOverlay.classList.add(
-"show"
-);
-
-}
-
-function closeDonation(){
-
-donationOverlay.classList.remove(
-"show"
-);
-
-localStorage.setItem(
-"toolbox-donation-seen",
-"1"
-);
-
-}
-
-document.getElementById(
-"donationLink"
-).href =
-CONFIG.DONATION_URL;
-
-document.getElementById(
-"continueButton"
-).onclick =
-closeDonation;
-
-document.getElementById(
-"donationButton"
-).onclick =
-openDonation;
-
-if(
-!localStorage.getItem(
-"toolbox-donation-seen"
-)
-){
-
-setTimeout(
-openDonation,
-500
-);
-
-}
-
-
-/* =========================
-DATE
-========================= */
-
-const today =
-new Date();
-
-document.getElementById(
-"todayDate"
-).textContent =
-today.toLocaleDateString(
-"ar",
-{
-weekday:"long",
-year:"numeric",
-month:"long",
-day:"numeric"
-}
-);
-
-
-/* =========================
-DAILY FALLBACK
-========================= */
-
-const dailyContent = [
-
-{
-icon:"💡",
-title:"اجعل هاتفك أداة لإنجازك",
-text:"قبل فتح مواقع التواصل، حدد شيئًا واحدًا تريد إنجازه اليوم ثم ابدأ به لمدة عشر دقائق فقط.",
-challenge:"أنجز مهمة مؤجلة لمدة 10 دقائق.",
-fact:"البدء بمهمة صغيرة يقلل حاجز التسويف."
-},
-
-{
-icon:"🧠",
-title:"تعلم شيئًا جديدًا اليوم",
-text:"اختر موضوعًا واحدًا لا تعرف عنه شيئًا واقرأ عنه لمدة خمس دقائق.",
-challenge:"تعلم معلومة جديدة واكتبها.",
-fact:"المعلومة التي تشرحها لشخص آخر تثبت في الذاكرة بشكل أفضل."
-},
-
-{
-icon:"💰",
-title:"راجع مصروفك اليوم",
-text:"افتح قائمة مصروفاتك واكتشف أين ذهب آخر مبلغ أنفقته.",
-challenge:"سجل كل مصروف اليوم.",
-fact:"معرفة أين تذهب أموالك هي أول خطوة لتنظيمها."
-},
-
-{
-icon:"🔥",
-title:"تحدي بدون تشتيت",
-text:"ضع هاتفك بعيدًا لمدة 20 دقيقة وأنجز شيئًا واحدًا فقط.",
-challenge:"20 دقيقة بدون إشعارات.",
-fact:"تعدد المهام غالبًا يجعل الانتباه يتنقل بدلًا من أن يركز."
-},
-
-{
-icon:"🎯",
-title:"اختر هدفًا واحدًا",
-text:"لا تحاول إنجاز كل شيء اليوم. اختر أهم شيء واجعله الأول.",
-challenge:"حدد أهم مهمة لديك الآن.",
-fact:"الأهداف المحددة أسهل في المتابعة من النوايا العامة."
-}
+/* Firebase */
 
-];
+const app = initializeApp(firebaseConfig);
 
-function dayIndex(){
+const auth = getAuth(app);
 
-const start =
-new Date(
-today.getFullYear(),
-0,
-0
-);
+const db = getFirestore(app);
 
-const diff =
-today -
-start;
 
-return Math.floor(
-diff /
-86400000
-);
-
-}
-
-function renderFallbackDaily(){
-
-const item =
-dailyContent[
-dayIndex() %
-dailyContent.length
-];
-
-document.getElementById(
-"dailyIcon"
-).textContent =
-item.icon;
-
-document.getElementById(
-"dailyTitle"
-).textContent =
-item.title;
-
-document.getElementById(
-"dailyText"
-).textContent =
-item.text;
-
-document.getElementById(
-"dailyChallenge"
-).textContent =
-item.challenge;
-
-document.getElementById(
-"dailyFact"
-).textContent =
-item.fact;
-
-}
-
-renderFallbackDaily();
+/* =====================================================
+   GLOBAL
+===================================================== */
 
-
-/* =========================
-AI DAILY
-========================= */
-
-async function loadDailyAI(
-force=false
-){
-
-const dateKey =
-new Date()
-.toISOString()
-.slice(0,10);
-
-const cacheKey =
-"toolbox-ai-" +
-dateKey;
-
-if(!force){
-
-const cached =
-localStorage.getItem(
-cacheKey
-);
-
-if(cached){
-
-try{
-
-const data =
-JSON.parse(cached);
+let currentUser = null;
 
-renderDailyAI(data);
-
-return;
-
-}catch(e){}
-
-}
+let selectedUser = null;
 
-}
-
-try{
-
-const response =
-await fetch(
-CONFIG.AI_ENDPOINT,
-{
-method:"POST",
-headers:{
-"Content-Type":
-"application/json"
-},
-body:JSON.stringify({
-date:dateKey,
-language:"ar"
-})
-}
-);
+let messagesUnsubscribe = null;
 
-if(!response.ok){
-throw new Error(
-"AI endpoint error"
-);
-}
-
-const data =
-await response.json();
+let usersUnsubscribe = null;
 
-if(
-!data.title ||
-!data.text
-){
-throw new Error(
-"Invalid AI response"
-);
-}
+let typingTimer = null;
 
-localStorage.setItem(
-cacheKey,
-JSON.stringify(data)
-);
-
-renderDailyAI(data);
-
-}catch(error){
-
-console.log(
-"AI unavailable:",
-error
-);
+let isRecording = false;
 
-}
+let mediaRecorder = null;
 
-}
+let audioChunks = [];
 
-function renderDailyAI(data){
+let currentLang = "ar";
 
-document.getElementById(
-"dailyIcon"
-).textContent =
-data.icon ||
-"🤖";
 
-document.getElementById(
-"dailyTitle"
-).textContent =
-data.title;
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-document.getElementById(
-"dailyText"
-).textContent =
-data.text;
+const authScreen =
+  document.getElementById("auth");
 
-document.getElementById(
-"dailyChallenge"
-).textContent =
-data.challenge ||
-"جرب شيئًا جديدًا اليوم.";
+const appScreen =
+  document.getElementById("app");
 
-document.getElementById(
-"dailyFact"
-).textContent =
-data.fact ||
-"معلومة جديدة كل يوم.";
+const loginForm =
+  document.getElementById("loginForm");
 
-}
+const registerForm =
+  document.getElementById("registerForm");
 
-loadDailyAI();
-
-
-document.getElementById(
-"newAIButton"
-).onclick =
-function(){
-
-this.textContent =
-"جاري التحديث...";
-
-loadDailyAI(true)
-.finally(
-()=>{
-this.textContent =
-"✨ تحديث اكتشاف اليوم";
-}
-);
-
-};
-
-
-/* =========================
-DISCOVER
-========================= */
-
-document.getElementById(
-"discoverButton"
-).onclick =
-function(){
+const layout =
+  document.getElementById("layout");
 
-document.getElementById(
-"toolsSection"
-).scrollIntoView({
-behavior:"smooth"
-});
+const userList =
+  document.getElementById("userList");
 
-};
+const messagesBox =
+  document.getElementById("messages");
 
 
-/* =========================
-AI CHAT
-========================= */
+/* =====================================================
+   AUTH STATE
+===================================================== */
 
-document.getElementById(
-"askAIButton"
-).onclick =
-function(){
+onAuthStateChanged(auth, async user => {
 
-document.getElementById(
-"aiSection"
-).scrollIntoView({
-behavior:"smooth"
-});
+  if(user){
 
-document.getElementById(
-"aiQuestion"
-).focus();
+    currentUser = user;
 
-};
+    authScreen.classList.add("hidden");
 
+    appScreen.classList.remove("hidden");
 
-document.getElementById(
-"sendAI"
-).onclick =
-async function(){
+    await createUserDocument();
 
-const input =
-document.getElementById(
-"aiQuestion"
-);
+    loadUsers();
 
-const answer =
-document.getElementById(
-"aiAnswer"
-);
+    setOnline(true);
 
-const question =
-input.value.trim();
+    loadMyProfile();
 
-if(!question){
-return;
-}
+  }else{
 
-answer.className =
-"ai-answer ai-loading";
+    currentUser = null;
 
-answer.textContent =
-"🤖 يفكر...";
+    authScreen.classList.remove("hidden");
 
-try{
+    appScreen.classList.add("hidden");
 
-const response =
-await fetch(
-CONFIG.AI_ENDPOINT,
-{
-method:"POST",
-headers:{
-"Content-Type":
-"application/json"
-},
-body:JSON.stringify({
-question,
-language:"ar"
-})
-}
-);
-
-if(!response.ok){
-throw new Error();
-}
-
-const data =
-await response.json();
-
-answer.className =
-"ai-answer";
-
-answer.textContent =
-data.answer ||
-"لم يصل رد.";
-
-}catch(error){
-
-answer.className =
-"ai-answer";
-
-answer.textContent =
-"تعذر الاتصال بالذكاء الاصطناعي حاليًا. حاول مرة أخرى.";
-
-}
-
-};
-
-
-/* =========================
-LANGUAGE
-========================= */
-
-document.getElementById(
-"languageButton"
-).onclick =
-function(){
-
-const isArabic =
-document.documentElement.lang ===
-"ar";
-
-if(isArabic){
-
-document.documentElement.lang =
-"en";
-
-document.documentElement.dir =
-"ltr";
-
-this.textContent =
-"English / العربية";
-
-}else{
-
-document.documentElement.lang =
-"ar";
-
-document.documentElement.dir =
-"rtl";
-
-this.textContent =
-"العربية / English";
-
-}
-
-};
-
-
-/* =========================
-TOOLS NAVIGATION
-========================= */
-
-const navButtons =
-document.querySelectorAll(
-".nav-btn"
-);
-
-const tools =
-document.querySelectorAll(
-".tool"
-);
-
-navButtons.forEach(
-button=>{
-
-button.onclick =
-function(){
-
-const name =
-this.dataset.tool;
-
-navButtons.forEach(
-b=>b.classList.remove(
-"active"
-)
-);
-
-this.classList.add(
-"active"
-);
-
-tools.forEach(
-tool=>{
-
-tool.classList.toggle(
-"active",
-tool.id ===
-"tool-" + name
-);
+  }
 
 });
 
-};
 
-}
-);
+/* =====================================================
+   AUTH UI
+===================================================== */
 
+window.showRegister = function(){
 
-/* =========================
-CURRENCY
-========================= */
+  loginForm.classList.add("hidden");
 
-let currencyRates = {
-EUR:1
-};
-
-let currencyDate = null;
-
-async function loadCurrencies(){
-
-const status =
-document.getElementById(
-"currencyStatus"
-);
-
-const update =
-document.getElementById(
-"currencyUpdate"
-);
-
-status.textContent =
-"جاري التحديث...";
-
-try{
-
-const url =
-CONFIG.CURRENCY_API +
-"/rates?base=EUR" +
-"&providers=" +
-CONFIG.CURRENCY_PROVIDER;
-
-const response =
-await fetch(url);
-
-if(!response.ok){
-throw new Error();
-}
-
-const data =
-await response.json();
-
-currencyRates = {
-EUR:1
-};
-
-data.forEach(
-item=>{
-
-currencyRates[
-item.quote
-] =
-item.rate;
-
-}
-);
-
-currencyDate =
-data[0]?.date ||
-null;
-
-status.textContent =
-"✓ الأسعار محدثة";
-
-update.textContent =
-currencyDate
-?
-"آخر تاريخ متوفر: " +
-currencyDate +
-" • المصدر: ECB"
-:
-"المصدر: ECB";
-
-renderCurrencyCards();
-
-convertCurrency();
-
-}catch(error){
-
-status.textContent =
-"تعذر تحديث الأسعار";
-
-update.textContent =
-"تحقق من الاتصال بالإنترنت.";
-
-}
-
-}
-
-function convertCurrency(){
-
-const amount =
-Number(
-document.getElementById(
-"currencyAmount"
-).value
-) || 0;
-
-const from =
-document.getElementById(
-"currencyFrom"
-).value;
-
-const to =
-document.getElementById(
-"currencyTo"
-).value;
-
-if(
-!currencyRates[from] ||
-!currencyRates[to]
-){
-
-document.getElementById(
-"currencyResult"
-).textContent =
-"السعر غير متوفر حاليًا";
-
-return;
-
-}
-
-const eurValue =
-amount /
-currencyRates[from];
-
-const result =
-eurValue *
-currencyRates[to];
-
-document.getElementById(
-"currencyResult"
-).textContent =
-amount.toLocaleString(
-"en-US",
-{
-maximumFractionDigits:4
-}
-)
-+
-" "
-+
-from
-+
-" = "
-+
-result.toLocaleString(
-"en-US",
-{
-maximumFractionDigits:4
-}
-)
-+
-" "
-+
-to;
-
-}
-
-function renderCurrencyCards(){
-
-const list =
-document.getElementById(
-"currencyList"
-);
-
-const codes =
-[
-"USD",
-"ILS",
-"EUR",
-"GBP",
-"SAR",
-"AED",
-"JOD",
-"EGP"
-];
-
-list.innerHTML = "";
-
-codes.forEach(
-code=>{
-
-if(
-!currencyRates[code]
-){
-return;
-}
-
-const card =
-document.createElement(
-"div"
-);
-
-card.className =
-"currency-card";
-
-card.innerHTML =
-
-"<div class='code'>" +
-code +
-"</div>" +
-
-"<div class='price'>" +
-currencyRates[code]
-.toFixed(4) +
-"</div>" +
-
-"<div class='date'>" +
-(
-currencyDate ||
-"آخر تحديث"
-) +
-"</div>";
-
-list.appendChild(
-card
-);
-
-});
-
-}
-
-document.getElementById(
-"currencyAmount"
-).oninput =
-convertCurrency;
-
-document.getElementById(
-"currencyFrom"
-).onchange =
-convertCurrency;
-
-document.getElementById(
-"currencyTo"
-).onchange =
-convertCurrency;
-
-document.getElementById(
-"convertCurrency"
-).onclick =
-convertCurrency;
-
-document.getElementById(
-"refreshCurrency"
-).onclick =
-loadCurrencies;
-
-loadCurrencies();
-
-
-/* =========================
-PASSWORD
-========================= */
-
-const lengthSlider =
-document.getElementById(
-"passwordLength"
-);
-
-lengthSlider.oninput =
-function(){
-
-document.getElementById(
-"passwordLengthLabel"
-).textContent =
-this.value;
-
-};
-
-document.getElementById(
-"generatePassword"
-).onclick =
-function(){
-
-const chars =
-"ABCDEFGHJKLMNPQRSTUVWXYZ" +
-"abcdefghijkmnopqrstuvwxyz" +
-"23456789!@#$%^&*_-+=";
-
-const length =
-Number(
-lengthSlider.value
-);
-
-let result = "";
-
-if(
-window.crypto &&
-window.crypto.getRandomValues
-){
-
-const array =
-new Uint32Array(
-length
-);
-
-window.crypto.getRandomValues(
-array
-);
-
-for(
-let i=0;
-i<length;
-i++
-){
-
-result +=
-chars[
-array[i] %
-chars.length
-];
-
-}
-
-}else{
-
-for(
-let i=0;
-i<length;
-i++
-){
-
-result +=
-chars[
-Math.floor(
-Math.random() *
-chars.length
-)
-];
-
-}
-
-}
-
-document.getElementById(
-"passwordResult"
-).textContent =
-result;
-
-};
-
-document.getElementById(
-"copyPassword"
-).onclick =
-async function(){
-
-const text =
-document.getElementById(
-"passwordResult"
-).textContent;
-
-if(
-!text ||
-text === "اضغط توليد"
-){
-return;
-}
-
-try{
-
-await navigator.clipboard.writeText(
-text
-);
-
-this.textContent =
-"تم النسخ ✓";
-
-setTimeout(
-()=>{
-this.textContent =
-"نسخ";
-},
-1200
-);
-
-}catch(e){
-
-alert(
-"تعذر النسخ."
-);
-
-}
+  registerForm.classList.remove("hidden");
 
 };
 
 
-/* =========================
-QR
-========================= */
+window.showLogin = function(){
 
-document.getElementById(
-"generateQR"
-).onclick =
-function(){
+  registerForm.classList.add("hidden");
 
-const text =
-document.getElementById(
-"qrInput"
-).value.trim();
-
-const result =
-document.getElementById(
-"qrResult"
-);
-
-if(!text){
-
-result.textContent =
-"اكتب النص أولًا.";
-
-return;
-
-}
-
-const img =
-document.createElement(
-"img"
-);
-
-img.alt =
-"QR Code";
-
-img.style.maxWidth =
-"220px";
-
-img.style.width =
-"100%";
-
-img.style.borderRadius =
-"12px";
-
-img.src =
-"https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="
-+
-encodeURIComponent(
-text
-);
-
-result.innerHTML =
-"";
-
-result.appendChild(
-img
-);
+  loginForm.classList.remove("hidden");
 
 };
 
 
-/* =========================
-TEXT
-========================= */
+/* =====================================================
+   REGISTER
+===================================================== */
 
-document.getElementById(
-"textInput"
-).oninput =
-function(){
+window.register = async function(){
 
-const text =
-this.value;
+  const name =
+    document.getElementById("regName").value.trim();
 
-const words =
-text.trim()
-?
-text.trim()
-.split(/\s+/)
-.length
-:
-0;
+  const email =
+    document.getElementById("regEmail").value.trim();
 
-const chars =
-[...text].length;
+  const password =
+    document.getElementById("regPassword").value;
 
-const lines =
-text
-?
-text.split(
-/\r?\n/
-).length
-:
-0;
+  if(!name || !email || !password){
 
-document.getElementById(
-"wordCount"
-).textContent =
-words;
+    alert("أكمل جميع البيانات");
 
-document.getElementById(
-"characterCount"
-).textContent =
-chars;
+    return;
 
-document.getElementById(
-"lineCount"
-).textContent =
-lines;
+  }
+
+  if(password.length < 6){
+
+    alert("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+
+    return;
+
+  }
+
+  try{
+
+    const result =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    await firebaseUpdateProfile(
+      result.user,
+      {
+        displayName:name
+      }
+    );
+
+    await setDoc(
+      doc(db,"users",result.user.uid),
+      {
+        uid:result.user.uid,
+        name:name,
+        email:email,
+        photo:"",
+        online:true,
+        lastSeen:serverTimestamp(),
+        createdAt:serverTimestamp()
+      }
+    );
+
+  }catch(error){
+
+    alert(firebaseError(error));
+
+  }
+
+};
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+window.login = async function(){
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  if(!email || !password){
+
+    alert("أدخل البريد وكلمة المرور");
+
+    return;
+
+  }
+
+  try{
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+  }catch(error){
+
+    alert(firebaseError(error));
+
+  }
 
 };
 
 
-/* =========================
-UNITS
-========================= */
+/* =====================================================
+   LOGOUT
+===================================================== */
 
-const unitData = {
+window.logout = async function(){
 
-length:{
-mm:1,
-cm:10,
-m:1000,
-km:1000000,
-inch:25.4,
-foot:304.8,
-mile:1609344
-},
+  if(currentUser){
 
-weight:{
-mg:1,
-g:1000,
-kg:1000000,
-lb:453592.37,
-oz:28349.523125
-},
+    await setOnline(false);
 
-temperature:{
-C:"C",
-F:"F",
-K:"K"
-}
+  }
+
+  await signOut(auth);
 
 };
 
-const unitLabels = {
 
-mm:"ملليمتر",
-cm:"سنتيمتر",
-m:"متر",
-km:"كيلومتر",
-inch:"بوصة",
-foot:"قدم",
-mile:"ميل",
+/* =====================================================
+   CREATE USER
+===================================================== */
 
-mg:"ملغ",
-g:"غرام",
-kg:"كيلوغرام",
-lb:"رطل",
-oz:"أونصة",
+async function createUserDocument(){
 
-C:"°C",
-F:"°F",
-K:"كلفن"
+  if(!currentUser)return;
 
-};
+  const ref =
+    doc(db,"users",currentUser.uid);
 
-const category =
-document.getElementById(
-"unitCategory"
-);
+  const snap =
+    await getDoc(ref);
 
-function loadUnitOptions(){
+  if(!snap.exists()){
 
-const from =
-document.getElementById(
-"unitFrom"
-);
+    await setDoc(ref,{
+      uid:currentUser.uid,
+      name:currentUser.displayName || "مستخدم",
+      email:currentUser.email || "",
+      photo:"",
+      online:true,
+      lastSeen:serverTimestamp(),
+      createdAt:serverTimestamp()
+    });
 
-const to =
-document.getElementById(
-"unitTo"
-);
-
-from.innerHTML = "";
-
-to.innerHTML = "";
-
-Object.keys(
-unitData[
-category.value
-]
-).forEach(
-key=>{
-
-from.add(
-new Option(
-unitLabels[key],
-key
-)
-);
-
-to.add(
-new Option(
-unitLabels[key],
-key
-)
-);
-
-});
-
-if(
-to.options.length > 1
-){
-
-to.selectedIndex =
-1;
+  }
 
 }
 
-}
 
-function convertUnit(){
+/* =====================================================
+   USERS
+===================================================== */
 
-const value =
-Number(
-document.getElementById(
-"unitValue"
-).value
-) || 0;
+function loadUsers(){
 
-const from =
-document.getElementById(
-"unitFrom"
-).value;
+  if(usersUnsubscribe)
+    usersUnsubscribe();
 
-const to =
-document.getElementById(
-"unitTo"
-).value;
+  usersUnsubscribe =
+    onSnapshot(
+      collection(db,"users"),
+      snapshot => {
 
-let result;
+        const search =
+          document
+          .getElementById("userSearch")
+          .value
+          .trim()
+          .toLowerCase();
 
-if(
-category.value ===
-"temperature"
-){
+        const users = [];
 
-let celsius;
+        snapshot.forEach(item => {
 
-if(from === "C")
-celsius = value;
+          const user = item.data();
 
-else if(from === "F")
-celsius =
-(value-32)*5/9;
+          if(user.uid === currentUser.uid)
+            return;
 
-else
-celsius =
-value-273.15;
+          if(search){
 
-if(to === "C")
-result = celsius;
+            const text =
+              `${user.name || ""} ${user.email || ""}`
+              .toLowerCase();
 
-else if(to === "F")
-result =
-celsius*9/5+32;
+            if(!text.includes(search))
+              return;
 
-else
-result =
-celsius+273.15;
+          }
 
-}else{
+          users.push(user);
 
-result =
-value *
-unitData[
-category.value
-][from] /
-unitData[
-category.value
-][to];
+        });
+
+        users.sort((a,b) =>
+          (a.name || "").localeCompare(
+            b.name || "",
+            "ar"
+          )
+        );
+
+        renderUsers(users);
+
+      }
+    );
 
 }
 
-document.getElementById(
-"unitResult"
-).textContent =
-result.toFixed(4)
-+
-" "
-+
-unitLabels[to];
 
-}
+window.searchUsers = function(){
 
-category.onchange =
-function(){
-
-loadUnitOptions();
-
-convertUnit();
-
-};
-
-document.getElementById(
-"unitFrom"
-).onchange =
-convertUnit;
-
-document.getElementById(
-"unitTo"
-).onchange =
-convertUnit;
-
-document.getElementById(
-"unitValue"
-).oninput =
-convertUnit;
-
-loadUnitOptions();
-convertUnit();
-
-
-/* =========================
-BMI
-========================= */
-
-document.getElementById(
-"calculateBMI"
-).onclick =
-function(){
-
-const weight =
-Number(
-document.getElementById(
-"bmiWeight"
-).value
-);
-
-const height =
-Number(
-document.getElementById(
-"bmiHeight"
-).value
-)/100;
-
-const result =
-document.getElementById(
-"bmiValue"
-);
-
-const message =
-document.getElementById(
-"bmiMessage"
-);
-
-if(
-weight<=0 ||
-height<=0
-){
-
-result.textContent =
-"أدخل البيانات";
-
-message.textContent =
-"";
-
-return;
-
-}
-
-const bmi =
-weight /
-(height*height);
-
-result.textContent =
-bmi.toFixed(1);
-
-if(bmi<18.5)
-message.textContent =
-"أقل من الوزن الطبيعي.";
-
-else if(bmi<25)
-message.textContent =
-"ضمن النطاق الطبيعي.";
-
-else if(bmi<30)
-message.textContent =
-"زيادة في الوزن.";
-
-else
-message.textContent =
-"ضمن نطاق السمنة.";
+  loadUsers();
 
 };
 
 
-/* =========================
-TIMER
-========================= */
+function renderUsers(users){
 
-let seconds = 1500;
-let interval = null;
+  userList.innerHTML = "";
 
-function updateTimer(){
+  if(!users.length){
 
-const minutes =
-Math.floor(
-seconds/60
-)
-.toString()
-.padStart(2,"0");
+    userList.innerHTML = `
+      <div style="padding:30px;text-align:center;color:#777">
+        لا يوجد مستخدمون
+      </div>
+    `;
 
-const secs =
-(seconds%60)
-.toString()
-.padStart(2,"0");
+    return;
 
-document.getElementById(
-"timerDisplay"
-).textContent =
-minutes +
-":" +
-secs;
+  }
 
-}
+  users.forEach(user => {
 
-document.getElementById(
-"timerStart"
-).onclick =
-function(){
+    const item =
+      document.createElement("div");
 
-if(interval){
+    item.className =
+      "user-item";
 
-clearInterval(
-interval
-);
+    if(selectedUser &&
+       selectedUser.uid === user.uid){
 
-interval = null;
+      item.classList.add("active");
 
-this.textContent =
-"استئناف";
+    }
 
-return;
+    item.innerHTML = `
 
-}
+      <img
+        class="avatar"
+        src="${escapeAttr(
+          user.photo ||
+          "https://i.pravatar.cc/100?u="+user.uid
+        )}">
 
-this.textContent =
-"إيقاف مؤقت";
+      ${user.online ? `<span class="online"></span>` : ""}
 
-interval =
-setInterval(
-()=>{
+      <div class="user-info">
 
-if(seconds>0){
+        <div class="user-name">
+          ${escapeHTML(user.name || "مستخدم")}
+        </div>
 
-seconds--;
+        <div class="last-msg">
+          ${user.online ? "🟢 متصل الآن" : "آخر ظهور"}
+        </div>
 
-updateTimer();
+      </div>
 
-}else{
+    `;
 
-clearInterval(
-interval
-);
+    item.onclick =
+      () => openChat(user);
 
-interval = null;
+    userList.appendChild(item);
 
-this.textContent =
-"ابدأ";
-
-alert(
-"🎉 انتهت جلسة التركيز!"
-);
+  });
 
 }
 
-},
-1000
-);
+
+/* =====================================================
+   OPEN CHAT
+===================================================== */
+
+window.openChat = function(user){
+
+  selectedUser = user;
+
+  layout.classList.add("chat-open");
+
+  document
+    .getElementById("chatEmpty")
+    .classList.add("hidden");
+
+  document
+    .getElementById("chatContent")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("chatName")
+    .textContent =
+      user.name || "مستخدم";
+
+  document
+    .getElementById("chatAvatar")
+    .src =
+      user.photo ||
+      "https://i.pravatar.cc/100?u="+user.uid;
+
+  updateChatStatus();
+
+  loadMessages();
 
 };
 
-document.getElementById(
-"timerReset"
-).onclick =
-function(){
 
-clearInterval(
-interval
-);
+/* =====================================================
+   CHAT STATUS
+===================================================== */
 
-interval = null;
+function updateChatStatus(){
 
-seconds = 1500;
+  if(!selectedUser)return;
 
-updateTimer();
+  document
+    .getElementById("chatStatus")
+    .textContent =
+      selectedUser.online
+      ? "🟢 متصل الآن"
+      : "غير متصل";
 
-document.getElementById(
-"timerStart"
-).textContent =
-"ابدأ";
+}
+
+
+/* =====================================================
+   CONVERSATION ID
+===================================================== */
+
+function conversationId(){
+
+  if(!selectedUser || !currentUser)
+    return "";
+
+  return [
+    currentUser.uid,
+    selectedUser.uid
+  ].sort().join("_");
+
+}
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+function loadMessages(){
+
+  if(messagesUnsubscribe)
+    messagesUnsubscribe();
+
+  messagesBox.innerHTML = "";
+
+  const conversation =
+    conversationId();
+
+  const messagesRef =
+    collection(
+      db,
+      "conversations",
+      conversation,
+      "messages"
+    );
+
+  const q =
+    query(
+      messagesRef,
+      orderBy("createdAt","asc")
+    );
+
+  messagesUnsubscribe =
+    onSnapshot(q,snapshot => {
+
+      messagesBox.innerHTML = "";
+
+      snapshot.forEach(item => {
+
+        renderMessage(
+          item.id,
+          item.data()
+        );
+
+      });
+
+      messagesBox.scrollTop =
+        messagesBox.scrollHeight;
+
+    });
+
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+window.sendMessage = async function(){
+
+  if(!selectedUser)return;
+
+  const input =
+    document.getElementById("messageInput");
+
+  const text =
+    input.value.trim();
+
+  if(!text)return;
+
+  const conversation =
+    conversationId();
+
+  await addDoc(
+    collection(
+      db,
+      "conversations",
+      conversation,
+      "messages"
+    ),
+    {
+      senderId:currentUser.uid,
+      receiverId:selectedUser.uid,
+      text:text,
+      type:"text",
+      createdAt:serverTimestamp(),
+      read:false,
+      reactions:{}
+    }
+  );
+
+  input.value = "";
+
+  await updateDoc(
+    doc(db,"conversations",conversation),
+    {
+      lastMessage:text,
+      lastMessageAt:serverTimestamp()
+    }
+  ).catch(async ()=>{
+
+    await setDoc(
+      doc(db,"conversations",conversation),
+      {
+        users:[
+          currentUser.uid,
+          selectedUser.uid
+        ],
+        lastMessage:text,
+        lastMessageAt:serverTimestamp()
+      }
+    );
+
+  });
+
+  stopTyping();
 
 };
 
-updateTimer();
 
+/* =====================================================
+   RENDER MESSAGE
+===================================================== */
 
-/* =========================
-TASKS
-========================= */
+function renderMessage(id,message){
 
-let tasks = [];
+  const mine =
+    message.senderId === currentUser.uid;
 
-try{
+  const row =
+    document.createElement("div");
 
-tasks =
-JSON.parse(
-localStorage.getItem(
-"toolbox-tasks"
-)
-) || [];
+  row.className =
+    "message-row " +
+    (mine ? "mine" : "theirs");
 
-}catch(e){
+  const bubble =
+    document.createElement("div");
 
-tasks = [];
+  bubble.className =
+    "message";
+
+  let content = "";
+
+  if(message.type === "text"){
+
+    content =
+      escapeHTML(message.text || "");
+
+  }else if(message.type === "image"){
+
+    content = `
+      <img
+        src="${escapeAttr(message.url)}"
+        style="max-width:260px;border-radius:12px">
+    `;
+
+  }else if(message.type === "file"){
+
+    content = `
+      <a
+        href="${escapeAttr(message.url)}"
+        target="_blank"
+        style="color:inherit">
+        📎 ${escapeHTML(message.name || "ملف")}
+      </a>
+    `;
+
+  }else if(message.type === "audio"){
+
+    content = `
+      <audio controls src="${escapeAttr(message.url)}"></audio>
+    `;
+
+  }
+
+  bubble.innerHTML = `
+    <div>${content}</div>
+
+    <div class="msg-time">
+      ${message.createdAt
+        ? formatTime(message.createdAt)
+        : "..."}
+      ${mine
+        ? (message.read ? " ✔✔" : " ✔")
+        : ""}
+    </div>
+
+    <div style="margin-top:5px">
+      <button
+        onclick="reactMessage('${id}','❤️')"
+        style="background:none;color:inherit">
+        ❤️
+      </button>
+
+      <button
+        onclick="deleteMessage('${id}')"
+        style="background:none;color:inherit">
+        🗑️
+      </button>
+    </div>
+  `;
+
+  row.appendChild(bubble);
+
+  messagesBox.appendChild(row);
 
 }
 
-function saveTasks(){
 
-localStorage.setItem(
-"toolbox-tasks",
-JSON.stringify(
-tasks
-)
-);
+/* =====================================================
+   DELETE MESSAGE
+===================================================== */
 
-}
+window.deleteMessage =
+  async function(id){
 
-function renderTasks(){
+    if(!selectedUser)return;
 
-const list =
-document.getElementById(
-"taskList"
-);
+    if(!confirm("حذف هذه الرسالة؟"))
+      return;
 
-list.innerHTML = "";
+    await deleteDoc(
+      doc(
+        db,
+        "conversations",
+        conversationId(),
+        "messages",
+        id
+      )
+    );
 
-if(!tasks.length){
+  };
 
-const item =
-document.createElement(
-"li"
-);
 
-item.className =
-"task";
+/* =====================================================
+   REACTION
+===================================================== */
 
-item.style.justifyContent =
-"center";
+window.reactMessage =
+  async function(id,emoji){
 
-item.textContent =
-"لا توجد مهام.";
+    if(!selectedUser)return;
 
-list.appendChild(
-item
-);
+    await updateDoc(
+      doc(
+        db,
+        "conversations",
+        conversationId(),
+        "messages",
+        id
+      ),
+      {
+        [`reactions.${currentUser.uid}`]:emoji
+      }
+    );
 
-return;
+  };
 
-}
 
-tasks.forEach(
-(task,index)=>{
+/* =====================================================
+   TYPING
+===================================================== */
 
-const item =
-document.createElement(
-"li"
-);
+window.handleTyping = function(){
 
-item.className =
-"task";
+  if(!selectedUser)return;
 
-if(task.done)
-item.classList.add(
-"done"
-);
+  setTyping(true);
 
-const checkbox =
-document.createElement(
-"input"
-);
+  clearTimeout(typingTimer);
 
-checkbox.type =
-"checkbox";
-
-checkbox.checked =
-task.done;
-
-checkbox.onchange =
-function(){
-
-task.done =
-this.checked;
-
-saveTasks();
-
-renderTasks();
+  typingTimer =
+    setTimeout(
+      stopTyping,
+      1500
+    );
 
 };
 
-const span =
-document.createElement(
-"span"
-);
 
-span.textContent =
-task.text;
+async function setTyping(value){
 
-const del =
-document.createElement(
-"button"
-);
+  if(!selectedUser)return;
 
-del.className =
-"delete";
-
-del.textContent =
-"×";
-
-del.onclick =
-function(){
-
-tasks.splice(
-index,
-1
-);
-
-saveTasks();
-
-renderTasks();
-
-};
-
-item.appendChild(
-checkbox
-);
-
-item.appendChild(
-span
-);
-
-item.appendChild(
-del
-);
-
-list.appendChild(
-item
-);
-
-});
+  await setDoc(
+    doc(
+      db,
+      "typing",
+      conversationId()
+    ),
+    {
+      [currentUser.uid]:value
+    },
+    {merge:true}
+  );
 
 }
 
-function addTask(){
 
-const input =
-document.getElementById(
-"taskInput"
+async function stopTyping(){
+
+  await setTyping(false);
+
+}
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+window.messageKey =
+  function(event){
+
+    if(event.key === "Enter" &&
+       !event.shiftKey){
+
+      event.preventDefault();
+
+      sendMessage();
+
+    }
+
+  };
+
+
+/* =====================================================
+   FILES
+===================================================== */
+
+/*
+  الرفع الحقيقي للصور والملفات يحتاج Firebase Storage.
+  هذه الدالة مجهزة لتوصيل Storage.
+*/
+
+window.sendFile =
+  async function(event){
+
+    const file =
+      event.target.files[0];
+
+    if(!file || !selectedUser)
+      return;
+
+    alert(
+      "تم اختيار الملف. اربط Firebase Storage لرفع الملفات فعلياً."
+    );
+
+    event.target.value = "";
+
+  };
+
+
+/* =====================================================
+   AUDIO
+===================================================== */
+
+window.toggleRecording =
+  async function(){
+
+    if(isRecording){
+
+      mediaRecorder.stop();
+
+      isRecording = false;
+
+      return;
+
+    }
+
+    try{
+
+      const stream =
+        await navigator.mediaDevices.getUserMedia({
+          audio:true
+        });
+
+      audioChunks = [];
+
+      mediaRecorder =
+        new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable =
+        e => audioChunks.push(e.data);
+
+      mediaRecorder.onstop =
+        async () => {
+
+          stream
+            .getTracks()
+            .forEach(track => track.stop());
+
+          alert(
+            "تم تسجيل الصوت. اربط Firebase Storage لإرساله."
+          );
+
+        };
+
+      mediaRecorder.start();
+
+      isRecording = true;
+
+    }catch(error){
+
+      alert(
+        "لم يتم السماح باستخدام الميكروفون."
+      );
+
+    }
+
+  };
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+async function loadMyProfile(){
+
+  const snap =
+    await getDoc(
+      doc(db,"users",currentUser.uid)
+    );
+
+  if(!snap.exists())return;
+
+  const user =
+    snap.data();
+
+  document
+    .getElementById("profileName")
+    .textContent =
+      user.name || currentUser.displayName;
+
+  document
+    .getElementById("profileEmail")
+    .textContent =
+      user.email || currentUser.email;
+
+  document
+    .getElementById("profileAvatar")
+    .src =
+      user.photo ||
+      "https://i.pravatar.cc/200?u="+currentUser.uid;
+
+}
+
+
+window.openProfile =
+  function(){
+
+    document
+      .getElementById("profilePanel")
+      .classList.remove("hidden");
+
+  };
+
+
+window.closeProfile =
+  function(){
+
+    document
+      .getElementById("profilePanel")
+      .classList.add("hidden");
+
+  };
+
+
+window.updateProfile =
+  async function(){
+
+    const name =
+      document
+      .getElementById("newName")
+      .value.trim();
+
+    if(!name)return;
+
+    await firebaseUpdateProfile(
+      currentUser,
+      {
+        displayName:name
+      }
+    );
+
+    await updateDoc(
+      doc(db,"users",currentUser.uid),
+      {
+        name:name
+      }
+    );
+
+    document
+      .getElementById("profileName")
+      .textContent = name;
+
+    document
+      .getElementById("newName")
+      .value = "";
+
+    alert("تم تحديث الاسم");
+
+  };
+
+
+/* =====================================================
+   ONLINE / LAST SEEN
+===================================================== */
+
+async function setOnline(value){
+
+  if(!currentUser)return;
+
+  await updateDoc(
+    doc(db,"users",currentUser.uid),
+    {
+      online:value,
+      lastSeen:serverTimestamp()
+    }
+  ).catch(()=>{});
+
+}
+
+window.addEventListener(
+  "beforeunload",
+  () => setOnline(false)
 );
 
-const text =
-input.value.trim();
 
-if(!text)
-return;
+/* =====================================================
+   DARK MODE
+===================================================== */
 
-tasks.push({
-text,
-done:false
-});
+window.toggleDarkMode =
+  function(){
 
-saveTasks();
+    const dark =
+      document.body.dataset.dark === "1";
 
-input.value = "";
+    if(!dark){
 
-renderTasks();
+      document.body.dataset.dark = "1";
+
+      document.documentElement.style.setProperty(
+        "--bg",
+        "#18191a"
+      );
+
+      document.documentElement.style.setProperty(
+        "--card",
+        "#242526"
+      );
+
+      document.documentElement.style.setProperty(
+        "--text",
+        "#e4e6eb"
+      );
+
+      document.documentElement.style.setProperty(
+        "--msg",
+        "#3a3b3c"
+      );
+
+      document.body.style.background =
+        "#18191a";
+
+    }else{
+
+      document.body.dataset.dark = "0";
+
+      document.documentElement.style.setProperty(
+        "--bg",
+        "#f0f2f5"
+      );
+
+      document.documentElement.style.setProperty(
+        "--card",
+        "#fff"
+      );
+
+      document.documentElement.style.setProperty(
+        "--text",
+        "#111827"
+      );
+
+      document.documentElement.style.setProperty(
+        "--msg",
+        "#e4e6eb"
+      );
+
+      document.body.style.background =
+        "#f0f2f5";
+
+    }
+
+  };
+
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+window.toggleLanguage =
+  function(){
+
+    currentLang =
+      currentLang === "ar"
+      ? "en"
+      : "ar";
+
+    document.documentElement.lang =
+      currentLang;
+
+    document.documentElement.dir =
+      currentLang === "ar"
+      ? "rtl"
+      : "ltr";
+
+    if(currentLang === "en"){
+
+      alert(
+        "English mode enabled. You can translate the interface strings later."
+      );
+
+    }else{
+
+      alert("تم تفعيل العربية");
+
+    }
+
+  };
+
+
+/* =====================================================
+   AI PANEL
+===================================================== */
+
+window.openAI =
+  function(){
+
+    document
+      .getElementById("aiPanel")
+      .classList.remove("hidden");
+
+  };
+
+
+window.closeAI =
+  function(){
+
+    document
+      .getElementById("aiPanel")
+      .classList.add("hidden");
+
+  };
+
+
+/* =====================================================
+   AI
+===================================================== */
+
+window.sendAI =
+  async function(){
+
+    const input =
+      document.getElementById("aiInput");
+
+    const text =
+      input.value.trim();
+
+    if(!text)return;
+
+    addAIMessage(
+      text,
+      true
+    );
+
+    input.value = "";
+
+    /*
+      لا تضع API Key للذكاء الاصطناعي هنا.
+
+      اربط هذا الطلب بـ Firebase Cloud Function
+      أو Backend خاص بك.
+
+      مثال:
+
+      POST /api/ai
+      {
+        "message": text
+      }
+    */
+
+    addAIMessage(
+      "🤖 مساعد AI جاهز. اربطه الآن بـ Cloud Function الخاصة بك حتى يتم تشغيل الذكاء الاصطناعي الحقيقي.",
+      false
+    );
+
+  };
+
+
+function addAIMessage(text,user){
+
+  const box =
+    document.getElementById("aiMessages");
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "ai-msg " +
+    (user ? "ai-user" : "ai-bot");
+
+  div.textContent = text;
+
+  box.appendChild(div);
+
+  box.scrollTop =
+    box.scrollHeight;
 
 }
 
-document.getElementById(
-"addTask"
-).onclick =
-addTask;
 
-document.getElementById(
-"taskInput"
-).onkeydown =
-function(e){
+/* =====================================================
+   MOBILE
+===================================================== */
 
-if(
-e.key ===
-"Enter"
-){
+window.closeMobileChat =
+  function(){
 
-addTask();
+    layout.classList.remove("chat-open");
 
-}
-
-};
-
-renderTasks();
+  };
 
 
-/* =========================
-AGE
-========================= */
+/* =====================================================
+   EMOJI
+===================================================== */
 
-document.getElementById(
-"calculateAge"
-).onclick =
-function(){
+window.toggleEmoji =
+  function(){
 
-const value =
-document.getElementById(
-"birthDate"
-).value;
+    const input =
+      document.getElementById("messageInput");
 
-const result =
-document.getElementById(
-"ageResult"
-);
+    input.value += " 😊";
 
-const details =
-document.getElementById(
-"ageDetails"
-);
+    input.focus();
 
-if(!value){
+  };
 
-result.textContent =
-"اختر التاريخ";
 
-details.textContent =
-"";
+/* =====================================================
+   HELPERS
+===================================================== */
 
-return;
+function formatTime(timestamp){
+
+  try{
+
+    return timestamp
+      .toDate()
+      .toLocaleTimeString(
+        [],
+        {
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+
+  }catch{
+
+    return "";
+
+  }
 
 }
 
-const birth =
-new Date(
-value+"T00:00:00"
-);
 
-const now =
-new Date();
+function escapeHTML(text){
 
-if(birth>now){
-
-result.textContent =
-"تاريخ غير صحيح";
-
-details.textContent =
-"";
-
-return;
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
-let years =
-now.getFullYear()
--
-birth.getFullYear();
 
-let months =
-now.getMonth()
--
-birth.getMonth();
+function escapeAttr(text){
 
-let days =
-now.getDate()
--
-birth.getDate();
-
-if(days<0){
-
-months--;
-
-days +=
-new Date(
-now.getFullYear(),
-now.getMonth(),
-0
-).getDate();
+  return String(text)
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
-if(months<0){
 
-years--;
+function firebaseError(error){
 
-months += 12;
+  const code =
+    error.code || "";
+
+  const errors = {
+
+    "auth/email-already-in-use":
+      "هذا البريد مستخدم بالفعل.",
+
+    "auth/invalid-email":
+      "البريد الإلكتروني غير صحيح.",
+
+    "auth/weak-password":
+      "كلمة المرور ضعيفة.",
+
+    "auth/invalid-credential":
+      "البريد أو كلمة المرور غير صحيحة.",
+
+    "auth/network-request-failed":
+      "تحقق من اتصال الإنترنت."
+
+  };
+
+  return errors[code] ||
+    "حدث خطأ: " + code;
 
 }
-
-result.textContent =
-years +
-" سنة";
-
-details.textContent =
-months +
-" شهر، " +
-days +
-" يوم";
-
-};
 
 </script>
 
