@@ -3,24 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
-<meta name="description" content="ToolBox - مجموعة أدوات يومية مجانية">
-<title>ToolBox - أدواتك اليومية</title>
+<meta name="theme-color" content="#07111c">
+<meta name="description" content="قصة علي من جباليا - ساعدني على تجاوز الظروف الصعبة">
+<title>قصة علي من جباليا | ساعدني</title>
 
 <style>
 :root{
-    --bg:#07111f;
-    --card:#0d1a2b;
-    --card2:#12233a;
-    --text:#f4f7fb;
-    --muted:#9eb0c7;
-    --primary:#4f8cff;
-    --primary2:#6366f1;
-    --success:#22c55e;
+    --bg:#050b12;
+    --bg2:#091522;
+    --card:#0d1b29;
+    --card2:#122536;
+    --text:#f8fafc;
+    --muted:#a8b6c5;
+    --primary:#e7a93b;
+    --primary2:#f2c15c;
+    --green:#22c55e;
     --danger:#ef4444;
-    --border:rgba(255,255,255,.09);
-    --shadow:0 20px 60px rgba(0,0,0,.3);
-    --radius:20px;
+    --border:rgba(255,255,255,.10);
+    --shadow:0 25px 80px rgba(0,0,0,.45);
+    --radius:24px;
 }
 
 *{
@@ -46,2552 +47,1400 @@ body{
     color:var(--text);
     background:
         radial-gradient(
-            circle at 10% 0%,
-            rgba(79,140,255,.18),
+            circle at 15% 0%,
+            rgba(231,169,59,.12),
             transparent 30%
         ),
         radial-gradient(
-            circle at 90% 100%,
-            rgba(99,102,241,.12),
+            circle at 90% 40%,
+            rgba(30,110,170,.12),
             transparent 30%
         ),
-        var(--bg);
+        linear-gradient(
+            180deg,
+            #050b12,
+            #091522 50%,
+            #050b12
+        );
+    line-height:1.8;
 }
 
-button,
-input,
-select,
-textarea{
-    font:inherit;
+body.modal-open{
+    overflow:hidden;
 }
 
 button{
+    font:inherit;
     cursor:pointer;
 }
 
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
 .container{
-    width:min(1150px,calc(100% - 28px));
+    width:min(1050px,calc(100% - 28px));
     margin:auto;
 }
 
-/* ================= HEADER ================= */
+/* =====================================================
+   TOP BAR
+===================================================== */
 
-header{
-    padding:32px 0 20px;
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:100;
+    height:70px;
+    background:rgba(5,11,18,.78);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
 }
 
-.header-top{
+.topbar-inner{
+    height:100%;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:20px;
+    gap:15px;
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:10px;
 }
 
-.logo{
-    width:52px;
-    height:52px;
+.brand-icon{
+    width:40px;
+    height:40px;
     display:grid;
     place-items:center;
-    border-radius:16px;
-    font-size:25px;
+    border-radius:12px;
     background:
         linear-gradient(
             135deg,
             var(--primary),
-            #7c3aed
+            #b96d17
         );
-    box-shadow:
-        0 12px 35px rgba(79,140,255,.3);
+    color:#16100a;
+    font-size:19px;
 }
 
-.brand h1{
-    font-size:clamp(26px,5vw,42px);
-    line-height:1;
+.brand-text{
+    font-weight:800;
+    font-size:15px;
 }
 
-.brand p{
+.brand-location{
     color:var(--muted);
-    margin-top:7px;
+    font-size:11px;
+    display:block;
+    margin-top:-4px;
 }
 
-/* ================= LANGUAGE ================= */
-
-.language-switch{
+.lang-switch{
     display:flex;
-    gap:4px;
-    padding:4px;
+    padding:3px;
     border:1px solid var(--border);
-    border-radius:13px;
-    background:var(--card);
+    border-radius:10px;
+    background:rgba(255,255,255,.04);
 }
 
-.language-switch button{
+.lang-switch button{
     border:0;
     color:var(--muted);
     background:transparent;
-    padding:9px 13px;
-    border-radius:9px;
-}
-
-.language-switch button.active{
-    color:white;
-    background:var(--primary);
-}
-
-/* ================= HERO ================= */
-
-.hero{
-    margin:22px 0;
-    padding:27px;
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    background:
-        linear-gradient(
-            135deg,
-            rgba(79,140,255,.13),
-            rgba(110,231,183,.05)
-        );
-    box-shadow:var(--shadow);
-}
-
-.hero h2{
-    font-size:25px;
-    margin-bottom:8px;
-}
-
-.hero p{
-    color:var(--muted);
-    line-height:1.8;
-}
-
-/* ================= NAV ================= */
-
-.tools-navigation{
-    display:flex;
-    gap:9px;
-    overflow-x:auto;
-    padding:4px 2px 15px;
-    scrollbar-width:thin;
-}
-
-.tool-button{
-    flex-shrink:0;
-    border:1px solid var(--border);
-    background:var(--card);
-    color:var(--muted);
-    padding:11px 14px;
-    border-radius:13px;
-    transition:.2s;
-}
-
-.tool-button:hover{
-    transform:translateY(-2px);
-    color:white;
-    border-color:var(--primary);
-}
-
-.tool-button.active{
-    color:white;
-    background:
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary2)
-        );
-    border-color:transparent;
-}
-
-/* ================= GRID ================= */
-
-.tools-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:18px;
-    padding-bottom:40px;
-}
-
-/* ================= TOOL CARD ================= */
-
-.tool{
-    display:none;
-    padding:22px;
-    background:rgba(13,26,43,.94);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-}
-
-.tool.active{
-    display:block;
-    animation:fadeIn .25s ease;
-}
-
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(8px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.tool-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:15px;
-    margin-bottom:18px;
-}
-
-.tool-header h3{
-    font-size:21px;
-}
-
-.tool-header p{
-    margin-top:5px;
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
-}
-
-.tool-number{
-    background:rgba(79,140,255,.12);
-    color:#b9cdfc;
-    padding:6px 10px;
-    border-radius:999px;
+    border-radius:7px;
+    padding:6px 9px;
     font-size:12px;
 }
 
-/* ================= FORM ================= */
-
-.form-group{
-    display:grid;
-    gap:7px;
-    margin-bottom:12px;
+.lang-switch button.active{
+    color:#111;
+    background:var(--primary);
 }
 
-.form-group label{
-    color:var(--muted);
-    font-size:13px;
-}
+/* =====================================================
+   HERO
+===================================================== */
 
-.row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-input,
-select,
-textarea{
-    width:100%;
-    color:var(--text);
-    background:#091525;
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:12px;
-    outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:var(--primary);
-    box-shadow:0 0 0 3px rgba(79,140,255,.12);
-}
-
-textarea{
-    min-height:145px;
-    resize:vertical;
-}
-
-/* ================= BUTTONS ================= */
-
-.buttons{
+.hero{
+    min-height:100vh;
+    padding-top:70px;
     display:flex;
-    gap:9px;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.05),
+            rgba(0,0,0,.65)
+        );
+    pointer-events:none;
+}
+
+.hero-glow{
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:rgba(231,169,59,.08);
+    filter:blur(80px);
+    top:10%;
+    right:-180px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:100%;
+    padding:70px 0 60px;
+}
+
+.location-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 12px;
+    border:1px solid rgba(231,169,59,.3);
+    background:rgba(231,169,59,.08);
+    color:var(--primary2);
+    border-radius:999px;
+    font-size:12px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    max-width:780px;
+    font-size:
+        clamp(
+            38px,
+            7vw,
+            76px
+        );
+    line-height:1.08;
+    letter-spacing:-2px;
+    margin-bottom:22px;
+}
+
+.hero h1 span{
+    color:var(--primary);
+}
+
+.hero-subtitle{
+    max-width:700px;
+    color:#d0dae5;
+    font-size:
+        clamp(
+            17px,
+            2.5vw,
+            21px
+        );
+    line-height:1.9;
+    margin-bottom:30px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
     flex-wrap:wrap;
-    margin-top:10px;
 }
 
 .btn{
-    border:0;
-    border-radius:12px;
-    padding:11px 15px;
-    color:white;
-    transition:.2s;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:52px;
+    padding:0 22px;
+    border-radius:14px;
+    border:1px solid transparent;
+    font-weight:800;
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        background .2s;
 }
 
 .btn:hover{
-    transform:translateY(-1px);
+    transform:translateY(-2px);
 }
 
 .btn-primary{
+    color:#1b1307;
     background:
         linear-gradient(
             135deg,
-            var(--primary),
-            var(--primary2)
+            var(--primary2),
+            var(--primary)
         );
+    box-shadow:
+        0 12px 35px
+        rgba(231,169,59,.20);
 }
 
 .btn-secondary{
-    background:#1b2b42;
+    color:white;
+    background:rgba(255,255,255,.05);
+    border-color:var(--border);
 }
 
-.btn-danger{
-    background:var(--danger);
+.scroll-note{
+    margin-top:45px;
+    color:#7f91a2;
+    font-size:12px;
 }
 
-.btn-success{
-    background:var(--success);
+/* =====================================================
+   STORY
+===================================================== */
+
+.story-section{
+    padding:70px 0;
 }
 
-/* ================= RESULT ================= */
-
-.result{
-    margin-top:13px;
-    min-height:50px;
-    display:grid;
-    place-items:center;
-    text-align:center;
-    word-break:break-word;
-    padding:14px;
-    border-radius:13px;
-    background:#091525;
-    border:1px dashed var(--border);
-    font-weight:700;
+.section-heading{
+    margin-bottom:25px;
 }
 
-/* ================= PASSWORD ================= */
-
-.password-length{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:14px;
+.eyebrow{
+    color:var(--primary);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
 }
 
-.password-length input{
-    padding:0;
-    accent-color:var(--primary);
+.section-heading h2{
+    font-size:
+        clamp(
+            29px,
+            5vw,
+            46px
+        );
+    line-height:1.2;
+    margin-top:7px;
 }
 
-/* ================= QR ================= */
-
-.qr-result img{
-    max-width:200px;
-    width:100%;
-    border-radius:12px;
-}
-
-/* ================= TEXT STATS ================= */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    margin-top:10px;
-}
-
-.stat{
-    text-align:center;
-    padding:13px;
-    border-radius:12px;
-    background:#091525;
+.story-card{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,37,54,.95),
+            rgba(9,21,34,.95)
+        );
     border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:
+        clamp(
+            22px,
+            5vw,
+            48px
+        );
 }
 
-.stat strong{
-    display:block;
-    font-size:21px;
+.story-meta{
+    display:flex;
+    gap:9px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
 }
 
-.stat span{
+.meta{
+    padding:6px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--border);
     color:var(--muted);
     font-size:11px;
 }
 
-/* ================= BMI ================= */
-
-.bmi-number{
-    font-size:30px;
+.story-text{
+    color:#dbe5ee;
+    font-size:17px;
+    line-height:2.15;
 }
 
-/* ================= TIMER ================= */
-
-.timer{
-    text-align:center;
-    font-size:58px;
-    font-weight:700;
-    letter-spacing:2px;
-    font-variant-numeric:tabular-nums;
-    padding:20px 0;
+.story-text p{
+    margin-bottom:22px;
 }
 
-/* ================= TASKS ================= */
-
-.task-input{
-    display:grid;
-    grid-template-columns:1fr auto;
-    gap:8px;
+.story-text p:last-child{
+    margin-bottom:0;
 }
 
-.tasks{
-    list-style:none;
-    display:grid;
-    gap:8px;
-    margin-top:14px;
-}
-
-.task{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:11px 12px;
+.story-highlight{
+    margin:30px 0;
+    padding:20px;
+    border-right:4px solid var(--primary);
+    background:rgba(231,169,59,.06);
     border-radius:12px;
-    background:#091525;
+    color:#f5e5c4;
+    font-size:18px;
+    font-weight:700;
+}
+
+.story-note{
+    margin-top:28px;
+    padding:14px 16px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:13px;
+    color:#8fa0b1;
+    font-size:12px;
+}
+
+/* =====================================================
+   DONATION CTA
+===================================================== */
+
+.donation-section{
+    padding:30px 0 80px;
+}
+
+.donation-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:28px;
+    padding:
+        clamp(
+            27px,
+            6vw,
+            55px
+        );
+    background:
+        linear-gradient(
+            135deg,
+            #182a1f,
+            #0c1c19 60%,
+            #09151b
+        );
+    border:1px solid rgba(34,197,94,.22);
+    box-shadow:var(--shadow);
+}
+
+.donation-card::after{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:rgba(34,197,94,.08);
+    filter:blur(50px);
+    left:-120px;
+    bottom:-150px;
+}
+
+.donation-content{
+    position:relative;
+    z-index:2;
+}
+
+.donation-icon{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.donation-card h2{
+    font-size:
+        clamp(
+            30px,
+            5vw,
+            45px
+        );
+    line-height:1.2;
+    margin-bottom:13px;
+}
+
+.donation-card p{
+    max-width:700px;
+    color:#c9d7ce;
+    margin-bottom:25px;
+}
+
+.donation-button{
+    background:
+        linear-gradient(
+            135deg,
+            #34d399,
+            #16a34a
+        );
+    color:#04120a;
+    box-shadow:
+        0 14px 40px
+        rgba(34,197,94,.20);
+}
+
+/* =====================================================
+   SUPPORT INFO
+===================================================== */
+
+.support-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
+    gap:13px;
+    margin-top:20px;
+}
+
+.support-item{
+    padding:17px;
+    border-radius:15px;
+    background:rgba(255,255,255,.035);
     border:1px solid var(--border);
 }
 
-.task span{
-    flex:1;
-    word-break:break-word;
+.support-item strong{
+    display:block;
+    margin-bottom:3px;
 }
 
-.task.completed span{
-    text-decoration:line-through;
-    color:#71849b;
-}
-
-.delete-task{
-    border:0;
-    background:transparent;
-    color:#fb7185;
-    font-size:20px;
-}
-
-/* ================= STORY ================= */
-
-.story{
-    grid-column:1/-1;
-}
-
-.story-content{
-    line-height:2;
-    color:#d8e2ef;
-}
-
-.story-content p{
-    margin-bottom:17px;
-}
-
-.story-warning{
-    margin-top:20px;
-    padding:14px;
-    border-radius:12px;
-    background:rgba(251,191,36,.08);
-    border:1px solid rgba(251,191,36,.2);
-    color:#fbd38d;
-    font-size:13px;
-}
-
-/* ================= FOOTER ================= */
-
-footer{
-    text-align:center;
+.support-item span{
     color:var(--muted);
     font-size:12px;
-    padding:10px 0 35px;
 }
 
-/* ================= MOBILE ================= */
+/* =====================================================
+   FOOTER
+===================================================== */
 
-@media(max-width:760px){
+footer{
+    padding:30px 0 45px;
+    text-align:center;
+    color:#718193;
+    font-size:11px;
+    border-top:1px solid var(--border);
+}
 
-    .header-top{
-        align-items:flex-start;
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:500;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+
+.modal.show{
+    display:flex;
+    animation:modalIn .2s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
     }
 
-    .brand h1{
-        font-size:28px;
+    to{
+        opacity:1;
+    }
+}
+
+.modal-box{
+    width:min(520px,100%);
+    max-height:
+        calc(
+            100vh - 36px
+        );
+    overflow:auto;
+    position:relative;
+    background:
+        linear-gradient(
+            145deg,
+            #102334,
+            #081522
+        );
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:27px;
+    box-shadow:0 30px 100px rgba(0,0,0,.65);
+    animation:boxIn .25s ease;
+}
+
+@keyframes boxIn{
+    from{
+        transform:translateY(15px) scale(.98);
     }
 
-    .logo{
-        width:45px;
-        height:45px;
+    to{
+        transform:translateY(0) scale(1);
     }
+}
 
-    .tools-grid{
-        grid-template-columns:1fr;
-    }
+.close-modal{
+    position:absolute;
+    top:12px;
+    left:12px;
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:1px solid var(--border);
+    color:white;
+    background:rgba(255,255,255,.06);
+    font-size:22px;
+}
 
-    .story{
-        grid-column:auto;
-    }
+.modal h3{
+    font-size:25px;
+    margin-bottom:5px;
+    padding-left:40px;
+}
 
-    .row{
-        grid-template-columns:1fr;
+.modal-subtitle{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.donation-method{
+    display:block;
+    width:100%;
+    text-align:right;
+    padding:17px;
+    margin-bottom:10px;
+    border-radius:15px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.035);
+    color:white;
+    transition:.2s;
+}
+
+.donation-method:hover{
+    border-color:rgba(231,169,59,.4);
+    background:rgba(231,169,59,.06);
+    transform:translateY(-1px);
+}
+
+.donation-method-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.donation-method strong{
+    font-size:15px;
+}
+
+.donation-method small{
+    display:block;
+    color:var(--muted);
+    margin-top:3px;
+    font-size:11px;
+}
+
+.copy-btn{
+    border:0;
+    padding:6px 9px;
+    border-radius:8px;
+    color:#111;
+    background:var(--primary);
+    font-size:11px;
+}
+
+.modal-warning{
+    margin-top:15px;
+    padding:12px;
+    border-radius:12px;
+    background:rgba(231,169,59,.07);
+    border:1px solid rgba(231,169,59,.15);
+    color:#d8c49c;
+    font-size:11px;
+    line-height:1.7;
+}
+
+/* =====================================================
+   LANGUAGE ENGLISH
+===================================================== */
+
+html[lang="en"] .story-highlight{
+    border-right:0;
+    border-left:4px solid var(--primary);
+}
+
+html[lang="en"] .donation-method{
+    text-align:left;
+}
+
+html[lang="en"] .close-modal{
+    left:auto;
+    right:12px;
+}
+
+html[lang="en"] .modal h3{
+    padding-left:0;
+    padding-right:40px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:700px){
+
+    .topbar{
+        height:62px;
     }
 
     .hero{
-        padding:20px;
+        padding-top:62px;
+        min-height:auto;
     }
 
-    .tool{
-        padding:18px;
+    .hero-content{
+        padding:
+            70px
+            0
+            65px;
     }
 
-    .language-switch button{
-        padding:8px 10px;
-    }
-}
-
-@media(max-width:450px){
-
-    .header-top{
-        flex-direction:column;
+    .hero h1{
+        letter-spacing:-1px;
     }
 
-    .language-switch{
-        align-self:flex-end;
-    }
-
-    .stats{
+    .support-grid{
         grid-template-columns:1fr;
     }
 
-    .timer{
-        font-size:48px;
+    .story-text{
+        font-size:16px;
     }
+
+    .hero-buttons{
+        flex-direction:column;
+    }
+
+    .hero-buttons .btn{
+        width:100%;
+    }
+
+    .donation-card .btn{
+        width:100%;
+    }
+
 }
+
+@media(max-width:430px){
+
+    .brand-text{
+        font-size:13px;
+    }
+
+    .brand-location{
+        font-size:10px;
+    }
+
+    .brand-icon{
+        width:36px;
+        height:36px;
+    }
+
+    .lang-switch button{
+        padding:5px 7px;
+        font-size:10px;
+    }
+
+    .story-card,
+    .donation-card{
+        border-radius:20px;
+    }
+
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
 
 @media(prefers-reduced-motion:reduce){
 
     *,
     *::before,
     *::after{
+        scroll-behavior:auto!important;
         animation:none!important;
         transition:none!important;
-        scroll-behavior:auto!important;
     }
+
 }
 </style>
 </head>
 
+
 <body>
 
-<header class="container">
 
-    <div class="header-top">
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
 
-        <div class="brand">
+<header class="topbar">
 
-            <div class="logo">
-                ⚡
+    <div class="container topbar-inner">
+
+        <a
+            href="#top"
+            class="brand">
+
+            <div class="brand-icon">
+                ♥
             </div>
 
             <div>
-                <h1 id="siteTitle">
-                    ToolBox
-                </h1>
 
-                <p id="siteSubtitle">
-                    أدواتك اليومية في مكان واحد
-                </p>
+                <span class="brand-text">
+                    قصة علي
+                </span>
+
+                <span class="brand-location">
+                    جباليا • غزة
+                </span>
+
             </div>
 
-        </div>
+        </a>
 
-        <div class="language-switch">
+
+        <div class="lang-switch">
 
             <button
-                id="arabicButton"
+                id="arBtn"
                 class="active">
-                العربية
+                عربي
             </button>
 
             <button
-                id="englishButton">
-                English
+                id="enBtn">
+                EN
             </button>
 
         </div>
 
     </div>
-
-    <section class="hero">
-
-        <h2 id="heroTitle">
-            أدوات سريعة وبسيطة
-        </h2>
-
-        <p id="heroDescription">
-            مجموعة أدوات مفيدة تعمل مباشرة من المتصفح.
-        </p>
-
-    </section>
 
 </header>
 
 
-<main class="container">
-
-<nav class="tools-navigation">
-
-    <button class="tool-button active" data-tool="currency">
-        💱 العملات
-    </button>
-
-    <button class="tool-button" data-tool="password">
-        🔐 كلمة مرور
-    </button>
-
-    <button class="tool-button" data-tool="qr">
-        ▣ QR
-    </button>
-
-    <button class="tool-button" data-tool="text">
-        📝 النص
-    </button>
-
-    <button class="tool-button" data-tool="units">
-        📏 الوحدات
-    </button>
-
-    <button class="tool-button" data-tool="bmi">
-        ⚖️ BMI
-    </button>
-
-    <button class="tool-button" data-tool="timer">
-        ⏱️ المؤقت
-    </button>
-
-    <button class="tool-button" data-tool="tasks">
-        ✅ المهام
-    </button>
-
-    <button class="tool-button" data-tool="age">
-        🎂 العمر
-    </button>
-
-</nav>
+<main id="top">
 
 
-<section class="tools-grid">
+<!-- =====================================================
+     HERO
+===================================================== -->
 
+<section class="hero">
 
-<!-- ================= CURRENCY ================= -->
+    <div class="hero-glow"></div>
 
-<article
-    class="tool active"
-    id="tool-currency">
+    <div class="container hero-content">
 
-    <div class="tool-header">
-
-        <div>
-            <h3>💱 محول العملات</h3>
-
-            <p>
-                تحويل تقريبي بين العملات.
-            </p>
+        <div class="location-badge">
+            📍 جباليا، شمال قطاع غزة
         </div>
 
-        <span class="tool-number">
-            01
-        </span>
 
-    </div>
+        <h1>
+            أنا علي، عمري 20 سنة...
+            <span>وهذه قصتي.</span>
+        </h1>
 
-    <div class="form-group">
 
-        <label>
-            المبلغ
-        </label>
+        <p class="hero-subtitle">
 
-        <input
-            id="currencyAmount"
-            type="number"
-            value="100"
-            min="0"
-            step="any">
+            الحرب لم تأخذ منا البيت فقط،
+            بل غيّرت تفاصيل حياتنا اليومية.
+            أكتب قصتي لأوصل صوتي،
+            ولأطلب من كل من يستطيع أن يساعدني
+            أن يقف بجانبي.
 
-    </div>
-
-    <div class="row">
-
-        <div class="form-group">
-
-            <label>
-                من
-            </label>
-
-            <select id="currencyFrom"></select>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                إلى
-            </label>
-
-            <select id="currencyTo"></select>
-
-        </div>
-
-    </div>
-
-    <div
-        class="result"
-        id="currencyResult">
-        —
-    </div>
-
-</article>
-
-
-<!-- ================= PASSWORD ================= -->
-
-<article
-    class="tool"
-    id="tool-password">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>🔐 مولد كلمات المرور</h3>
-
-            <p>
-                إنشاء كلمات مرور قوية وعشوائية.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            02
-        </span>
-
-    </div>
-
-    <div class="password-length">
-
-        <span>
-            الطول:
-        </span>
-
-        <strong id="passwordLengthLabel">
-            16
-        </strong>
-
-        <input
-            id="passwordLength"
-            type="range"
-            min="6"
-            max="64"
-            value="16">
-
-    </div>
-
-    <div class="buttons">
-
-        <button
-            class="btn btn-primary"
-            id="generatePassword">
-            توليد
-        </button>
-
-        <button
-            class="btn btn-secondary"
-            id="copyPassword">
-            نسخ
-        </button>
-
-    </div>
-
-    <div
-        class="result"
-        id="passwordResult">
-        اضغط توليد
-    </div>
-
-</article>
-
-
-<!-- ================= QR ================= -->
-
-<article
-    class="tool"
-    id="tool-qr">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>▣ مولد QR</h3>
-
-            <p>
-                تحويل رابط أو نص إلى QR Code.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            03
-        </span>
-
-    </div>
-
-    <div class="form-group">
-
-        <label>
-            النص أو الرابط
-        </label>
-
-        <textarea
-            id="qrInput"
-            placeholder="اكتب النص أو الرابط هنا..."></textarea>
-
-    </div>
-
-    <button
-        class="btn btn-primary"
-        id="generateQR">
-        إنشاء QR
-    </button>
-
-    <div
-        class="result qr-result"
-        id="qrResult">
-        —
-    </div>
-
-</article>
-
-
-<!-- ================= TEXT ================= -->
-
-<article
-    class="tool"
-    id="tool-text">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>📝 إحصائيات النص</h3>
-
-            <p>
-                حساب الكلمات والحروف والأسطر.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            04
-        </span>
-
-    </div>
-
-    <textarea
-        id="textInput"
-        placeholder="اكتب أو الصق النص هنا..."></textarea>
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <strong id="wordCount">
-                0
-            </strong>
-
-            <span>
-                الكلمات
-            </span>
-
-        </div>
-
-        <div class="stat">
-
-            <strong id="characterCount">
-                0
-            </strong>
-
-            <span>
-                الحروف
-            </span>
-
-        </div>
-
-        <div class="stat">
-
-            <strong id="lineCount">
-                0
-            </strong>
-
-            <span>
-                الأسطر
-            </span>
-
-        </div>
-
-    </div>
-
-</article>
-
-
-<!-- ================= UNITS ================= -->
-
-<article
-    class="tool"
-    id="tool-units">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>📏 محول الوحدات</h3>
-
-            <p>
-                طول ووزن وحرارة.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            05
-        </span>
-
-    </div>
-
-    <div class="row">
-
-        <div class="form-group">
-
-            <label>
-                القيمة
-            </label>
-
-            <input
-                id="unitValue"
-                type="number"
-                value="1"
-                step="any">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                النوع
-            </label>
-
-            <select id="unitCategory">
-
-                <option value="length">
-                    طول
-                </option>
-
-                <option value="weight">
-                    وزن
-                </option>
-
-                <option value="temperature">
-                    حرارة
-                </option>
-
-            </select>
-
-        </div>
-
-    </div>
-
-    <div class="row">
-
-        <div class="form-group">
-
-            <label>
-                من
-            </label>
-
-            <select id="unitFrom"></select>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                إلى
-            </label>
-
-            <select id="unitTo"></select>
-
-        </div>
-
-    </div>
-
-    <button
-        class="btn btn-primary"
-        id="convertUnit">
-        تحويل
-    </button>
-
-    <div
-        class="result"
-        id="unitResult">
-        —
-    </div>
-
-</article>
-
-
-<!-- ================= BMI ================= -->
-
-<article
-    class="tool"
-    id="tool-bmi">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>⚖️ حاسبة BMI</h3>
-
-            <p>
-                حساب مؤشر كتلة الجسم بشكل تقريبي.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            06
-        </span>
-
-    </div>
-
-    <div class="row">
-
-        <div class="form-group">
-
-            <label>
-                الوزن بالكيلوغرام
-            </label>
-
-            <input
-                id="bmiWeight"
-                type="number"
-                min="1"
-                step="any">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>
-                الطول بالسنتيمتر
-            </label>
-
-            <input
-                id="bmiHeight"
-                type="number"
-                min="1"
-                step="any">
-
-        </div>
-
-    </div>
-
-    <button
-        class="btn btn-primary"
-        id="calculateBMI">
-        احسب
-    </button>
-
-    <div class="result">
-
-        <div
-            class="bmi-number"
-            id="bmiValue">
-            —
-        </div>
-
-        <small id="bmiMessage">
-        </small>
-
-    </div>
-
-</article>
-
-
-<!-- ================= TIMER ================= -->
-
-<article
-    class="tool"
-    id="tool-timer">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>⏱️ مؤقت التركيز</h3>
-
-            <p>
-                جلسة تركيز لمدة 25 دقيقة.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            07
-        </span>
-
-    </div>
-
-    <div
-        class="timer"
-        id="timerDisplay">
-        25:00
-    </div>
-
-    <div class="buttons">
-
-        <button
-            class="btn btn-primary"
-            id="timerStart">
-            ابدأ الجلسة
-        </button>
-
-        <button
-            class="btn btn-secondary"
-            id="timerReset">
-            إعادة
-        </button>
-
-    </div>
-
-</article>
-
-
-<!-- ================= TASKS ================= -->
-
-<article
-    class="tool"
-    id="tool-tasks">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>✅ قائمة المهام</h3>
-
-            <p>
-                المهام تحفظ تلقائيًا على جهازك.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            08
-        </span>
-
-    </div>
-
-    <div class="task-input">
-
-        <input
-            id="taskInput"
-            type="text"
-            placeholder="اكتب مهمة جديدة...">
-
-        <button
-            class="btn btn-primary"
-            id="addTask">
-            إضافة
-        </button>
-
-    </div>
-
-    <ul
-        class="tasks"
-        id="taskList">
-    </ul>
-
-</article>
-
-
-<!-- ================= AGE ================= -->
-
-<article
-    class="tool"
-    id="tool-age">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>🎂 حاسبة العمر</h3>
-
-            <p>
-                احسب العمر بالتفصيل.
-            </p>
-        </div>
-
-        <span class="tool-number">
-            09
-        </span>
-
-    </div>
-
-    <div class="form-group">
-
-        <label>
-            تاريخ الميلاد
-        </label>
-
-        <input
-            id="birthDate"
-            type="date">
-
-    </div>
-
-    <button
-        class="btn btn-primary"
-        id="calculateAge">
-        احسب العمر
-    </button>
-
-    <div class="result">
-
-        <strong id="ageResult">
-            —
-        </strong>
-
-        <small id="ageDetails">
-        </small>
-
-    </div>
-
-</article>
-
-
-<!-- ================= STORY ================= -->
-
-<article
-    class="tool story"
-    id="tool-story">
-
-    <div class="tool-header">
-
-        <div>
-            <h3>
-                📖 قصة علي من جباليا
-            </h3>
-
-            <p>
-                قصة تجريبية يمكن تعديلها لاحقًا بتفاصيلك الحقيقية.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="story-content">
-
-        <p>
-            أنا علي، عمري عشرون سنة، من جباليا شمال قطاع غزة.
-            كنت أعيش حياة بسيطة، مثل أي شاب في عمري، وكانت لدي أحلام
-            وخطط للمستقبل.
         </p>
 
-        <p>
-            ثم جاءت الحرب وتغيرت تفاصيل الحياة كلها.
-            أصبح الحصول على الطعام والماء والخبز أمرًا صعبًا،
-            وأصبحت الأيام تمر بين الخوف والنزوح والانتظار.
-        </p>
 
-        <p>
-            تركنا بيتنا، وعشنا في ظروف صعبة، وتحولت الخيمة إلى مكان
-            نحاول فيه أن نحمي ما تبقى من حياتنا.
-            وفي الوقت نفسه، تعرض بيتنا للنهب والدمار، وضاعت أشياء
-            كثيرة كانت جزءًا من حياتنا وذكرياتنا.
-        </p>
+        <div class="hero-buttons">
 
-        <p>
-            في جباليا، تغيرت الشوارع التي أعرفها.
-            أماكن كنت أمر منها كل يوم أصبحت مغطاة بالركام،
-            وأصبح البحث عن الطعام والماء جزءًا من يومنا.
-        </p>
+            <a
+                href="#story"
+                class="btn btn-primary">
 
-        <p>
-            أنا في العشرين من عمري، متزوج، لكن الحرب جعلتني أفكر
-            في أشياء أبسط بكثير من أحلام الشباب.
-            أصبحت أفكر في الطعام والماء، وفي سلامة عائلتي،
-            وفي أين سننام الليلة.
-        </p>
+                📖 اقرأ قصتي
 
-        <div class="story-warning">
-            ⚠️ هذا النص نموذج قصصي خيالي. لا ينبغي استخدام أحداث مختلقة
-            على أنها شهادة شخصية حقيقية.
+            </a>
+
+
+            <button
+                class="btn btn-secondary"
+                id="heroDonate">
+
+                ♥ أريد المساعدة
+
+            </button>
+
+        </div>
+
+
+        <div class="scroll-note">
+            ↓ انزل لتقرأ القصة كاملة
         </div>
 
     </div>
-
-</article>
 
 </section>
+
+
+<!-- =====================================================
+     STORY
+===================================================== -->
+
+<section
+    class="story-section"
+    id="story">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                MY STORY
+            </div>
+
+            <h2>
+                قصتي من جباليا
+            </h2>
+
+        </div>
+
+
+        <article class="story-card">
+
+            <div class="story-meta">
+
+                <span class="meta">
+                    علي
+                </span>
+
+                <span class="meta">
+                    20 سنة
+                </span>
+
+                <span class="meta">
+                    متزوج
+                </span>
+
+                <span class="meta">
+                    جباليا - غزة
+                </span>
+
+            </div>
+
+
+            <div class="story-text">
+
+                <p>
+                    أنا علي، شاب من جباليا في شمال قطاع غزة،
+                    أبلغ من العمر عشرين عامًا، ومتزوج.
+                    قبل الحرب كانت لدي حياة بسيطة وأحلام مثل أي شاب
+                    في هذا العمر. لم أكن أطلب الكثير؛ كنت أريد أن أعيش
+                    بأمان، وأن أبني مستقبلي، وأن تبقى عائلتي بخير.
+                </p>
+
+
+                <p>
+                    عندما بدأت الحرب، تغير كل شيء من حولنا.
+                    الأشياء التي كنا نعتبرها عادية أصبحت صعبة:
+                    الحصول على الطعام، والماء، ومكان آمن للنوم،
+                    وحتى التفكير في اليوم التالي.
+                </p>
+
+
+                <div class="story-highlight">
+                    لم نكن نعرف أن أبسط الأشياء التي نعيشها كل يوم
+                    يمكن أن تصبح أمنيات.
+                </div>
+
+
+                <p>
+                    عائلتي لم تسلم من الحرب، وتعرض أفراد منها
+                    للإصابة، وأصبح الخوف على أحبائنا جزءًا من
+                    تفاصيل يومنا. كنا نعيش كل لحظة ونحن لا نعرف
+                    ماذا سيحدث بعد ساعات.
+                </p>
+
+
+                <p>
+                    اضطررنا إلى ترك بيتنا في شمال غزة.
+                    تركنا المكان الذي عشنا فيه وتركنا وراءنا
+                    أشياء كثيرة لا يمكن تعويضها بسهولة.
+                    وبعد ذلك تعرض بيتنا للنهب، وضاعت ممتلكات
+                    وذكريات كانت بالنسبة لنا جزءًا من حياتنا.
+                </p>
+
+
+                <p>
+                    عشنا في ظروف النزوح، وفي الخيمة، حيث لا توجد
+                    الراحة التي اعتدنا عليها في البيت.
+                    الحر، والخوف، وقلة الإمكانيات، والبحث المستمر
+                    عن الطعام والماء، كلها أصبحت جزءًا من يومنا.
+                </p>
+
+
+                <p>
+                    في جباليا، الأماكن التي أعرفها منذ سنوات
+                    تغيرت. الشوارع والبيوت والذكريات لم تعد كما كانت.
+                    وكل مرة أرى فيها ما حدث أتذكر الحياة التي كانت
+                    موجودة قبل أن تتغير كل هذه التفاصيل.
+                </p>
+
+
+                <p>
+                    أنا اليوم في العشرين من عمري ومتزوج، لكن الحرب
+                    جعلتني أفكر في أشياء مختلفة تمامًا عن أحلام
+                    الشباب. أصبحت أفكر أولًا في سلامة عائلتي،
+                    وفي الطعام والماء، وفي مكان نستطيع أن نعيش فيه
+                    بأمان، وفي كيفية البدء من جديد.
+                </p>
+
+
+                <p>
+                    أنا لا أكتب هذه الكلمات لأطلب الشفقة.
+                    أكتبها لأنني أريد أن يصل صوتي إلى من يستطيع
+                    مساعدتي. أي مساعدة، مهما كانت بسيطة، يمكن أن
+                    تخفف عنا شيئًا من هذه الظروف، وتساعدنا على
+                    الاستمرار والبدء من جديد.
+                </p>
+
+
+                <p>
+                    إذا وصلت قصتي إليك، فشكرًا لأنك قرأتها.
+                    وإن كنت تستطيع المساعدة، فاعلم أن مساعدتك
+                    تعني لنا الكثير.
+                </p>
+
+            </div>
+
+
+            <div class="story-note">
+                ملاحظة: هذه الصفحة مخصصة لعرض قصتك الشخصية.
+                عدّل أي فقرة لتطابق الأحداث والتفاصيل التي عشتها
+                فعلًا قبل نشرها.
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DONATION
+===================================================== -->
+
+<section class="donation-section">
+
+    <div class="container">
+
+        <div class="donation-card">
+
+            <div class="donation-content">
+
+                <div class="donation-icon">
+                    🤍
+                </div>
+
+
+                <h2>
+                    هل تستطيع أن تساعدني؟
+                </h2>
+
+
+                <p>
+                    إذا قرأت قصتي ووصل إليك ما مررنا به،
+                    يمكنك المساهمة بما تستطيع.
+                    لا يوجد مبلغ صغير عندما يكون الهدف
+                    مساعدة عائلة تحاول الاستمرار.
+                </p>
+
+
+                <button
+                    class="btn donation-button"
+                    id="donateButton">
+
+                    ♥ تبرع الآن
+
+                </button>
+
+
+                <div class="support-grid">
+
+                    <div class="support-item">
+
+                        <strong>
+                            الطعام
+                        </strong>
+
+                        <span>
+                            المساعدة في تأمين الاحتياجات الأساسية
+                        </span>
+
+                    </div>
+
+
+                    <div class="support-item">
+
+                        <strong>
+                            المعيشة
+                        </strong>
+
+                        <span>
+                            المساهمة في ظروف النزوح الصعبة
+                        </span>
+
+                    </div>
+
+
+                    <div class="support-item">
+
+                        <strong>
+                            بداية جديدة
+                        </strong>
+
+                        <span>
+                            المساعدة على إعادة بناء الحياة
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 
 </main>
 
 
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
 <footer>
 
-    ToolBox © 2026 — جميع الحقوق محفوظة
+    <div class="container">
+
+        قصة علي من جباليا • غزة
+
+        <br>
+
+        شكرًا لكل من قرأ وشارك وساعد.
+
+    </div>
 
 </footer>
 
 
+<!-- =====================================================
+     DONATION MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="donationModal"
+    aria-hidden="true">
+
+    <div
+        class="modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="donationTitle">
+
+
+        <button
+            class="close-modal"
+            id="closeModal"
+            aria-label="إغلاق">
+
+            ×
+
+        </button>
+
+
+        <h3 id="donationTitle">
+            طرق التبرع
+        </h3>
+
+
+        <p class="modal-subtitle">
+            اختر الطريقة المناسبة لك للمساعدة.
+        </p>
+
+
+        <!--
+            =================================================
+            ضع بيانات التبرع الحقيقية هنا
+            =================================================
+        -->
+
+
+        <button
+            class="donation-method"
+            data-copy="ضع-رقم-PalPay-هنا">
+
+            <div class="donation-method-top">
+
+                <div>
+
+                    <strong>
+                        💚 PalPay
+                    </strong>
+
+                    <small>
+                        اضغط لنسخ رقم المحفظة
+                    </small>
+
+                </div>
+
+                <span
+                    class="copy-btn">
+                    نسخ
+                </span>
+
+            </div>
+
+        </button>
+
+
+        <button
+            class="donation-method"
+            data-copy="ضع-رقم-الحساب-هنا">
+
+            <div class="donation-method-top">
+
+                <div>
+
+                    <strong>
+                        🏦 التحويل البنكي
+                    </strong>
+
+                    <small>
+                        اضغط لنسخ رقم الحساب
+                    </small>
+
+                </div>
+
+                <span
+                    class="copy-btn">
+                    نسخ
+                </span>
+
+            </div>
+
+        </button>
+
+
+        <a
+            class="donation-method"
+            href="#"
+            id="donationLink">
+
+            <div class="donation-method-top">
+
+                <div>
+
+                    <strong>
+                        🔗 رابط تبرع إلكتروني
+                    </strong>
+
+                    <small>
+                        ضع رابط حملة التبرع هنا
+                    </small>
+
+                </div>
+
+                <span
+                    class="copy-btn">
+                    فتح
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <div class="modal-warning">
+
+            ⚠️ قبل نشر الصفحة، تأكد من استبدال
+            أرقام الحسابات والروابط التجريبية
+            ببيانات التبرع الصحيحة.
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
+
+/* =====================================================
+   PAGE
+===================================================== */
 
 "use strict";
 
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const donationModal =
+    document.getElementById(
+        "donationModal"
+    );
+
+const donateButton =
+    document.getElementById(
+        "donateButton"
+    );
+
+const heroDonate =
+    document.getElementById(
+        "heroDonate"
+    );
+
+const closeModal =
+    document.getElementById(
+        "closeModal"
+    );
+
+
+/* =====================================================
+   OPEN MODAL
+===================================================== */
+
+function openDonation(){
+
+    donationModal.classList.add(
+        "show"
+    );
+
+    donationModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeDonation(){
+
+    donationModal.classList.remove(
+        "show"
+    );
+
+    donationModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+donateButton.addEventListener(
+    "click",
+    openDonation
+);
+
+
+heroDonate.addEventListener(
+    "click",
+    openDonation
+);
+
+
+closeModal.addEventListener(
+    "click",
+    closeDonation
+);
+
+
+/* =====================================================
+   CLOSE WHEN CLICKING OUTSIDE
+===================================================== */
+
+donationModal.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target ===
+            donationModal
+        ){
+
+            closeDonation();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CLOSE WITH ESC
+===================================================== */
+
 document.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-/* =====================================================
-   LANGUAGE
-===================================================== */
-
-const arabicButton =
-    document.getElementById("arabicButton");
-
-const englishButton =
-    document.getElementById("englishButton");
-
-const siteTitle =
-    document.getElementById("siteTitle");
-
-const siteSubtitle =
-    document.getElementById("siteSubtitle");
-
-const heroTitle =
-    document.getElementById("heroTitle");
-
-const heroDescription =
-    document.getElementById("heroDescription");
-
-
-function setLanguage(language){
-
-    if(language === "en"){
-
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
-
-        siteTitle.textContent =
-            "ToolBox";
-
-        siteSubtitle.textContent =
-            "Your everyday tools in one place";
-
-        heroTitle.textContent =
-            "Fast and simple tools";
-
-        heroDescription.textContent =
-            "A collection of useful browser-based tools.";
-
-        arabicButton.classList.remove("active");
-        englishButton.classList.add("active");
-
-        localStorage.setItem(
-            "toolbox-language",
-            "en"
-        );
-
-    }else{
-
-        document.documentElement.lang = "ar";
-        document.documentElement.dir = "rtl";
-
-        siteTitle.textContent =
-            "ToolBox";
-
-        siteSubtitle.textContent =
-            "أدواتك اليومية في مكان واحد";
-
-        heroTitle.textContent =
-            "أدوات سريعة وبسيطة";
-
-        heroDescription.textContent =
-            "مجموعة أدوات مفيدة تعمل مباشرة من المتصفح.";
-
-        englishButton.classList.remove("active");
-        arabicButton.classList.add("active");
-
-        localStorage.setItem(
-            "toolbox-language",
-            "ar"
-        );
-    }
-}
-
-
-arabicButton.addEventListener(
-    "click",
-    function(){
-        setLanguage("ar");
-    }
-);
-
-
-englishButton.addEventListener(
-    "click",
-    function(){
-        setLanguage("en");
-    }
-);
-
-
-setLanguage(
-    localStorage.getItem("toolbox-language")
-    || "ar"
-);
-
-
-/* =====================================================
-   TOOL NAVIGATION
-===================================================== */
-
-const toolButtons =
-    document.querySelectorAll(".tool-button");
-
-const tools =
-    document.querySelectorAll(".tool");
-
-
-function openTool(toolName){
-
-    toolButtons.forEach(
-        function(button){
-
-            button.classList.toggle(
-                "active",
-                button.dataset.tool === toolName
-            );
-
-        }
-    );
-
-
-    tools.forEach(
-        function(tool){
-
-            tool.classList.toggle(
-                "active",
-                tool.id === "tool-" + toolName
-            );
-
-        }
-    );
-
-
-    localStorage.setItem(
-        "active-tool",
-        toolName
-    );
-}
-
-
-toolButtons.forEach(
-    function(button){
-
-        button.addEventListener(
-            "click",
-            function(){
-
-                openTool(
-                    button.dataset.tool
-                );
-
-            }
-        );
-
-    }
-);
-
-
-openTool(
-    localStorage.getItem("active-tool")
-    || "currency"
-);
-
-
-/* =====================================================
-   CURRENCY
-===================================================== */
-
-const currencies = {
-
-    USD:1,
-    EUR:.92,
-    GBP:.78,
-    SAR:3.75,
-    AED:3.67,
-    JOD:.71,
-    EGP:48.5,
-    ILS:3.70
-
-};
-
-
-const currencyNames = {
-
-    USD:"USD - دولار",
-    EUR:"EUR - يورو",
-    GBP:"GBP - جنيه إسترليني",
-    SAR:"SAR - ريال سعودي",
-    AED:"AED - درهم إماراتي",
-    JOD:"JOD - دينار أردني",
-    EGP:"EGP - جنيه مصري",
-    ILS:"ILS - شيكل"
-
-};
-
-
-const currencyFrom =
-    document.getElementById(
-        "currencyFrom"
-    );
-
-const currencyTo =
-    document.getElementById(
-        "currencyTo"
-    );
-
-
-Object.keys(currencies).forEach(
-    function(code){
-
-        currencyFrom.add(
-            new Option(
-                currencyNames[code],
-                code
-            )
-        );
-
-        currencyTo.add(
-            new Option(
-                currencyNames[code],
-                code
-            )
-        );
-
-    }
-);
-
-
-currencyFrom.value = "USD";
-currencyTo.value = "ILS";
-
-
-function convertCurrency(){
-
-    const amount =
-        Number(
-            document.getElementById(
-                "currencyAmount"
-            ).value
-        ) || 0;
-
-    const from =
-        currencyFrom.value;
-
-    const to =
-        currencyTo.value;
-
-    const result =
-        amount /
-        currencies[from] *
-        currencies[to];
-
-
-    document.getElementById(
-        "currencyResult"
-    ).textContent =
-        result.toFixed(2)
-        + " "
-        + to;
-}
-
-
-document.getElementById(
-    "currencyAmount"
-).addEventListener(
-    "input",
-    convertCurrency
-);
-
-
-currencyFrom.addEventListener(
-    "change",
-    convertCurrency
-);
-
-
-currencyTo.addEventListener(
-    "change",
-    convertCurrency
-);
-
-
-convertCurrency();
-
-
-/* =====================================================
-   PASSWORD GENERATOR
-===================================================== */
-
-const passwordLength =
-    document.getElementById(
-        "passwordLength"
-    );
-
-const passwordLengthLabel =
-    document.getElementById(
-        "passwordLengthLabel"
-    );
-
-
-passwordLength.addEventListener(
-    "input",
-    function(){
-
-        passwordLengthLabel.textContent =
-            passwordLength.value;
-
-    }
-);
-
-
-document.getElementById(
-    "generatePassword"
-).addEventListener(
-    "click",
-    function(){
-
-        const characters =
-            "ABCDEFGHJKLMNPQRSTUVWXYZ" +
-            "abcdefghijkmnopqrstuvwxyz" +
-            "23456789" +
-            "!@#$%^&*_-+=";
-
-
-        const length =
-            Number(
-                passwordLength.value
-            );
-
-
-        let password = "";
-
-
-        if(
-            window.crypto &&
-            window.crypto.getRandomValues
-        ){
-
-            const values =
-                new Uint32Array(length);
-
-            window.crypto.getRandomValues(
-                values
-            );
-
-
-            for(
-                let i=0;
-                i<length;
-                i++
-            ){
-
-                password +=
-                    characters[
-                        values[i] %
-                        characters.length
-                    ];
-
-            }
-
-        }else{
-
-            for(
-                let i=0;
-                i<length;
-                i++
-            ){
-
-                password +=
-                    characters[
-                        Math.floor(
-                            Math.random() *
-                            characters.length
-                        )
-                    ];
-
-            }
-
-        }
-
-
-        document.getElementById(
-            "passwordResult"
-        ).textContent =
-            password;
-
-    }
-);
-
-
-document.getElementById(
-    "copyPassword"
-).addEventListener(
-    "click",
-    async function(){
-
-        const password =
-            document.getElementById(
-                "passwordResult"
-            ).textContent;
-
-
-        if(
-            !password ||
-            password === "اضغط توليد"
-        ){
-
-            return;
-
-        }
-
-
-        try{
-
-            await navigator.clipboard.writeText(
-                password
-            );
-
-            this.textContent =
-                "تم النسخ ✓";
-
-
-            setTimeout(
-                ()=>{
-                    this.textContent =
-                        "نسخ";
-                },
-                1200
-            );
-
-        }catch(error){
-
-            alert(
-                "لم يتمكن المتصفح من النسخ."
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   QR
-===================================================== */
-
-document.getElementById(
-    "generateQR"
-).addEventListener(
-    "click",
-    function(){
-
-        const value =
-            document.getElementById(
-                "qrInput"
-            ).value.trim();
-
-
-        const output =
-            document.getElementById(
-                "qrResult"
-            );
-
-
-        if(!value){
-
-            output.textContent =
-                "اكتب نصًا أو رابطًا أولاً.";
-
-            return;
-
-        }
-
-
-        const image =
-            document.createElement(
-                "img"
-            );
-
-
-        image.alt =
-            "QR Code";
-
-
-        image.src =
-            "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="
-            +
-            encodeURIComponent(value);
-
-
-        output.innerHTML = "";
-
-        output.appendChild(
-            image
-        );
-
-    }
-);
-
-
-/* =====================================================
-   TEXT STATISTICS
-===================================================== */
-
-document.getElementById(
-    "textInput"
-).addEventListener(
-    "input",
-    function(){
-
-        const text =
-            this.value;
-
-
-        const words =
-            text.trim()
-                ? text.trim()
-                    .split(/\s+/)
-                    .length
-                : 0;
-
-
-        const characters =
-            [...text].length;
-
-
-        const lines =
-            text
-                ? text.split(/\r?\n/).length
-                : 0;
-
-
-        document.getElementById(
-            "wordCount"
-        ).textContent =
-            words;
-
-
-        document.getElementById(
-            "characterCount"
-        ).textContent =
-            characters;
-
-
-        document.getElementById(
-            "lineCount"
-        ).textContent =
-            lines;
-
-    }
-);
-
-
-/* =====================================================
-   UNITS
-===================================================== */
-
-const units = {
-
-    length:{
-
-        mm:1,
-        cm:10,
-        m:1000,
-        km:1000000,
-        inch:25.4,
-        foot:304.8,
-        yard:914.4,
-        mile:1609344
-
-    },
-
-
-    weight:{
-
-        mg:1,
-        g:1000,
-        kg:1000000,
-        lb:453592.37,
-        oz:28349.523125
-
-    },
-
-
-    temperature:{
-
-        C:"C",
-        F:"F",
-        K:"K"
-
-    }
-
-};
-
-
-const unitLabels = {
-
-    mm:"ملليمتر",
-    cm:"سنتيمتر",
-    m:"متر",
-    km:"كيلومتر",
-    inch:"بوصة",
-    foot:"قدم",
-    yard:"ياردة",
-    mile:"ميل",
-
-    mg:"ملغ",
-    g:"غرام",
-    kg:"كيلوغرام",
-    lb:"رطل",
-    oz:"أونصة",
-
-    C:"°C",
-    F:"°F",
-    K:"كلفن"
-
-};
-
-
-const unitCategory =
-    document.getElementById(
-        "unitCategory"
-    );
-
-const unitFrom =
-    document.getElementById(
-        "unitFrom"
-    );
-
-const unitTo =
-    document.getElementById(
-        "unitTo"
-    );
-
-
-function loadUnits(){
-
-    const category =
-        unitCategory.value;
-
-
-    unitFrom.innerHTML = "";
-
-    unitTo.innerHTML = "";
-
-
-    Object.keys(
-        units[category]
-    ).forEach(
-        function(key){
-
-            unitFrom.add(
-                new Option(
-                    unitLabels[key],
-                    key
-                )
-            );
-
-            unitTo.add(
-                new Option(
-                    unitLabels[key],
-                    key
-                )
-            );
-
-        }
-    );
-
-
-    if(unitTo.options.length > 1){
-
-        unitTo.selectedIndex = 1;
-
-    }
-
-}
-
-
-function convertUnit(){
-
-    const category =
-        unitCategory.value;
-
-    const value =
-        Number(
-            document.getElementById(
-                "unitValue"
-            ).value
-        ) || 0;
-
-    const from =
-        unitFrom.value;
-
-    const to =
-        unitTo.value;
-
-
-    let result;
-
-
-    if(
-        category ===
-        "temperature"
-    ){
-
-        let celsius;
-
-
-        if(from === "C"){
-
-            celsius = value;
-
-        }else if(from === "F"){
-
-            celsius =
-                (value - 32) *
-                5/9;
-
-        }else{
-
-            celsius =
-                value - 273.15;
-
-        }
-
-
-        if(to === "C"){
-
-            result = celsius;
-
-        }else if(to === "F"){
-
-            result =
-                celsius *
-                9/5 +
-                32;
-
-        }else{
-
-            result =
-                celsius +
-                273.15;
-
-        }
-
-    }else{
-
-        result =
-            value *
-            units[category][from] /
-            units[category][to];
-
-    }
-
-
-    document.getElementById(
-        "unitResult"
-    ).textContent =
-        result.toFixed(4)
-        +
-        " "
-        +
-        unitLabels[to];
-
-}
-
-
-unitCategory.addEventListener(
-    "change",
-    function(){
-
-        loadUnits();
-        convertUnit();
-
-    }
-);
-
-
-unitFrom.addEventListener(
-    "change",
-    convertUnit
-);
-
-
-unitTo.addEventListener(
-    "change",
-    convertUnit
-);
-
-
-document.getElementById(
-    "unitValue"
-).addEventListener(
-    "input",
-    convertUnit
-);
-
-
-loadUnits();
-convertUnit();
-
-
-/* =====================================================
-   BMI
-===================================================== */
-
-document.getElementById(
-    "calculateBMI"
-).addEventListener(
-    "click",
-    function(){
-
-        const weight =
-            Number(
-                document.getElementById(
-                    "bmiWeight"
-                ).value
-            );
-
-
-        const height =
-            Number(
-                document.getElementById(
-                    "bmiHeight"
-                ).value
-            ) / 100;
-
-
-        const result =
-            document.getElementById(
-                "bmiValue"
-            );
-
-
-        const message =
-            document.getElementById(
-                "bmiMessage"
-            );
-
-
-        if(
-            weight <= 0 ||
-            height <= 0
-        ){
-
-            result.textContent =
-                "أدخل البيانات";
-
-            message.textContent =
-                "";
-
-            return;
-
-        }
-
-
-        const bmi =
-            weight /
-            (height * height);
-
-
-        result.textContent =
-            bmi.toFixed(1);
-
-
-        if(bmi < 18.5){
-
-            message.textContent =
-                "أقل من الوزن الطبيعي.";
-
-        }else if(bmi < 25){
-
-            message.textContent =
-                "ضمن النطاق الطبيعي.";
-
-        }else if(bmi < 30){
-
-            message.textContent =
-                "زيادة في الوزن.";
-
-        }else{
-
-            message.textContent =
-                "ضمن نطاق السمنة.";
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   POMODORO TIMER
-===================================================== */
-
-let remainingSeconds =
-    25 * 60;
-
-let timerInterval =
-    null;
-
-
-const timerDisplay =
-    document.getElementById(
-        "timerDisplay"
-    );
-
-
-const timerStart =
-    document.getElementById(
-        "timerStart"
-    );
-
-
-function updateTimer(){
-
-    const minutes =
-        Math.floor(
-            remainingSeconds / 60
-        )
-        .toString()
-        .padStart(2,"0");
-
-
-    const seconds =
-        (
-            remainingSeconds % 60
-        )
-        .toString()
-        .padStart(2,"0");
-
-
-    timerDisplay.textContent =
-        minutes
-        +
-        ":"
-        +
-        seconds;
-
-}
-
-
-timerStart.addEventListener(
-    "click",
-    function(){
-
-        if(timerInterval){
-
-            clearInterval(
-                timerInterval
-            );
-
-            timerInterval = null;
-
-            timerStart.textContent =
-                "استئناف ⏱️";
-
-            return;
-
-        }
-
-
-        timerStart.textContent =
-            "إيقاف مؤقت ⏸️";
-
-
-        timerInterval =
-            setInterval(
-                function(){
-
-                    if(
-                        remainingSeconds > 0
-                    ){
-
-                        remainingSeconds--;
-
-                        updateTimer();
-
-                    }else{
-
-                        clearInterval(
-                            timerInterval
-                        );
-
-                        timerInterval = null;
-
-                        timerStart.textContent =
-                            "ابدأ الجلسة";
-
-                        alert(
-                            "انتهت جلسة التركيز!"
-                        );
-
-                    }
-
-                },
-                1000
-            );
-
-    }
-);
-
-
-document.getElementById(
-    "timerReset"
-).addEventListener(
-    "click",
-    function(){
-
-        clearInterval(
-            timerInterval
-        );
-
-        timerInterval = null;
-
-        remainingSeconds =
-            25 * 60;
-
-        updateTimer();
-
-        timerStart.textContent =
-            "ابدأ الجلسة";
-
-    }
-);
-
-
-updateTimer();
-
-
-/* =====================================================
-   TASKS
-===================================================== */
-
-let tasks = [];
-
-
-try{
-
-    tasks =
-        JSON.parse(
-            localStorage.getItem(
-                "toolbox-tasks"
-            )
-        ) || [];
-
-}catch(error){
-
-    tasks = [];
-
-}
-
-
-function saveTasks(){
-
-    localStorage.setItem(
-        "toolbox-tasks",
-        JSON.stringify(tasks)
-    );
-
-}
-
-
-function renderTasks(){
-
-    const list =
-        document.getElementById(
-            "taskList"
-        );
-
-
-    list.innerHTML = "";
-
-
-    if(tasks.length === 0){
-
-        const empty =
-            document.createElement(
-                "li"
-            );
-
-        empty.className =
-            "task";
-
-        empty.style.justifyContent =
-            "center";
-
-        empty.style.color =
-            "#8193aa";
-
-        empty.textContent =
-            "لا توجد مهام حاليًا.";
-
-        list.appendChild(
-            empty
-        );
-
-        return;
-
-    }
-
-
-    tasks.forEach(
-        function(task,index){
-
-            const item =
-                document.createElement(
-                    "li"
-                );
-
-
-            item.className =
-                "task";
-
-
-            if(task.completed){
-
-                item.classList.add(
-                    "completed"
-                );
-
-            }
-
-
-            const checkbox =
-                document.createElement(
-                    "input"
-                );
-
-
-            checkbox.type =
-                "checkbox";
-
-            checkbox.checked =
-                task.completed;
-
-
-            checkbox.addEventListener(
-                "change",
-                function(){
-
-                    task.completed =
-                        checkbox.checked;
-
-                    saveTasks();
-
-                    renderTasks();
-
-                }
-            );
-
-
-            const text =
-                document.createElement(
-                    "span"
-                );
-
-
-            text.textContent =
-                task.text;
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            deleteButton.className =
-                "delete-task";
-
-            deleteButton.textContent =
-                "×";
-
-            deleteButton.title =
-                "حذف";
-
-
-            deleteButton.addEventListener(
-                "click",
-                function(){
-
-                    tasks.splice(
-                        index,
-                        1
-                    );
-
-                    saveTasks();
-
-                    renderTasks();
-
-                }
-            );
-
-
-            item.appendChild(
-                checkbox
-            );
-
-            item.appendChild(
-                text
-            );
-
-            item.appendChild(
-                deleteButton
-            );
-
-
-            list.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
-
-
-document.getElementById(
-    "addTask"
-).addEventListener(
-    "click",
-    addTask
-);
-
-
-document.getElementById(
-    "taskInput"
-).addEventListener(
     "keydown",
     function(event){
 
-        if(event.key === "Enter"){
+        if(
+            event.key === "Escape" &&
+            donationModal.classList.contains(
+                "show"
+            )
+        ){
 
-            addTask();
+            closeDonation();
 
         }
 
@@ -2599,173 +1448,294 @@ document.getElementById(
 );
 
 
-function addTask(){
+/* =====================================================
+   COPY DONATION DATA
+===================================================== */
 
-    const input =
-        document.getElementById(
-            "taskInput"
+const donationMethods =
+    document.querySelectorAll(
+        ".donation-method[data-copy]"
+    );
+
+
+donationMethods.forEach(
+    function(method){
+
+        method.addEventListener(
+            "click",
+            async function(){
+
+                const value =
+                    method.dataset.copy;
+
+
+                /*
+                    منع نسخ البيانات التجريبية
+                    إذا لم يتم تعديلها
+                */
+
+                if(
+                    value.includes(
+                        "ضع-"
+                    )
+                ){
+
+                    alert(
+                        "ضع بيانات التبرع الحقيقية أولًا."
+                    );
+
+                    return;
+
+                }
+
+
+                try{
+
+                    await navigator.clipboard.writeText(
+                        value
+                    );
+
+
+                    const copyButton =
+                        method.querySelector(
+                            ".copy-btn"
+                        );
+
+
+                    const oldText =
+                        copyButton.textContent;
+
+
+                    copyButton.textContent =
+                        "تم ✓";
+
+
+                    setTimeout(
+                        function(){
+
+                            copyButton.textContent =
+                                oldText;
+
+                        },
+                        1500
+                    );
+
+
+                }catch(error){
+
+                    alert(
+                        "تعذر النسخ تلقائيًا."
+                    );
+
+                }
+
+            }
         );
 
+    }
+);
 
-    const text =
-        input.value.trim();
+
+/* =====================================================
+   ENGLISH / ARABIC
+===================================================== */
+
+const arBtn =
+    document.getElementById(
+        "arBtn"
+    );
+
+const enBtn =
+    document.getElementById(
+        "enBtn"
+    );
 
 
-    if(!text){
+const arabicTexts = {
 
-        return;
+    title:
+        "قصة علي من جباليا | ساعدني",
+
+    heroTitle:
+        "أنا علي، عمري 20 سنة... وهذه قصتي.",
+
+    heroSubtitle:
+        "الحرب لم تأخذ منا البيت فقط، بل غيّرت تفاصيل حياتنا اليومية. أكتب قصتي لأوصل صوتي، ولأطلب من كل من يستطيع أن يساعدني أن يقف بجانبي."
+
+};
+
+
+const englishTexts = {
+
+    title:
+        "Ali's Story from Jabalia | Help Me",
+
+    heroTitle:
+        "I am Ali, 20 years old... and this is my story.",
+
+    heroSubtitle:
+        "The war did not only take our home; it changed every part of our daily life. I am sharing my story so my voice can be heard, and so those who can help can stand beside me."
+
+};
+
+
+function setLanguage(
+    language
+){
+
+    if(
+        language === "en"
+    ){
+
+        document.documentElement.lang =
+            "en";
+
+        document.documentElement.dir =
+            "ltr";
+
+        document.title =
+            englishTexts.title;
+
+        document.querySelector(
+            ".hero h1"
+        ).innerHTML =
+            englishTexts.heroTitle;
+
+        document.querySelector(
+            ".hero-subtitle"
+        ).textContent =
+            englishTexts.heroSubtitle;
+
+        enBtn.classList.add(
+            "active"
+        );
+
+        arBtn.classList.remove(
+            "active"
+        );
+
+    }else{
+
+        document.documentElement.lang =
+            "ar";
+
+        document.documentElement.dir =
+            "rtl";
+
+        document.title =
+            arabicTexts.title;
+
+        document.querySelector(
+            ".hero h1"
+        ).innerHTML =
+            arabicTexts.heroTitle;
+
+        document.querySelector(
+            ".hero-subtitle"
+        ).textContent =
+            arabicTexts.heroSubtitle;
+
+        arBtn.classList.add(
+            "active"
+        );
+
+        enBtn.classList.remove(
+            "active"
+        );
 
     }
 
 
-    tasks.push({
-
-        text:text,
-
-        completed:false
-
-    });
-
-
-    saveTasks();
-
-    input.value = "";
-
-    renderTasks();
+    localStorage.setItem(
+        "story-language",
+        language
+    );
 
 }
 
 
-renderTasks();
-
-
-/* =====================================================
-   AGE CALCULATOR
-===================================================== */
-
-document.getElementById(
-    "calculateAge"
-).addEventListener(
+arBtn.addEventListener(
     "click",
     function(){
 
-        const value =
-            document.getElementById(
-                "birthDate"
-            ).value;
+        setLanguage(
+            "ar"
+        );
+
+    }
+);
 
 
-        const result =
-            document.getElementById(
-                "ageResult"
-            );
+enBtn.addEventListener(
+    "click",
+    function(){
 
-
-        const details =
-            document.getElementById(
-                "ageDetails"
-            );
-
-
-        if(!value){
-
-            result.textContent =
-                "اختر تاريخ الميلاد";
-
-            details.textContent =
-                "";
-
-            return;
-
-        }
-
-
-        const birth =
-            new Date(
-                value + "T00:00:00"
-            );
-
-
-        const today =
-            new Date();
-
-
-        if(birth > today){
-
-            result.textContent =
-                "التاريخ غير صحيح";
-
-            details.textContent =
-                "";
-
-            return;
-
-        }
-
-
-        let years =
-            today.getFullYear()
-            -
-            birth.getFullYear();
-
-
-        let months =
-            today.getMonth()
-            -
-            birth.getMonth();
-
-
-        let days =
-            today.getDate()
-            -
-            birth.getDate();
-
-
-        if(days < 0){
-
-            months--;
-
-            days +=
-                new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    0
-                ).getDate();
-
-        }
-
-
-        if(months < 0){
-
-            years--;
-
-            months += 12;
-
-        }
-
-
-        result.textContent =
-            years
-            +
-            " سنة";
-
-
-        details.textContent =
-            months
-            +
-            " شهر، "
-            +
-            days
-            +
-            " يوم";
+        setLanguage(
+            "en"
+        );
 
     }
 );
 
 
 /* =====================================================
-   END
+   START LANGUAGE
 ===================================================== */
+
+setLanguage(
+    localStorage.getItem(
+        "story-language"
+    ) || "ar"
+);
+
+
+/* =====================================================
+   SMOOTH SCROLL
+===================================================== */
+
+document.querySelectorAll(
+    'a[href^="#"]'
+).forEach(
+    function(link){
+
+        link.addEventListener(
+            "click",
+            function(event){
+
+                const targetId =
+                    link.getAttribute(
+                        "href"
+                    );
+
+
+                if(
+                    targetId === "#"
+                ){
+
+                    return;
+
+                }
+
+
+                const target =
+                    document.querySelector(
+                        targetId
+                    );
+
+
+                if(target){
+
+                    event.preventDefault();
+
+                    target.scrollIntoView({
+                        behavior:"smooth",
+                        block:"start"
+                    });
+
+                }
+
+            }
+        );
 
     }
 );
