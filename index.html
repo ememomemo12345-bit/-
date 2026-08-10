@@ -1,453 +1,305 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نواة الذكاء الكمّي | AI NEXUS</title>
-    <!-- خطوط عصرية -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
-    <!-- مكتبة Three.js للرسوميات 3D -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <style>
-        :root {
-            --primary: #00f0ff;
-            --secondary: #ff003c;
-            --dark: #050510;
-            --glass: rgba(10, 15, 30, 0.6);
-            --border: rgba(0, 240, 255, 0.3);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAZA CYBER-NEXUS | بروتوكول غزة</title>
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --neon-green: #00ff41;
+    --neon-red: #ff003c;
+    --text-main: #e0e0e0;
+  }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body, html {
-            width: 100%; height: 100%;
-            background-color: var(--dark);
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            overflow: hidden; /* يمنع التمرير العادي */
-        }
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: 'Changa', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+  }
 
-        /* خلفية الـ 3D */
-        #webgl-container {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-        }
+  /* تأثير الخلل (Glitch) المستمر على الشاشة */
+  .glitch-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 255, 65, 0.03);
+    pointer-events: none;
+    z-index: 9999;
+    animation: screenGlitch 8s infinite;
+    display: none;
+  }
 
-        /* واجهة المستخدم الشفافة */
-        .ui-layer {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 2;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            padding: 20px;
-            pointer-events: none; /* لتمرير اللمس للخلفية */
-        }
+  @keyframes screenGlitch {
+    0%, 96%, 98%, 100% { opacity: 0; transform: scale(1); filter: invert(0); }
+    97% { opacity: 1; transform: scale(1.02); filter: invert(1); background: rgba(255, 0, 60, 0.2); }
+    99% { opacity: 1; transform: scale(0.98); background: rgba(0, 255, 65, 0.2); }
+  }
 
-        .hud-element {
-            pointer-events: auto; /* تفعيل اللمس للعناصر فقط */
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-        }
+  header {
+    padding: 20px;
+    border-bottom: 2px solid var(--neon-red);
+    text-align: center;
+    position: relative;
+  }
 
-        /* الهيدر */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 25px;
-        }
+  h1.glitch-text {
+    font-size: 35px;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text-main);
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* تأثير اهتزاز النص */
+  h1.glitch-text::before, h1.glitch-text::after {
+    content: "GAZA_NEXUS//";
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg);
+  }
+  h1.glitch-text::before {
+    left: 2px; text-shadow: -2px 0 var(--neon-red);
+    animation: textGlitch 3s infinite linear alternate-reverse;
+  }
+  h1.glitch-text::after {
+    left: -2px; text-shadow: -2px 0 var(--neon-green);
+    animation: textGlitch 2s infinite linear alternate-reverse;
+  }
 
-        .brand h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            letter-spacing: 3px;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .brand h1::before {
-            content: '';
-            width: 12px; height: 12px;
-            background: var(--secondary);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--secondary);
-            animation: pulse 1s infinite;
-        }
+  @keyframes textGlitch {
+    0% { clip: rect(20px, 9999px, 85px, 0); }
+    20% { clip: rect(5px, 9999px, 95px, 0); }
+    40% { clip: rect(60px, 9999px, 15px, 0); }
+    60% { clip: rect(10px, 9999px, 50px, 0); }
+    80% { clip: rect(80px, 9999px, 20px, 0); }
+    100% { clip: rect(30px, 9999px, 70px, 0); }
+  }
 
-        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: #111;
+  }
 
-        .sys-stats {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            color: #00ffaa;
-            text-align: left;
-        }
+  button.nav-btn {
+    background: transparent;
+    border: 1px solid var(--neon-green);
+    color: var(--neon-green);
+    padding: 10px 20px;
+    font-family: 'Changa';
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+  }
+  
+  button.nav-btn:hover, button.nav-btn.active {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-green);
+  }
 
-        /* منطقة المحادثة والذكاء الاصطناعي */
-        .ai-core {
-            align-self: center;
-            justify-self: center;
-            width: 100%;
-            max-width: 800px;
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            margin-top: 20px;
-            position: relative;
-        }
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  
+  .section { display: none; animation: fadeIn 0.5s; }
+  .section.active { display: block; }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .chat-box {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            /* Scrollbar */
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) transparent;
-        }
-        .chat-box::-webkit-scrollbar { width: 5px; }
-        .chat-box::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+  /* صندوق الأخطاء المنبثق التلقائي */
+  .fake-error {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: rgba(255, 0, 60, 0.9);
+    color: #fff;
+    padding: 15px;
+    border: 1px solid #fff;
+    font-family: 'Share Tech Mono', monospace;
+    z-index: 10000;
+    box-shadow: 0 0 20px var(--neon-red);
+    transform: translateX(200%);
+    transition: transform 0.3s ease-out;
+  }
 
-        .message {
-            max-width: 85%;
-            padding: 12px 18px;
-            border-radius: 12px;
-            font-size: 15px;
-            line-height: 1.6;
-            animation: fadeIn 0.4s ease-out;
-        }
+  /* تنسيق الجداول والبطاقات */
+  .truth-card {
+    background: #151515; border-right: 4px solid var(--neon-red);
+    padding: 20px; margin-bottom: 20px; border-radius: 5px;
+  }
+  .truth-card h3 { color: var(--neon-red); margin-bottom: 10px; }
+  .truth-card .fact { color: var(--neon-green); margin-top: 10px; font-weight: 700; border-top: 1px dashed #333; padding-top: 10px;}
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  /* لعبة الاختراق */
+  #hack-area {
+    width: 100%; height: 300px;
+    background: #000; border: 2px dashed var(--neon-green);
+    position: relative; overflow: hidden;
+    cursor: crosshair;
+  }
+  #target-node {
+    width: 40px; height: 40px; background: var(--neon-red);
+    position: absolute; border-radius: 50%;
+    box-shadow: 0 0 15px var(--neon-red);
+    display: flex; justify-content: center; align-items: center;
+    font-weight: bold; cursor: pointer;
+  }
 
-        .msg-user {
-            background: rgba(0, 240, 255, 0.1);
-            border-right: 3px solid var(--primary);
-            align-self: flex-start;
-            border-bottom-right-radius: 0;
-        }
-
-        .msg-ai {
-            background: rgba(255, 0, 60, 0.1);
-            border-left: 3px solid var(--secondary);
-            align-self: flex-end;
-            border-bottom-left-radius: 0;
-            color: #ddd;
-        }
-
-        /* لوحة الإدخال */
-        .input-panel {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-            border-top: 1px solid var(--border);
-            background: rgba(0,0,0,0.5);
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        input[type="text"] {
-            flex-grow: 1;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            outline: none;
-            transition: 0.3s;
-        }
-        input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
-
-        button {
-            background: var(--primary);
-            color: #000;
-            border: none;
-            padding: 0 25px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 15px;
-            text-transform: uppercase;
-        }
-        button:hover {
-            background: #fff;
-            box-shadow: 0 0 20px var(--primary);
-        }
-        button:active { transform: scale(0.95); }
-
-        /* تأثيرات مسح البيانات */
-        .scanning-line {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--primary);
-            box-shadow: 0 0 20px var(--primary);
-            animation: scan 3s linear infinite;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-
-        /* شاشة التحميل */
-        #loader {
-            position: fixed; inset: 0; background: var(--dark);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999; color: var(--primary); font-family: 'Orbitron';
-            font-size: 24px; font-weight: 900; letter-spacing: 5px;
-            transition: opacity 1s;
-        }
-    </style>
+</style>
 </head>
 <body>
 
-<!-- شاشة التحميل الأولية -->
-<div id="loader">INITIALIZING NEXUS CORE...</div>
+<div class="glitch-overlay" id="screenGlitch"></div>
 
-<!-- الرسوميات ثلاثية الأبعاد -->
-<div id="webgl-container"></div>
+<header>
+  <h1 class="glitch-text">GAZA_NEXUS//</h1>
+  <p style="font-family: 'Share Tech Mono'; color: var(--neon-green); margin-top:10px;">SYSTEM: ONLINE | SECURE CONNECTION ESTABLISHED</p>
+</header>
 
-<!-- واجهة المستخدم -->
-<div class="ui-layer">
+<nav>
+  <button class="nav-btn active" onclick="showSection('gaza-facts')">ملفات غزة (سري)</button>
+  <button class="nav-btn" onclick="showSection('social-hacks')">خوارزميات السوشيال ميديا</button>
+  <button class="nav-btn" onclick="showSection('mini-game')">اختراق النظام (لعبة)</button>
+</nav>
+
+<div class="container">
+  
+  <!-- قسم حقائق غزة -->
+  <div id="gaza-facts" class="section active">
+    <h2 style="margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom:10px;">> فك التشفير: الأكاذيب مقابل الحقائق</h2>
     
-    <header class="hud-element">
-        <div class="brand">
-            <h1>AI.NEXUS_</h1>
-        </div>
-        <div class="sys-stats" id="stats">
-            CPU: 0%<br>RAM: 0GB<br>UPLINK: ONLINE
-        </div>
-    </header>
-
-    <div class="ai-core hud-element">
-        <div class="scanning-line"></div>
-        <div class="chat-box" id="chatBox">
-            <div class="message msg-ai">
-                <strong>الأنظمة تعمل بكفاءة 100% 🤖</strong><br>
-                مرحباً بك في واجهة الذكاء الكمّي. أنا متصل بقاعدة البيانات العالمية.<br>
-                اسألني عن أي شيء (مثال: الثقب الأسود، الذكاء الاصطناعي، فلسطين...).
-            </div>
-        </div>
-        
-        <div class="input-panel">
-            <input type="text" id="userInput" placeholder="أدخل استعلامك هنا للبحث في الشبكة..." autocomplete="off">
-            <button id="sendBtn" onclick="processQuery()">إرسال Data</button>
-        </div>
+    <div class="truth-card">
+      <h3>⚠️ الكذبة الإعلامية المبرمجة:</h3>
+      <p>"غزة مجرد بقعة جغرافية مدمرة لا يوجد فيها سوى الركام واليأس."</p>
+      <div class="fact">
+        🟢 الحقيقة من الداخل: <br>
+        غزة تمتلك أدمغة برمجية، أطباء، وشباباً يخلقون الحياة من العدم. خلف كل شارع مدمر هناك عائلة تبتكر حلولاً للطاقة، وتصنع فنوناً، وتتحدى خوارزميات العالم لتوصيل صوتها. هي مصنع الصمود البشري.
+      </div>
     </div>
+
+    <div class="truth-card">
+      <h3>⚠️ الكذبة الإعلامية المبرمجة:</h3>
+      <p>"الشعب هناك منفصل عن التطور التكنولوجي العالمي."</p>
+      <div class="fact">
+        🟢 الحقيقة من الداخل: <br>
+        الشباب في غزة يديرون شركات عالمية عن بعد، يكتبون أكواداً لبرامج تستخدمها أنت يومياً، ويخترقون الحصار الرقمي بمهارات "هندسة اجتماعية" وتقنية تفوق الوصف.
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم السوشيال ميديا -->
+  <div id="social-hacks" class="section">
+    <h2 style="margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom:10px;">> أدوات اختراق خوارزميات الانتباه</h2>
+    
+    <div class="truth-card" style="border-right-color: var(--neon-green);">
+      <h3 style="color: var(--neon-green);">1. الهروب من حظر الظل (Shadowban)</h3>
+      <p>الخوارزميات تراقب الكلمات. لا تكتب "الكلمات المحظورة" بشكل مباشر. استخدم الفواصل أو الحروف اللاتينية المشابهة (مثال: غـ.ـزة، P@lestine). ركز على المحتوى البصري القوي ودع التعليقات تتحدث.</p>
+    </div>
+
+    <div class="truth-card" style="border-right-color: var(--neon-green);">
+      <h3 style="color: var(--neon-green);">2. قاعدة الـ 3 ثوانٍ (Hook Engineering)</h3>
+      <p>الذكاء الاصطناعي للمنصات (تيك توك/إنستغرام) يقيس بقاء المستخدم. ابدأ الفيديو بحركة سريعة أو سؤال مستفز بصرياً. إذا تجاوز المشاهد أول 3 ثوانٍ، سيتم دفع مقطعك لـ 100 شخص آخر تلقائياً.</p>
+    </div>
+  </div>
+
+  <!-- قسم اللعبة -->
+  <div id="mini-game" class="section">
+    <h2 style="margin-bottom: 20px;">> تمرين الاستجابة العصبية: اختراق السيرفر</h2>
+    <p style="margin-bottom: 15px; color: var(--text-muted);">اضغط على العقدة الحمراء قبل أن يتغير مكانها. اجمع 10 نقاط لكسر الحماية.</p>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+      <span style="color: var(--neon-green); font-size: 20px;">النقاط: <span id="score">0</span></span>
+      <span id="game-status" style="color: var(--neon-red);"></span>
+    </div>
+
+    <div id="hack-area">
+      <div id="target-node" onclick="hitTarget()">!</div>
+    </div>
+    <button class="nav-btn" style="margin-top: 15px; width: 100%;" onclick="startGame()">بدء الاختراق</button>
+  </div>
 
 </div>
 
+<!-- صندوق الخطأ الوهمي -->
+<div class="fake-error" id="errorBox">
+  ERROR 404: REALITY_HACKED<br>
+  محاولة طمس الحقائق... تم التصدي لها!
+</div>
+
 <script>
-    /* =========================================
-       1. إزالة شاشة التحميل
-    ========================================= */
-    window.onload = () => {
-        setTimeout(() => {
-            const loader = document.getElementById('loader');
-            loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 1000);
-        }, 1500);
-    };
+  // نظام التنقل بين الأقسام
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
 
-    /* =========================================
-       2. نظام الإحصائيات الوهمي الاحترافي
-    ========================================= */
-    setInterval(() => {
-        const cpu = (Math.random() * 20 + 5).toFixed(1);
-        const ram = (Math.random() * 4 + 2).toFixed(2);
-        document.getElementById('stats').innerHTML = `CPU: ${cpu}%<br>RAM: ${ram} TB<br>UPLINK: SECURE`;
-    }, 1000);
-
-    /* =========================================
-       3. محرك الرسوميات الثلاثي الأبعاد (الشبكة العصبية)
-    ========================================= */
-    const container = document.getElementById('webgl-container');
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050510, 0.002);
-
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
-    camera.position.z = 400;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
-
-    // إنشاء الجسيمات (Particles)
-    const particleCount = 400;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const velocities = [];
-
-    for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 1000;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 1000;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 1000;
-        velocities.push({
-            x: (Math.random() - 0.5) * 1,
-            y: (Math.random() - 0.5) * 1,
-            z: (Math.random() - 0.5) * 1
-        });
+  // نظام الأخطاء الوهمية العشوائية (Glitches & Popups)
+  setInterval(() => {
+    // تفعيل تأثير الغليتش على الشاشة أحياناً
+    if(Math.random() > 0.8) {
+      const glitch = document.getElementById('screenGlitch');
+      glitch.style.display = 'block';
+      setTimeout(() => glitch.style.display = 'none', 300);
     }
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    // مادة الجسيمات
-    const pMaterial = new THREE.PointsMaterial({
-        color: 0x00f0ff,
-        size: 3,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-    });
-
-    const particles = new THREE.Points(geometry, pMaterial);
-    scene.add(particles);
-
-    // خطوط الربط بين الجسيمات
-    const lineMaterial = new THREE.LineBasicMaterial({
-        color: 0x00f0ff,
-        transparent: true,
-        opacity: 0.15
-    });
-
-    // تفاعل الماوس / اللمس
-    let mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX - window.innerWidth / 2) * 0.5;
-        mouseY = (e.clientY - window.innerHeight / 2) * 0.5;
-    });
-    document.addEventListener('touchmove', (e) => {
-        mouseX = (e.touches[0].clientX - window.innerWidth / 2) * 0.5;
-        mouseY = (e.touches[0].clientY - window.innerHeight / 2) * 0.5;
-    });
-
-    // حلقة التحريك (Animation Loop)
-    function animate() {
-        requestAnimationFrame(animate);
-
-        camera.position.x += (mouseX - camera.position.x) * 0.05;
-        camera.position.y += (-mouseY - camera.position.y) * 0.05;
-        camera.lookAt(scene.position);
-
-        const positions = particles.geometry.attributes.position.array;
-        
-        for (let i = 0; i < particleCount; i++) {
-            positions[i * 3] += velocities[i].x;
-            positions[i * 3 + 1] += velocities[i].y;
-            positions[i * 3 + 2] += velocities[i].z;
-
-            // ارتداد عند الحواف
-            if (Math.abs(positions[i * 3]) > 500) velocities[i].x *= -1;
-            if (Math.abs(positions[i * 3 + 1]) > 500) velocities[i].y *= -1;
-            if (Math.abs(positions[i * 3 + 2]) > 500) velocities[i].z *= -1;
-        }
-        
-        particles.geometry.attributes.position.needsUpdate = true;
-        particles.rotation.y += 0.001;
-
-        renderer.render(scene, camera);
+    // إظهار صندوق خطأ وهمي
+    if(Math.random() > 0.9) {
+      const err = document.getElementById('errorBox');
+      err.style.transform = 'translateX(0)';
+      setTimeout(() => err.style.transform = 'translateX(200%)', 4000);
     }
-    animate();
+  }, 3000);
 
-    // توافقية الشاشة
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+  // منطق لعبة الاختراق المصغرة
+  let score = 0;
+  let gameInterval;
+  const target = document.getElementById('target-node');
+  const area = document.getElementById('hack-area');
+  
+  function moveTarget() {
+    const maxX = area.clientWidth - 40;
+    const maxY = area.clientHeight - 40;
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+    
+    target.style.left = randomX + 'px';
+    target.style.top = randomY + 'px';
+  }
 
-    /* =========================================
-       4. محرك الذكاء الاصطناعي والمحادثة
-    ========================================= */
-    const chatBox = document.getElementById('chatBox');
-    const userInput = document.getElementById('userInput');
+  function startGame() {
+    score = 0;
+    document.getElementById('score').innerText = score;
+    document.getElementById('game-status').innerText = "جاري الاختراق...";
+    document.getElementById('game-status').style.color = "var(--neon-green)";
+    
+    clearInterval(gameInterval);
+    moveTarget();
+    gameInterval = setInterval(moveTarget, 800); // سرعة حركة الهدف
+  }
 
-    // إرسال بالضغط على Enter
-    userInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') processQuery();
-    });
-
-    async function processQuery() {
-        const text = userInput.value.trim();
-        if (!text) return;
-
-        // طباعة رسالة المستخدم
-        appendMessage(text, 'msg-user');
-        userInput.value = '';
-
-        // رسالة جارِ البحث
-        const loadingMsgId = 'loading-' + Date.now();
-        appendMessage('يتم فحص قواعد البيانات العالمية وبناء الاستجابة...', 'msg-ai', loadingMsgId);
-
-        try {
-            // جلب البيانات الحقيقية من ويكيبيديا (العربية)
-            const endpoint = `https://ar.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(text)}`;
-            const response = await fetch(endpoint);
-            
-            let reply = "";
-            if (response.ok) {
-                const data = await response.json();
-                if (data.extract) {
-                    reply = `<strong>تم العثور على تطابق:</strong><br>${data.extract}`;
-                } else {
-                    reply = "لا توجد بيانات دقيقة حول هذا الموضوع في السجلات الحالية. حاول مصطلحاً آخر.";
-                }
-            } else {
-                reply = "لم أتمكن من العثور على الموضوع. يرجى التأكد من الإملاء أو المحاولة بكلمات مفتاحية أخرى.";
-            }
-
-            // تحديث الرسالة بتأثير الكتابة
-            document.getElementById(loadingMsgId).innerHTML = '';
-            typeWriterEffect(reply, loadingMsgId);
-
-        } catch (error) {
-            document.getElementById(loadingMsgId).innerHTML = "⚠️ فشل الاتصال بالسيرفر. النظام يعاني من تداخل إشارات.";
-        }
+  function hitTarget() {
+    score++;
+    document.getElementById('score').innerText = score;
+    moveTarget();
+    
+    if (score >= 10) {
+      clearInterval(gameInterval);
+      document.getElementById('game-status').innerText = "تم اختراق النظام بنجاح!";
+      document.getElementById('game-status').style.color = "var(--neon-green)";
+      target.style.left = '50%';
+      target.style.top = '50%';
+      // إحداث غليتش قوي عند الفوز
+      document.getElementById('screenGlitch').style.display = 'block';
+      setTimeout(() => document.getElementById('screenGlitch').style.display = 'none', 1000);
     }
-
-    function appendMessage(text, className, id = '') {
-        const div = document.createElement('div');
-        div.className = `message ${className}`;
-        if (id) div.id = id;
-        div.innerHTML = text;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // تأثير الآلة الكاتبة للذكاء الاصطناعي
-    function typeWriterEffect(htmlText, elementId) {
-        const el = document.getElementById(elementId);
-        let i = 0;
-        el.innerHTML = '';
-        
-        // نتعامل مع الـ HTML كطريقة بسيطة (عرض الكلمات وليس الحروف لتسريع العملية ومنع كسر الوسوم)
-        const tokens = htmlText.split(/(<[^>]+>| )/);
-        
-        function type() {
-            if (i < tokens.length) {
-                el.innerHTML += tokens[i];
-                i++;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(type, 15); // سرعة الكتابة
-            }
-        }
-        type();
-    }
+  }
 </script>
 
 </body>
