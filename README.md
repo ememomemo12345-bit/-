@@ -1,413 +1,338 @@
-# -
-موقع اخباري
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الرصد Ultima | المنصة الإخبارية الفائقة</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<title>المنصة المتقدمة | الأخبار واللعبة 3D</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<!-- مكتبة Three.js للألعاب ثلاثية الأبعاد الحديثة -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
   :root {
-    --bg: #07090e;
-    --panel: #0f131c;
-    --panel-border: rgba(255, 255, 255, 0.08);
+    --bg: #090d16;
+    --panel: #111827;
+    --border: #1f2937;
     --accent: #ff2a5f;
-    --accent-glow: rgba(255, 42, 95, 0.35);
-    --gold: #ffb703;
-    --gold-glow: rgba(255, 183, 3, 0.25);
     --cyan: #00f5d4;
-    --text: #f1f5f9;
-    --text-muted: #64748b;
+    --text: #e5e7eb;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  
+
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Cairo', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
   }
 
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-  /* Ticker */
-  .ticker-bar {
-    background: linear-gradient(90deg, #120307, #24050d);
-    border-bottom: 1px solid var(--panel-border);
-    display: flex;
-    align-items: center;
-    position: sticky; top: 0; z-index: 1000;
-    backdrop-filter: blur(10px);
-  }
-  .ticker-badge {
-    background: var(--accent);
-    color: #fff;
-    padding: 8px 18px;
-    font-weight: 900;
-    font-size: 12px;
-    box-shadow: 0 0 15px var(--accent-glow);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .ticker-badge::before {
-    content: ''; display: inline-block; width: 8px; height: 8px;
-    background: #fff; border-radius: 50%; animation: pulse 1s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-
-  .ticker-scroll {
-    overflow: hidden; white-space: nowrap; flex-grow: 1; padding: 6px 0;
-  }
-  .ticker-items {
-    display: inline-block; animation: ticker 40s linear infinite; font-size: 13px;
-  }
-  .ticker-items span { margin-left: 40px; color: #cbd5e1; }
-  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
-  /* Header */
   header {
-    padding: 40px 20px 20px;
     text-align: center;
-    background: radial-gradient(circle at 50% 0%, rgba(255, 42, 95, 0.15), transparent 70%);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 30px;
   }
-  .logo {
-    font-family: 'Amiri', serif;
-    font-size: 56px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #fff 40%, var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px var(--gold-glow);
-  }
-  .sub-logo { font-size: 13px; color: var(--text-muted); letter-spacing: 2px; }
 
-  /* Controls Bar */
-  .bar-controls {
-    max-width: 1000px; margin: 20px auto 0;
-    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; padding: 0 10px;
+  header h1 {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 900;
   }
-  .input-field {
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    color: #fff; padding: 10px 16px; border-radius: 10px;
-    outline: none; font-family: inherit; font-size: 13px; transition: 0.3s;
-    width: 240px;
-  }
-  .input-field:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
-  .action-btn {
-    background: linear-gradient(135deg, var(--accent), #d61c4e);
-    color: #fff; border: none; padding: 10px 20px; border-radius: 10px;
-    font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
-    box-shadow: 0 4px 15px var(--accent-glow); transition: 0.2s;
+  .status {
+    font-size: 13px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 5px;
   }
-  .action-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-  /* Category Navigation */
-  nav.cat-nav {
-    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
-    padding: 15px 10px; background: rgba(15, 19, 28, 0.8);
-    position: sticky; top: 37px; z-index: 900; backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--panel-border);
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
   }
-  nav.cat-nav button {
-    background: transparent; border: 1px solid transparent; color: var(--text-muted);
-    padding: 6px 16px; border-radius: 20px; font-family: inherit; font-weight: 700;
-    font-size: 13px; cursor: pointer; transition: 0.2s;
-  }
-  nav.cat-nav button.active, nav.cat-nav button:hover {
-    color: #fff; background: var(--panel); border-color: var(--panel-border);
-  }
-  nav.cat-nav button.active { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
-  /* Layout Main */
-  main { max-width: 1100px; margin: 30px auto; padding: 0 16px; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  /* Featured Gaza Section */
-  .featured-card {
-    background: linear-gradient(135deg, rgba(255, 42, 95, 0.05), var(--panel));
-    border: 1px solid var(--accent);
-    border-radius: 16px; padding: 28px; margin-bottom: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
-  .featured-card::before {
-    content: ''; position: absolute; top:0; right:0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .tag-pill {
-    background: var(--accent); color: #fff; font-size: 11px; font-weight: 900;
-    padding: 4px 12px; border-radius: 6px; display: inline-block; margin-bottom: 12px;
-  }
-  .featured-card h2 { font-size: 28px; color: #fff; margin-bottom: 16px; }
-  
-  .featured-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-  @media(min-width: 768px) { .featured-grid { grid-template-columns: 1.5fr 1fr; } }
 
-  .featured-body p { color: #cbd5e1; font-size: 14.5px; line-height: 1.8; margin-bottom: 10px; }
-  
-  .side-headlines { background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; border: 1px solid var(--panel-border); }
-  .side-headlines h4 { color: var(--gold); font-size: 13px; margin-bottom: 10px; }
-  .side-headlines ul { list-style: none; }
-  .side-headlines li { font-size: 13px; color: var(--text-muted); padding: 8px 0; border-bottom: 1px solid var(--panel-border); }
-  .side-headlines li:last-child { border: none; }
+  @media(min-width: 850px) {
+    .layout {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 
-  /* News Grid & Cards */
   .section-title {
-    font-size: 20px; color: var(--gold); margin-bottom: 20px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-title::after { content:''; flex-grow:1; height:1px; background:var(--panel-border); }
-
-  .cards-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px;
-  }
-  .card {
-    background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px;
-    padding: 20px; transition: 0.3s; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;
-  }
-  .card:hover { transform: translateY(-4px); border-color: var(--cyan); box-shadow: 0 10px 20px rgba(0,245,212,0.1); }
-  .card .card-cat { font-size: 10px; color: var(--cyan); font-weight: 700; text-transform: uppercase; }
-  .card h4 { font-size: 16px; color: #fff; margin: 10px 0; line-height: 1.4; }
-  .card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-
-  /* Interactive Arcade Game */
-  .game-container {
-    background: var(--panel); border: 1px solid var(--panel-border);
-    border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 40px;
-  }
-  #gameCanvas {
-    background: #041009; border: 2px solid var(--cyan); border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,245,212,0.15); max-width: 100%; touch-action: none; cursor: crosshair;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  /* Modal Reader */
-  .modal {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: center; z-index: 2000;
-    opacity: 0; pointer-events: none; transition: 0.3s;
+  /* قسم الأخبار */
+  .news-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 550px;
+    overflow-y: auto;
+    padding-right: 5px;
   }
-  .modal.active { opacity: 1; pointer-events: all; }
-  .modal-content {
-    background: var(--panel); border: 1px solid var(--panel-border); border-radius: 16px;
-    width: 90%; max-width: 600px; padding: 30px; position: relative;
+
+  .news-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: 0.3s;
   }
-  .modal-close { position: absolute; top: 15px; left: 15px; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+
+  .news-card:hover {
+    border-color: var(--accent);
+  }
+
+  .news-card h3 {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .news-card p {
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .news-card a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  /* قسم اللعبة ثلاثية الأبعاد */
+  .game-wrapper {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+  }
+
+  #canvas-container {
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+
+  .game-ui {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 0 10px;
+  }
+
+  .score-board {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--cyan);
+  }
+
+  .controls-hint {
+    font-size: 12px;
+    color: #6b7280;
+  }
 </style>
 </head>
 <body>
 
-<div class="ticker-bar">
-  <div class="ticker-badge">مباشر</div>
-  <div class="ticker-scroll">
-    <div class="ticker-items" id="tickerTrack"></div>
-  </div>
-</div>
-
 <header>
-  <div class="logo">الرصد.</div>
-  <div class="sub-logo">الجيل الجديد من منصات الأخبار والتفاعل</div>
-  
-  <div class="bar-controls">
-    <input type="text" id="searchInput" class="input-field" placeholder="تصفية وسرعة البحث...">
-    <button id="refreshBtn" class="action-btn">⟳ تحديث الأنباء الفوري</button>
+  <h1>الرصد الإخباري التفاعلي 3D</h1>
+  <div class="status">
+    <span class="dot"></span>
+    <span>تحديث أخبار مستمر + منطقة الترفيه 3D</span>
   </div>
 </header>
 
-<nav class="cat-nav">
-  <button data-cat="all" class="active">الرئيسية</button>
-  <button data-cat="gaza">غزة</button>
-  <button data-cat="world">العالم</button>
-  <button data-cat="tech">تقنية</button>
-  <button data-cat="game">منطقة التسلية</button>
-</nav>
+<div class="layout">
+  
+  <!-- قسم الأخبار التلقائية -->
+  <div>
+    <div class="section-title">📰 أحدث الأخبار المباشرة</div>
+    <div class="news-container" id="newsContainer">
+      <div style="text-align:center; padding: 40px; color:#6b7280;">جاري تحميل الأخبار...</div>
+    </div>
+  </div>
 
-<main>
-
-  <div class="featured-card" data-section="gaza">
-    <span class="tag-pill">تغطية خاصة</span>
-    <h2>آخر التطورات الميدانية في غزة</h2>
-    <div class="featured-grid">
-      <div class="featured-body">
-        <p>تستمر متابعة التطورات الميدانية والجهود الإنسانية المستمرة في مختلف مناطق القطاع.</p>
-        <p>فرق الإغاثة تعمل بجهود مضاعفة وسط تحديات لوجستية متزايدة لتأمين الاحتياجات الأساسية.</p>
-      </div>
-      <div class="side-headlines">
-        <h4>عناوين تسليط الضوء</h4>
-        <ul id="gazaHeadlines"></ul>
+  <!-- قسم اللعبة المتطورة 3D -->
+  <div>
+    <div class="section-title">🎮 معركة الفضاء 3D (حرك الماوس للتوجيه)</div>
+    <div class="game-wrapper">
+      <div id="canvas-container"></div>
+      <div class="game-ui">
+        <div class="score-board" id="scoreDisplay">النقاط: 0</div>
+        <div class="controls-hint">وجه بالماوس للتصويب والتدمير</div>
       </div>
     </div>
   </div>
 
-  <section data-section="world">
-    <div class="section-title">الأحداث العالمية</div>
-    <div class="cards-grid" id="worldGrid"></div>
-  </section>
-
-  <section data-section="tech">
-    <div class="section-title">التكنولوجيا والذكاء الاصطناعي</div>
-    <div class="cards-grid" id="techGrid"></div>
-  </section>
-
-  <section data-section="game">
-    <div class="section-title">تحدي المهارة (Arcade)</div>
-    <div class="game-container">
-      <canvas id="gameCanvas" width="360" height="400"></canvas>
-      <div style="margin-top: 15px; display: flex; justify-content: center; gap: 20px; align-items: center;">
-        <span id="scoreText" style="color:var(--gold); font-weight:900;">النقاط: 0</span>
-        <button id="startGameBtn" class="action-btn">تشغيل اللعبة</button>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<div class="modal" id="readerModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <span id="modalCat" class="tag-pill"></span>
-    <h3 id="modalTitle" style="color:#fff; margin: 15px 0;"></h3>
-    <p id="modalBody" style="color:var(--text-muted); line-height: 1.8;"></p>
-  </div>
 </div>
 
 <script>
-  // Audio Synthesizer for SFX
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playSound(type) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    
-    if(type === 'score') {
-      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+  /* --- 1. محرك الأخبار التلقائي --- */
+  const RSS_URL = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss/a8c6f800-2f50-4596-9f1e-f3f1e9444458/6c85e2e8-d6a4-4f81-80cf-f8c6b75f8263';
+
+  async function fetchNews() {
+    try {
+      const res = await fetch(RSS_URL);
+      const data = await res.json();
+      const container = document.getElementById('newsContainer');
+      
+      if (data.status === 'ok') {
+        container.innerHTML = data.items.map(item => `
+          <div class="news-card">
+            <h3>${item.title}</h3>
+            <p>${item.description.replace(/<[^>]*>?/gm, '').substring(0, 130)}...</p>
+            <a href="${item.link}" target="_blank">قراءة التفاصيل ←</a>
+          </div>
+        `).join('');
+      }
+    } catch (e) {
+      console.log('جاري إعادة المحاولة...');
     }
   }
 
-  // Initial Mock Data
-  const tickerData = ["تطورات متسارعة في الملفات الإقليمية", "استمرار الخدمات الإغاثية في مختلف المناطق", "إطلاقات جديدة في عالم الذكاء الاصطناعي"];
-  document.getElementById('tickerTrack').innerHTML = tickerData.map(t=>`<span>• ${t}</span>`).join('');
+  fetchNews();
+  setInterval(fetchNews, 60000); // تحديث تلقائي كل 60 ثانية
 
-  const gazaList = ["متابعة الأوضاع الإنسانية ميدانياً", "تسهيل حركة قوافل الإغاثة", "جهود متواصلة لإصلاح الشبكات الأساسية"];
-  document.getElementById('gazaHeadlines').innerHTML = gazaList.map(item => `<li>${item}</li>`).join('');
+  /* --- 2. محرك اللعبة ثلاثي الأبعاد 3D (Three.js) --- */
+  const container = document.getElementById('canvas-container');
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  let score = 0;
 
-  const sampleData = {
-    worldGrid: [
-      ["دولي", "قمة دبلوماسية مرتقبة", "مناقشة الملفات الاقتصادية والأمنية الإقليمية."],
-      ["دولي", "تقارير حول حركة التجارة", "تغيرات جديدة في سلاسل الإمداد العالمية."]
-    ],
-    techGrid: [
-      ["تقنية", "نماذج ذكاء اصطناعي جديدة", "قفزات نوعية في معالجة اللغات الطبيعية."],
-      ["تقنية", "ابتكارات الطاقة النظيفة", "تقنيات جديدة لزيادة كفاءة الألواح الشمسية."]
-    ]
-  };
+  // Scene, Camera, Renderer
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.z = 7;
 
-  function renderGrid(id, items) {
-    const container = document.getElementById(id);
-    if(!container) return;
-    container.innerHTML = items.map(([tag, title, desc]) => `
-      <div class="card" onclick="openModal('${tag}', '${title}', '${desc}')">
-        <div>
-          <div class="card-cat">${tag}</div>
-          <h4>${title}</h4>
-          <p>${desc}</p>
-        </div>
-      </div>
-    `).join('');
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const light = new THREE.PointLight(0x00f5d4, 2, 50);
+  light.position.set(0, 0, 5);
+  scene.add(light);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+  // Player Ship (3D Pyramid Mesh)
+  const shipGeo = new THREE.ConeGeometry(0.4, 1.2, 4);
+  const shipMat = new THREE.MeshPhongMaterial({ color: 0x00f5d4, wireframe: false });
+  const ship = new THREE.Mesh(shipGeo, shipMat);
+  ship.rotation.x = Math.PI / 2;
+  scene.add(ship);
+
+  // Targets (Enemies)
+  const enemies = [];
+  function spawnEnemy() {
+    const geo = new THREE.DodecahedronGeometry(0.4);
+    const mat = new THREE.MeshPhongMaterial({ color: 0xff2a5f, flatShading: true });
+    const enemy = new THREE.Mesh(geo, mat);
+    enemy.position.x = (Math.random() - 0.5) * 8;
+    enemy.position.y = (Math.random() - 0.5) * 5;
+    enemy.position.z = -15;
+    scene.add(enemy);
+    enemies.push(enemy);
   }
 
-  renderGrid('worldGrid', sampleData.worldGrid);
-  renderGrid('techGrid', sampleData.techGrid);
+  // Starfield Background
+  const starsGeo = new THREE.BufferGeometry();
+  const starsCount = 400;
+  const starPos = new Float32Array(starsCount * 3);
+  for(let i=0; i<starsCount*3; i++) starPos[i] = (Math.random() - 0.5) * 40;
+  starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
+  const starField = new THREE.Points(starsGeo, starsMat);
+  scene.add(starField);
 
-  // Modal Functionality
-  function openModal(cat, title, body) {
-    document.getElementById('modalCat').textContent = cat;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalBody').textContent = body;
-    document.getElementById('readerModal').classList.add('active');
-  }
-  function closeModal() {
-    document.getElementById('readerModal').classList.remove('active');
-  }
-
-  // Interactive Live Search
-  document.getElementById('searchInput').addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    document.querySelectorAll('.card').forEach(card => {
-      card.style.display = card.textContent.toLowerCase().includes(term) ? 'flex' : 'none';
-    });
+  // Controls (Mouse Movement)
+  let mouse = { x: 0, y: 0 };
+  container.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
   });
 
-  // Navigation Filters
-  document.querySelectorAll('nav.cat-nav button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('nav.cat-nav button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.cat;
-      document.querySelectorAll('[data-section]').forEach(sec => {
-        sec.style.display = (cat === 'all' || sec.dataset.section === cat) ? 'block' : 'none';
-      });
-    });
-  });
+  // Game Loop
+  let frame = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    frame++;
 
-  // Game Engine
-  const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
-  let game = { running: false, score: 0, playerX: 180, balls: [] };
+    // Ship follow mouse
+    ship.position.x += (mouse.x * 4 - ship.position.x) * 0.1;
+    ship.position.y += (mouse.y * 3 - ship.position.y) * 0.1;
+    ship.rotation.z = -ship.position.x * 0.2;
 
-  function spawnBall() {
-    game.balls.push({ x: Math.random() * (canvas.width - 20) + 10, y: 0, dy: 2 + Math.random() * 2 });
-  }
+    // Spawn enemies
+    if(frame % 30 === 0) spawnEnemy();
 
-  function gameLoop() {
-    if(!game.running) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Move & Collision Check
+    enemies.forEach((enemy, index) => {
+      enemy.position.z += 0.25;
+      enemy.rotation.x += 0.02;
+      enemy.rotation.y += 0.02;
 
-    // Render Paddle
-    ctx.fillStyle = '#00f5d4';
-    ctx.fillRect(game.playerX - 35, canvas.height - 20, 70, 10);
-
-    // Update & Render Balls
-    game.balls.forEach((b, idx) => {
-      b.y += b.dy;
-      ctx.beginPath(); ctx.arc(b.x, b.y, 8, 0, Math.PI*2);
-      ctx.fillStyle = '#ff2a5f'; ctx.fill();
-
-      // Catch Check
-      if(b.y >= canvas.height - 25 && Math.abs(b.x - game.playerX) < 40) {
-        game.score += 10;
-        document.getElementById('scoreText').textContent = 'النقاط: ' + game.score;
-        playSound('score');
-        game.balls.splice(idx, 1);
+      // Hit check
+      const dist = ship.position.distanceTo(enemy.position);
+      if(dist < 0.8) {
+        scene.remove(enemy);
+        enemies.splice(index, 1);
+        score += 10;
+        scoreDisplay.textContent = 'النقاط: ' + score;
+      } else if(enemy.position.z > 8) {
+        scene.remove(enemy);
+        enemies.splice(index, 1);
       }
     });
 
-    if(Math.random() < 0.03) spawnBall();
-    requestAnimationFrame(gameLoop);
+    // Animate stars
+    starField.rotation.z += 0.001;
+
+    renderer.render(scene, camera);
   }
 
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    game.playerX = e.clientX - rect.left;
-  });
+  animate();
 
-  document.getElementById('startGameBtn').addEventListener('click', () => {
-    game = { running: true, score: 0, playerX: 180, balls: [] };
-    document.getElementById('scoreText').textContent = 'النقاط: 0';
-    gameLoop();
+  // Responsive Canvas
+  window.addEventListener('resize', () => {
+    if(!container) return;
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
   });
 </script>
+
 </body>
 </html>
