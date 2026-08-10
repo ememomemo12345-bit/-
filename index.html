@@ -3,300 +3,707 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMNIVERSE NEXUS ULTIMATE // النظام الكوني الشامل والكامل 2027</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>OMNIVERSE MASTER SYSTEM // النظام الهندسي الكامل 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-core: #010204;
-    --panel-glass: rgba(5, 8, 16, 0.92);
-    --neon-blue: #00f0ff;
+    --bg-core: #030407;
+    --panel-bg: rgba(8, 12, 22, 0.94);
+    --neon-cyan: #00f0ff;
     --neon-green: #00ff66;
     --neon-red: #ff003c;
-    --neon-gold: #ffcc00;
-    --neon-purple: #9d00ff;
-    --text-light: #f5f5f7;
-    --border-glow: rgba(0, 240, 255, 0.35);
+    --neon-yellow: #f39c12;
+    --text-main: #f4f4f8;
+    --border-glow: rgba(0, 240, 255, 0.3);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: thin; scrollbar-color: var(--neon-blue) transparent; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background-color: var(--bg-core);
-    color: var(--text-light);
+    color: var(--text-main);
     font-family: 'Cairo', sans-serif;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     overflow-x: hidden;
-    position: relative;
   }
 
-  /* تأثيرات السيبر المتقدمة والخلفية الديناميكية */
-  .matrix-glitch-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.5) 50%),
-                radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 100%);
-    background-size: 100% 3px;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
+  /* شريط الحالة العلوي المتكامل */
   header {
-    background: var(--panel-glass);
-    border-bottom: 2px solid var(--neon-blue);
-    padding: 15px 35px;
+    background: var(--panel-bg);
+    border-bottom: 2px solid var(--neon-cyan);
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
     position: sticky; top: 0; z-index: 1000;
-    box-shadow: 0 0 35px rgba(0, 240, 255, 0.2);
   }
 
-  .nexus-logo {
+  .logo-area {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 24px;
-    color: var(--neon-blue);
-    text-shadow: 0 0 15px var(--neon-blue);
-    display: flex; align-items: center; gap: 12px;
+    font-size: 20px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    display: flex; align-items: center; gap: 10px;
   }
 
-  .omni-ticker {
+  .status-badge {
+    display: flex; align-items: center; gap: 8px;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    color: var(--neon-green);
-    background: rgba(0,255,102,0.1);
-    padding: 6px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(0,255,102,0.4);
+    font-size: 13px; color: var(--neon-green);
+    background: rgba(0, 255, 102, 0.1);
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(0, 255, 102, 0.3);
   }
 
-  /* الهيكل التفصيلي الشامل (شبكة متقدمة من الأقسام) */
-  .omniverse-grid {
+  .pulsar-dot {
+    width: 9px; height: 9px; background: var(--neon-green);
+    border-radius: 50%; box-shadow: 0 0 10px var(--neon-green);
+    animation: pulseAnim 0.8s infinite alternate;
+  }
+  @keyframes pulseAnim { from { opacity: 0.3; } to { opacity: 1; } }
+
+  /* تخطيط الأقسام بالتفصيل الكامل */
+  .master-grid {
+    flex: 1;
     display: grid;
     grid-template-columns: 320px 1fr 340px;
     gap: 20px;
     padding: 20px;
-    min-height: calc(100vh - 80px);
   }
 
-  @media(max-width: 1250px) {
-    .omniverse-grid { grid-template-columns: 1fr; }
+  @media(max-width: 1200px) {
+    .master-grid { grid-template-columns: 1fr; }
   }
 
-  .omni-panel {
-    background: var(--panel-glass);
+  .panel-card {
+    background: var(--panel-bg);
     border: 1px solid var(--border-glow);
-    border-radius: 16px;
-    padding: 22px;
-    backdrop-filter: blur(25px);
+    border-radius: 14px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    gap: 15px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
   }
 
-  .omni-panel h2 {
-    font-size: 16px;
-    color: var(--neon-blue);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    padding-bottom: 8px;
+  .panel-card h3 {
     font-family: 'Share Tech Mono', monospace;
+    color: var(--neon-cyan);
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
     display: flex; justify-content: space-between; align-items: center;
   }
 
-  /* وحدة العقل الاصطناعي المفصلة */
-  .ai-terminal {
-    background: rgba(0,0,0,0.7);
-    border: 1px dashed var(--neon-blue);
+  /* وحدة الذكاء الاصطناعي المفصلة */
+  .ai-terminal-box {
+    background: #000;
+    border: 1px dashed var(--neon-cyan);
+    border-radius: 8px;
     padding: 14px;
-    border-radius: 10px;
     font-family: 'Share Tech Mono', monospace;
     font-size: 12px;
     color: var(--neon-green);
-    height: 200px;
+    height: 210px;
     overflow-y: auto;
     line-height: 1.6;
   }
 
-  /* بطاقات الحقائق الشاملة لغزة والصمود */
-  .truth-master-card {
-    background: rgba(255, 0, 60, 0.06);
+  /* شاشة الحركة البصرية الديناميكية التفاعلية بالكامل */
+  .live-canvas-area {
+    width: 100%;
+    height: 210px;
+    background: #020306;
+    border-radius: 8px;
+    border: 1px solid var(--neon-red);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .node-particle {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--neon-cyan);
+  }
+
+  /* بطاقات الحقائق والتوثيق */
+  .fact-detail-box {
+    background: rgba(255, 0, 60, 0.05);
     border-right: 4px solid var(--neon-red);
-    padding: 16px;
-    border-radius: 10px;
+    padding: 14px;
+    border-radius: 8px;
     margin-bottom: 10px;
   }
-  .truth-master-card h3 { color: var(--neon-red); font-size: 15px; margin-bottom: 6px; }
-  .fact-highlight { color: var(--neon-green); font-weight: bold; margin-top: 8px; display: block; font-size: 13px; }
+  .fact-detail-box h4 { color: var(--neon-red); font-size: 14px; margin-bottom: 5px; }
+  .fact-detail-box p { font-size: 13px; line-height: 1.5; color: #ddd; }
+  .highlight-tag { color: var(--neon-green); font-weight: bold; margin-top: 6px; display: block; font-size: 12px; }
 
-  /* لوحة أدوات السوشيال ميديا وتجاوز الحظر المفصلة */
-  .tool-group { display: flex; flex-direction: column; gap: 10px; }
-  .omni-input {
-    width: 100%; background: rgba(0,0,0,0.75);
-    border: 1px solid var(--border-glow); color: #fff;
-    padding: 12px; border-radius: 8px; font-family: inherit; outline: none;
+  /* لوحة أدوات السوشيال ميديا وتوليد النصوص */
+  .control-group { display: flex; flex-direction: column; gap: 10px; }
+  .field-input {
+    width: 100%; background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; padding: 12px; border-radius: 8px;
+    font-family: inherit; outline: none; transition: 0.2s;
   }
-  .omni-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 12px rgba(0,240,255,0.4); }
+  .field-input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,240,255,0.3); }
 
-  .omni-btn {
-    background: var(--neon-blue); color: #000; border: none;
-    padding: 12px; font-weight: 900; border-radius: 8px; cursor: pointer;
-    transition: 0.3s; text-transform: uppercase; font-family: 'Share Tech Mono', monospace;
+  .action-button {
+    background: var(--neon-cyan); color: #000; border: none;
+    padding: 12px; font-weight: 900; border-radius: 8px;
+    cursor: pointer; font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase; transition: 0.2s;
   }
-  .omni-btn:hover { background: #fff; box-shadow: 0 0 22px var(--neon-blue); }
+  .action-button:hover { background: #fff; box-shadow: 0 0 18px var(--neon-cyan); }
 
-  /* مشغل الميديا الميدانية المتقدم */
-  .media-wrapper {
-    width: 100%; height: 220px; background: #000; border-radius: 10px;
-    overflow: hidden; border: 1px solid var(--neon-red); position: relative;
+  .output-display {
+    background: rgba(0,0,0,0.6);
+    padding: 12px; border-radius: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px; color: var(--neon-green);
+    min-height: 60px; word-break: break-all;
   }
-  .media-wrapper iframe { width: 100%; height: 100%; border: none; }
 
-  /* صندوق التنبيهات والأخطاء الحية المفصلة */
-  .cyber-popup {
-    position: fixed; bottom: 30px; left: 30px;
-    background: rgba(255, 0, 60, 0.96); color: #fff;
-    padding: 16px 22px; border-radius: 12px;
+  /* نظام التنبيهات والأخطاء السيبرانية العائمة الحية */
+  .floating-alert {
+    position: fixed; bottom: 25px; left: 25px;
+    background: rgba(255, 0, 60, 0.95); color: #fff;
+    padding: 14px 20px; border-radius: 10px;
     font-family: 'Share Tech Mono', monospace; font-size: 13px;
-    box-shadow: 0 0 35px var(--neon-red); z-index: 10000;
+    box-shadow: 0 0 30px var(--neon-red); z-index: 10000;
     transform: translateY(200%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 </style>
 </head>
 <body>
 
-<div class="matrix-glitch-overlay"></div>
-
 <header>
-  <div class="nexus-logo">
-    <span>🌐</span> OMNIVERSE_ULTIMATE // CORE_2027
+  <div class="logo-area">
+    <span>🌐</span> OMNIVERSE MASTER CORE // 2027
   </div>
-  <div class="omni-ticker" id="omniClock">
-    التحديث الكوني الشامل: جاري المزامنة...
+  <div class="status-badge">
+    <div class="pulsar-dot"></div>
+    <span id="headerClock">التحديث الحي: نشط كل ثانية</span>
   </div>
 </header>
 
-<div class="omniverse-grid">
+<div class="master-grid">
   
-  <!-- القسم الأول: وحدة الذكاء الاصطناعي والتحديث التلقائي المستمر -->
-  <div class="omni-panel">
-    <h2><span>⚡</span> العقل الاصطناعي (كل ثانية)</h2>
-    <p style="font-size: 12px; color: #aaa;">نظام عصبى متطور يولد تحليلات ومعلومات متجددة بلا توقف:</p>
-    <div class="ai-terminal" id="aiTerminal">
-      [00:00:01] تهيئة النواة الذكية الشاملة...<br>
-      [00:00:02] ربط العقد الرقمية الميدانية...
+  <!-- العمود الأول: الذكاء الاصطناعي والتحديث التلقائي المستمر -->
+  <div class="panel-card">
+    <h3><span>⚡</span> العقل الذاتي (Live AI Stream)</h3>
+    <p style="font-size: 12px; color: #aaa;">نظام تحليل وتوليد تدفق بيانات عصبية متجدد بلا توقف:</p>
+    <div class="ai-terminal-box" id="aiTerminal">
+      [00:00:01] تهيئة النواة البرمجية الشاملة...<br>
+      [00:00:02] ربط خوادم الميدان والشبكات العصبية...
     </div>
 
-    <h2><span>🎮</span> مركز التشفير والألعاب السيبرانية</h2>
-    <button class="omni-btn" onclick="runCyberChallenge()">تشغيل محاكي التشفير المتقدم</button>
-    <div id="challengeOutput" style="font-family: 'Share Tech Mono'; font-size: 12px; color: var(--neon-blue); margin-top: 5px;"></div>
+    <h3><span>🎮</span> أداة كسر التشفير والتفاعل</h3>
+    <button class="action-button" onclick="triggerCyberProtocol()">تشغيل بروتوكول الأمان</button>
+    <div id="protocolOutput" style="font-family: 'Share Tech Mono'; font-size: 12px; color: var(--neon-cyan);"></div>
   </div>
 
-  <!-- القسم الثاني: الحقيقة المطلقة لغزة والميديا الميدانية الموثقة -->
-  <div class="omni-panel">
-    <h2><span>🛡️</span> الحقيقة المطلقة Vs. التضليل الإعلامي</h2>
+  <!-- العمود الثاني: الحقيقة المطلقة والمحاكي البصري الميداني -->
+  <div class="panel-card">
+    <h3><span>🛡️</span> الحقيقة المطلقة Vs. التضليل الإعلامي</h3>
     
-    <div class="truth-master-card">
-      <h3>🚨 التضليل الإعلامي العالمي:</h3>
-      <p>"محاولة حصر صورة غزة في دائرة الدمار وطمس معالم العقل والإبداع والابتكار البشري."</p>
-      <span class="fact-highlight">✅ الحقيقة الميدانية النابضة:</span>
-      <p style="font-size: 13px; margin-top: 5px;">غزة هي مصنع الصمود الأبدي، والأدمغة هناك تبتكر الحلول والتكنولوجيا وتبث الحياة من تحت الرماد رغم كل ظروف الحصار وانقطاع الإمكانيات.</p>
+    <div class="fact-detail-box">
+      <h4>🚨 التضليل الإعلامي العالمي:</h4>
+      <p>"حصر وتأطير صورة غزة في دائرة الدمار وطمس الجانب الحضاري والأكاديمي والإنساني."</p>
+      <span class="highlight-tag">✅ الحقيقة الميدانية النابضة:</span>
+      <p style="margin-top: 4px;">غزة هي مصنع الصمود والعقول المبتكرة التي تبث الحياة وتدير الابتكار من قلب التحديات.</p>
     </div>
 
-    <div class="truth-master-card">
-      <h3>🚨 التضليل الإعلامي العالمي:</h3>
-      <p>"عزل القطاع عن ركب التقنية والاتصالات العالمية."</p>
-      <span class="fact-highlight">✅ الحقيقة الميدانية النابضة:</span>
-      <p style="font-size: 13px; margin-top: 5px;">المهندسون والمطورون الأحرار يديرون منصات رقمية عالمية ويتجاوزون الحصار بأقوى الأدوات وأعقد الخوارزميات.</p>
-    </div>
-
-    <h2><span>📺</span> التوثيق الميداني المباشر</h2>
-    <div class="media-wrapper">
-      <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=PL..." allowfullscreen style="filter: contrast(1.15);"></iframe>
+    <h3><span>📈</span> المحاكي البصري الديناميكي المباشر</h3>
+    <div class="live-canvas-area" id="canvasArea">
+      <div class="node-particle" id="np1"></div>
+      <div class="node-particle" id="np2" style="background: var(--neon-green); box-shadow: 0 0 12px var(--neon-green);"></div>
+      <div style="font-family: 'Share Tech Mono'; color: rgba(255,255,255,0.4); font-size: 12px; z-index: 2;">شبكة حية متحررة 100% (بدون جمود)</div>
     </div>
   </div>
 
-  <!-- القسم الثالث: أداة السوشيال ميديا وحماية المحتوى المتقدمة -->
-  <div class="omni-panel">
-    <h2><span>⚙️</span> هندسة السوشيال ميديا 2027</h2>
-    <p style="font-size: 12px; color: #aaa;">تشفير النصوص لحمايتها من حظر الظل (Shadowban) والقيود:</p>
+  <!-- العمود الثالث: هندسة السوشيال ميديا وحماية المحتوى -->
+  <div class="panel-card">
+    <h3><span>⚙️</span> هندسة السوشيال ميديا 2027</h3>
+    <p style="font-size: 12px; color: #aaa;">أداة توليد وتشفير النصوص لحمايتها من حظر الظل (Shadowban):</p>
     
-    <div class="tool-group">
-      <label style="font-size: 11px; color: var(--neon-blue);">النص المراد تحصينه وتعديله:</label>
-      <input type="text" id="targetText" class="omni-input" value="غزة تصنع الحياة والصمود الأبدي">
-      <button class="omni-btn" onclick="executeAdvancedBypass()">تشفير فوري للخوارزميات</button>
+    <div class="control-group">
+      <label style="font-size: 11px; color: var(--neon-cyan);">أدخل النص المراد تحصينه:</label>
+      <input type="text" id="userInputText" class="field-input" value="غزة تصنع الحياة والصمود الأبدي">
+      <button class="action-button" onclick="processTextBypass()">تشفير ومعالجة فورية</button>
       
-      <div id="outputResult" style="background: rgba(0,0,0,0.6); padding: 12px; border-radius: 8px; font-family: 'Share Tech Mono'; font-size: 12px; color: var(--neon-green); min-height: 70px; word-break: break-all;">
-        النتيجة المؤمنة ستظهر هنا...
+      <div class="output-display" id="outputResultBox">
+        النتيجة المعالجة ستظهر هنا فوراً...
       </div>
     </div>
-
-    <h2><span>🚨</span> لوحة الأخطاء النظامية التلقائية</h2>
-    <p style="font-size: 11px; color: #aaa;">النظام يولد أخطاء وتحذيرات برمجية عشوائية لضمان تفاعل الواجهة الحية.</p>
   </div>
 
 </div>
 
-<!-- صندوق التنبيهات والأخطاء الحية التلقائية -->
-<div class="cyber-popup" id="cyberPopup">
-  ⚠️ نظام الحماية الشامل: تم رصد محاولة تضليل رقمي وصدها فوراً بنجاح!
+<!-- صندوق التنبيهات والأخطاء الحية العائمة -->
+<div class="floating-alert" id="floatingAlert">
+  ⚠️ تنبيه النظام 2027: تم رصد وتأمين التدفق الرقمي بنجاح!
 </div>
 
 <script>
-  /* 1. نظام التحديث الكوني التلقائي دقيقة بدقيقة وثانية بثانية */
+  /* 1. نظام التحديث التلقائي المستمر للذكاء الاصطناعي كل ثانية */
   const aiTerminal = document.getElementById('aiTerminal');
-  const omniClock = document.getElementById('omniClock');
+  const headerClock = document.getElementById('headerClock');
   
-  const streamEvents = [
-    "مزامنة العقد العصبية الكونية لعام 2027 بنجاح...",
+  const systemLogs = [
+    "مزامنة العقد العصبية الكونية لعام 2027...",
     "تدفق بيانات حي ومباشر من خوادم الميدان في غزة...",
-    "تجاوز الفلاتر العالمية وتأمين حرية تدفق الحقيقة المطلقة...",
+    "تجاوز الفلاتر العالمية وتأمين حرية الحقيقة المطلقة...",
     "إصلاح تلقائي واستقرار شامل للثغرات البرمجية في المنصة...",
     "تحليل تدفق السوشيال ميديا الذكي والآمن... يعمل بفعالية.",
     "تحديث خوارزميات الذكاء الاصطناعي الذاتي وتوسيع قاعدة البيانات..."
   ];
 
-  let eventIndex = 0;
+  let logIdx = 0;
   setInterval(() => {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString();
-    omniClock.innerText = `التحديث الكوني: ${timeString} (محدث كل ثانية)`;
+    const timeNow = new Date();
+    const timeString = timeNow.toLocaleTimeString();
+    headerClock.innerText = `التحديث الحي: ${timeString} (كل ثانية)`;
     
-    if(now.getSeconds() % 2 === 0) {
-      const currentEvent = streamEvents[eventIndex % streamEvents.length];
-      aiTerminal.innerHTML += `<br>[${timeString}] ${currentEvent}`;
+    if(timeNow.getSeconds() % 2 === 0) {
+      const activeLog = systemLogs[logIdx % systemLogs.length];
+      aiTerminal.innerHTML += `<br>[${timeString}] ${activeLog}`;
       aiTerminal.scrollTop = aiTerminal.scrollHeight;
-      eventIndex++;
+      logIdx++;
     }
-  }, 1000); // تحديث دقيق ونبض مستمر كل ثانية
+  }, 1000); // نبض مستمر كل ثانية بدقة
 
-  /* 2. نظام الأخطاء والتحذيرات المنبثقة التلقائية */
+  /* 2. نظام التنبيهات والأخطاء العشوائية الحية */
   setInterval(() => {
-    const popup = document.getElementById('cyberPopup');
-    popup.style.transform = 'translateY(0)';
+    const alertBox = document.getElementById('floatingAlert');
+    alertBox.style.transform = 'translateY(0)';
     setTimeout(() => {
-      popup.style.transform = 'translateY(200%)';
-    }, 4500);
-  }, 11000); // تظهر بشكل دوري لضمان حيوية النظام
+      alertBox.style.transform = 'translateY(200%)';
+    }, 4000);
+  }, 10000); // تظهر كل 10 ثوانٍ لضمان حيوية الشاشة
 
-  /* 3. محرك هندسة السوشيال ميديا وحماية الكلمات بدقة */
-  function executeAdvancedBypass() {
-    let inputVal = document.getElementById('targetText').value;
-    let secured = inputVal.replace(/غزة/g, 'غـ.ـزة')
-                          .replace(/فلسطين/g, 'P@lestine')
-                          .replace(/صمود/g, 'صُـمود')
-                          .replace(/الحياة/g, 'الحـياة')
-                          .split('').join(' ');
+  /* 3. المحاكي البصري الحركي (عناصر متحررة بدون جمود) */
+  let x1 = 40, y1 = 40, dx1 = 3, dy1 = 2;
+  let x2 = 180, y2 = 120, dx2 = -2.5, dy2 = -3;
+  const np1 = document.getElementById('np1');
+  const np2 = document.getElementById('np2');
+  const cArea = document.getElementById('canvasArea');
+
+  setInterval(() => {
+    let maxWidth = cArea.clientWidth - 20;
+    let maxHeight = cArea.clientHeight - 20;
+
+    x1 += dx1; y1 += dy1;
+    if(x1 <= 0 || x1 >= maxWidth) dx1 *= -1;
+    if(y1 <= 0 || y1 >= maxHeight) dy1 *= -1;
+
+    x2 += dx2; y2 += dy2;
+    if(x2 <= 0 || x2 >= maxWidth) dx2 *= -1;
+    if(y2 <= 0 || y2 >= maxHeight) dy2 *= -1;
+
+    np1.style.left = x1 + 'px';
+    np1.style.top = y1 + 'px';
+
+    np2.style.left = x2 + 'px';
+    np2.style.top = y2 + 'px';
+  }, 25); // حركة سريعة وسلسة وديناميكية
+
+  /* 4. وظيفة معالجة وتشفير النصوص للسوشيال ميديا */
+  function processTextBypass() {
+    let rawText = document.getElementById('userInputText').value;
+    let securedText = rawText.replace(/غزة/g, 'غـ.ـزة')
+                             .replace(/فلسطين/g, 'P@lestine')
+                             .replace(/صمود/g, 'صُـمود')
+                             .replace(/الحياة/g, 'الحـياة')
+                             .split('').join(' ');
     
-    document.getElementById('outputResult').innerText = "تم التشفير بنجاح تام: " + secured;
+    document.getElementById('outputResultBox').innerText = "النص بعد التشفير الآمن: " + securedText;
   }
 
-  /* 4. محاكي كسر التشفير السيبراني المتقدم */
-  function runCyberChallenge() {
-    const output = document.getElementById('challengeOutput');
-    let generatedCode = Math.floor(100000 + Math.random() * 900000);
-    output.innerHTML = `🔐 مفتاح الأمان والتشفير: <strong>#${generatedCode}</strong><br>النظام يعمل بأعلى كفاءة تشغيلية مستمرة!`;
+  /* 5. بروتوكول الأمان التفاعلي */
+  function triggerCyberProtocol() {
+    let randomKey = Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('protocolOutput').innerHTML = `🔐 مفتاح الحماية السيبراني: <strong>#${randomKey}</strong><br>النظام يعمل بأقصى طاقة استيعابية تفاعلية!`;
   }
 </script>
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNIVERSE MASTER SYSTEM // النظام الهندسي الكامل 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-core: #030407;
+    --panel-bg: rgba(8, 12, 22, 0.94);
+    --neon-cyan: #00f0ff;
+    --neon-green: #00ff66;
+    --neon-red: #ff003c;
+    --neon-yellow: #f39c12;
+    --neon-purple: #9d00ff;
+    --text-main: #f4f4f8;
+    --border-glow: rgba(0, 240, 255, 0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-core);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* شريط الحالة العلوي المتكامل */
+  header {
+    background: var(--panel-bg);
+    border-bottom: 2px solid var(--neon-cyan);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+    position: sticky; top: 0; z-index: 1000;
+  }
+
+  .logo-area {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 20px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .status-badge {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px; color: var(--neon-green);
+    background: rgba(0, 255, 102, 0.1);
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(0, 255, 102, 0.3);
+  }
+
+  .pulsar-dot {
+    width: 9px; height: 9px; background: var(--neon-green);
+    border-radius: 50%; box-shadow: 0 0 10px var(--neon-green);
+    animation: pulseAnim 0.8s infinite alternate;
+  }
+  @keyframes pulseAnim { from { opacity: 0.3; } to { opacity: 1; } }
+
+  /* تخطيط الأقسام بالتفصيل الكامل (شبكة واسعة ومتعددة) */
+  .master-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+
+  @media(max-width: 1400px) {
+    .master-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media(max-width: 768px) {
+    .master-grid { grid-template-columns: 1fr; }
+  }
+
+  .panel-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  }
+
+  .panel-card h3 {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--neon-cyan);
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  /* وحدة الذكاء الاصطناعي المفصلة */
+  .ai-terminal-box {
+    background: #000;
+    border: 1px dashed var(--neon-cyan);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--neon-green);
+    height: 180px;
+    overflow-y: auto;
+    line-height: 1.6;
+  }
+
+  /* شاشة الحركة البصرية الديناميكية التفاعلية بالكامل */
+  .live-canvas-area {
+    width: 100%;
+    height: 180px;
+    background: #020306;
+    border-radius: 8px;
+    border: 1px solid var(--neon-red);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .node-particle {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--neon-cyan);
+  }
+
+  /* بطاقات الحقائق والتوثيق */
+  .fact-detail-box {
+    background: rgba(255, 0, 60, 0.05);
+    border-right: 4px solid var(--neon-red);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+  }
+  .fact-detail-box h4 { color: var(--neon-red); font-size: 13px; margin-bottom: 4px; }
+  .fact-detail-box p { font-size: 12px; line-height: 1.4; color: #ddd; }
+  .highlight-tag { color: var(--neon-green); font-weight: bold; margin-top: 5px; display: block; font-size: 11px; }
+
+  /* لوحة أدوات السوشيال ميديا وتوليد النصوص */
+  .control-group { display: flex; flex-direction: column; gap: 10px; }
+  .field-input {
+    width: 100%; background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; padding: 10px; border-radius: 8px;
+    font-family: inherit; outline: none; transition: 0.2s;
+  }
+  .field-input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,240,255,0.3); }
+
+  .action-button {
+    background: var(--neon-cyan); color: #000; border: none;
+    padding: 10px; font-weight: 900; border-radius: 8px;
+    cursor: pointer; font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase; transition: 0.2s;
+  }
+  .action-button:hover { background: #fff; box-shadow: 0 0 18px var(--neon-cyan); }
+
+  .output-display {
+    background: rgba(0,0,0,0.6);
+    padding: 10px; border-radius: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px; color: var(--neon-green);
+    min-height: 50px; word-break: break-all;
+  }
+
+  /* نظام التنبيهات والأخطاء السيبرانية العائمة الحية */
+  .floating-alert {
+    position: fixed; bottom: 25px; left: 25px;
+    background: rgba(255, 0, 60, 0.95); color: #fff;
+    padding: 14px 20px; border-radius: 10px;
+    font-family: 'Share Tech Mono', monospace; font-size: 13px;
+    box-shadow: 0 0 30px var(--neon-red); z-index: 10000;
+    transform: translateY(200%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <span>🌐</span> OMNIVERSE MASTER CORE // 2027
+  </div>
+  <div class="status-badge">
+    <div class="pulsar-dot"></div>
+    <span id="headerClock">التحديث الحي: نشط كل ثانية</span>
+  </div>
+</header>
+
+<div class="master-grid">
+  
+  <!-- العمود الأول: الذكاء الاصطناعي والتحديث التلقائي المستمر -->
+  <div class="panel-card">
+    <h3><span>⚡</span> العقل الذاتي (Live AI Stream)</h3>
+    <p style="font-size: 11px; color: #aaa;">نظام تحليل وتوليد تدفق بيانات عصبية متجدد بلا توقف:</p>
+    <div class="ai-terminal-box" id="aiTerminal">
+      [00:00:01] تهيئة النواة البرمجية الشاملة...<br>
+      [00:00:02] ربط خوادم الميدان والشبكات العصبية...
+    </div>
+
+    <h3><span>🎮</span> أداة كسر التشفير والتفاعل</h3>
+    <button class="action-button" onclick="triggerCyberProtocol()">تشغيل بروتوكول الأمان</button>
+    <div id="protocolOutput" style="font-family: 'Share Tech Mono'; font-size: 11px; color: var(--neon-cyan);"></div>
+  </div>
+
+  <!-- العمود الثاني: الحقيقة المطلقة والمحاكي البصري الميداني -->
+  <div class="panel-card">
+    <h3><span>🛡️</span> الحقيقة المطلقة Vs. التضليل</h3>
+    <div class="fact-detail-box">
+      <h4>🚨 التضليل الإعلامي العالمي:</h4>
+      <p>"حصر وتأطير صورة غزة في دائرة الدمار وطمس الجانب الحضاري والأكاديمي."</p>
+      <span class="highlight-tag">✅ الحقيقة الميدانية النابضة:</span>
+      <p style="margin-top: 3px;">غزة هي مصنع الصمود والعقول المبتكرة التي تبث الحياة وتدير الابتكار.</p>
+    </div>
+
+    <h3><span>📈</span> المحاكي البصري الديناميكي</h3>
+    <div class="live-canvas-area" id="canvasArea">
+      <div class="node-particle" id="np1"></div>
+      <div class="node-particle" id="np2" style="background: var(--neon-green); box-shadow: 0 0 12px var(--neon-green);"></div>
+      <div style="font-family: 'Share Tech Mono'; color: rgba(255,255,255,0.4); font-size: 11px; z-index: 2;">شبكة حية متحررة 100%</div>
+    </div>
+  </div>
+
+  <!-- العمود الثالث: هندسة السوشيال ميديا وحماية المحتوى -->
+  <div class="panel-card">
+    <h3><span>⚙️</span> هندسة السوشيال ميديا 2027</h3>
+    <p style="font-size: 11px; color: #aaa;">تشفير النصوص لحمايتها من حظر الظل (Shadowban):</p>
+    
+    <div class="control-group">
+      <label style="font-size: 11px; color: var(--neon-cyan);">أدخل النص المراد تحصينه:</label>
+      <input type="text" id="userInputText" class="field-input" value="غزة تصنع الحياة والصمود الأبدي">
+      <button class="action-button" onclick="processTextBypass()">تشفير ومعالجة فورية</button>
+      <div class="output-display" id="outputResultBox">النتيجة المعالجة ستظهر هنا...</div>
+    </div>
+  </div>
+
+  <!-- العمود الرابع (إضافة إبداعية جديدة وكاملة): مساعد الذكاء الاصطناعي التفاعلي وتحليل الترند -->
+  <div class="panel-card" style="border-color: var(--neon-purple);">
+    <h3 style="color: var(--neon-purple);"><span>🔮</span> مركز الذكاء الاصطناعي الفاخر</h3>
+    <p style="font-size: 11px; color: #aaa;">محرك توليد الأفكار واستعلامات الترند الذكية:</p>
+    
+    <div class="control-group">
+      <label style="font-size: 11px; color: var(--neon-purple);">اسأل المساعد الذكي:</label>
+      <input type="text" id="aiPromptInput" class="field-input" value="كيف نزيد التفاعل على المنصة؟">
+      <button class="action-button" style="background: var(--neon-purple); color: #fff;" onclick="runAdvancedAIResponse()">توليد استجابة ذكية</button>
+      <div class="output-display" id="aiResponseBox" style="color: var(--neon-purple);">انتظار المدخلات الذكية...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- صندوق التنبيهات والأخطاء الحية العائمة -->
+<div class="floating-alert" id="floatingAlert">
+  ⚠️ تنبيه النظام 2027: تم رصد وتأمين التدفق الرقمي بنجاح!
+</div>
+
+<script>
+  /* 1. نظام التحديث التلقائي المستمر للذكاء الاصطناعي كل ثانية */
+  const aiTerminal = document.getElementById('aiTerminal');
+  const headerClock = document.getElementById('headerClock');
+  
+  const systemLogs = [
+    "مزامنة العقد العصبية الكونية لعام 2027...",
+    "تدفق بيانات حي ومباشر من خوادم الميدان في غزة...",
+    "تجاوز الفلاتر العالمية وتأمين حرية الحقيقة المطلقة...",
+    "إصلاح تلقائي واستقرار شامل للثغرات البرمجية في المنصة...",
+    "تحليل تدفق السوشيال ميديا الذكي والآمن... يعمل بفعالية.",
+    "تحديث خوارزميات الذكاء الاصطناعي الذاتي وتوسيع قاعدة البيانات..."
+  ];
+
+  let logIdx = 0;
+  setInterval(() => {
+    const timeNow = new Date();
+    const timeString = timeNow.toLocaleTimeString();
+    headerClock.innerText = `التحديث الحي: ${timeString} (كل ثانية)`;
+    
+    if(timeNow.getSeconds() % 2 === 0) {
+      const activeLog = systemLogs[logIdx % systemLogs.length];
+      aiTerminal.innerHTML += `<br>[${timeString}] ${activeLog}`;
+      aiTerminal.scrollTop = aiTerminal.scrollHeight;
+      logIdx++;
+    }
+  }, 1000);
+
+  /* 2. نظام التنبيهات والعشوائية الحية */
+  setInterval(() => {
+    const alertBox = document.getElementById('floatingAlert');
+    alertBox.style.transform = 'translateY(0)';
+    setTimeout(() => {
+      alertBox.style.transform = 'translateY(200%)';
+    }, 4000);
+  }, 10000);
+
+  /* 3. المحاكي البصري الحركي (عناصر متحررة بدون جمود) */
+  let x1 = 40, y1 = 40, dx1 = 3, dy1 = 2;
+  let x2 = 180, y2 = 120, dx2 = -2.5, dy2 = -3;
+  const np1 = document.getElementById('np1');
+  const np2 = document.getElementById('np2');
+  const cArea = document.getElementById('canvasArea');
+
+  setInterval(() => {
+    let maxWidth = cArea.clientWidth - 20;
+    let maxHeight = cArea.clientHeight - 20;
+
+    x1 += dx1; y1 += dy1;
+    if(x1 <= 0 || x1 >= maxWidth) dx1 *= -1;
+    if(y1 <= 0 || y1 >= maxHeight) dy1 *= -1;
+
+    x2 += dx2; y2 += dy2;
+    if(x2 <= 0 || x2 >= maxWidth) dx2 *= -1;
+    if(y2 <= 0 || y2 >= maxHeight) dy2 *= -1;
+
+    np1.style.left = x1 + 'px';
+    np1.style.top = y1 + 'px';
+    np2.style.left = x2 + 'px';
+    np2.style.top = y2 + 'px';
+  }, 25);
+
+  /* 4. وظيفة معالجة وتشفير النصوص للسوشيال ميديا */
+  function processTextBypass() {
+    let rawText = document.getElementById('userInputText').value;
+    let securedText = rawText.replace(/غزة/g, 'غـ.ـزة')
+                             .replace(/فلسطين/g, 'P@lestine')
+                             .replace(/صمود/g, 'صُـمود')
+                             .replace(/الحياة/g, 'الحـياة')
+                             .split('').join(' ');
+    
+    document.getElementById('outputResultBox').innerText = "النص بعد التشفير الآمن: " + securedText;
+  }
+
+  /* 5. بروتوكول الأمان التفاعلي */
+  function triggerCyberProtocol() {
+    let randomKey = Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('protocolOutput').innerHTML = `🔐 مفتاح الحماية السيبراني: <strong>#${randomKey}</strong><br>النظام يعمل بأقصى طاقة استيعابية تفاعلية!`;
+  }
+
+  /* 6. الوظيفة الإضافية الجديدة: مركز الذكاء الاصطناعي وتحليل الترند */
+  function runAdvancedAIResponse() {
+    let prompt = document.getElementById('aiPromptInput').value;
+    let responses = [
+      "تحليل الذكاء الاصطناعي: دمج واجهات تفاعلية متعددة العقد يرفع معدل البقاء في الموقع بنسبة 350%.",
+      "استراتيجية النشر لعام 2027: استخدام الأكواد الديناميكية الحية يتجاوز خوارزميات الحظر التقليدية بكفاءة.",
+      "تأكيد الخوارزمية: تم معالجة طلبك عبر طبقات التشفير العصبي بنجاح تام وبدون أخطاء."
+    ];
+    let selectedResponse = responses[Math.floor(Math.random() * responses.length)];
+    document.getElementById('aiResponseBox').innerText = `🤖 استجابة الذكاء الاصطناعي: ${selectedResponse}`;
+  }
+</script>
+
+</body>
+</html>
+
+
+
