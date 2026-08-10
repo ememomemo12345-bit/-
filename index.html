@@ -1,52 +1,74 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. تبديل لغات القصة
+    // -------------------------------------------------------------
+    // 1. تبديل لغات القصة / الواجهة
+    // -------------------------------------------------------------
     const langArBtn = document.getElementById('langAr');
     const langEnBtn = document.getElementById('langEn');
     const storyAr = document.getElementById('storyAr');
     const storyEn = document.getElementById('storyEn');
 
-    langArBtn.addEventListener('click', () => {
-        langArBtn.classList.add('active');
-        langEnBtn.classList.remove('active');
-        storyAr.classList.add('active');
-        storyEn.classList.remove('active');
-    });
+    function switchLanguage(lang) {
+        if (lang === 'ar') {
+            langArBtn.classList.add('active');
+            langEnBtn.classList.remove('active');
+            storyAr.classList.add('active');
+            storyEn.classList.remove('active');
+            document.documentElement.setAttribute('dir', 'rtl');
+            document.documentElement.setAttribute('lang', 'ar');
+        } else {
+            langEnBtn.classList.add('active');
+            langArBtn.classList.remove('active');
+            storyEn.classList.add('active');
+            storyAr.classList.remove('active');
+            document.documentElement.setAttribute('dir', 'ltr');
+            document.documentElement.setAttribute('lang', 'en');
+        }
+    }
 
-    langEnBtn.addEventListener('click', () => {
-        langEnBtn.classList.add('active');
-        langArBtn.classList.remove('active');
-        storyEn.classList.add('active');
-        storyAr.classList.remove('active');
-    });
+    langArBtn?.addEventListener('click', () => switchLanguage('ar'));
+    langEnBtn?.addEventListener('click', () => switchLanguage('en'));
 
-    // 2. التنقل بين الأدوات الـ 9
+    // -------------------------------------------------------------
+    // 2. التنقل بين الأدوات (مع حفظ آخر أداة تم استخدامها)
+    // -------------------------------------------------------------
     const switches = document.querySelectorAll('.switch-btn');
     const tools = document.querySelectorAll('.tool-panel');
 
     switches.forEach(btn => {
         btn.addEventListener('click', () => {
+            const toolId = btn.dataset.tool;
             switches.forEach(s => s.classList.remove('active'));
             tools.forEach(t => t.classList.remove('active'));
 
             btn.classList.add('active');
-            const targetTool = document.getElementById('tool-' + btn.dataset.tool);
+            const targetTool = document.getElementById('tool-' + toolId);
             if (targetTool) {
                 targetTool.classList.add('active');
+                localStorage.setItem('active_tool', toolId);
             }
         });
     });
 
-    // 01: تحويل العملات
+    // استعادة آخر أداة تم فتحها
+    const lastActiveTool = localStorage.getItem('active_tool');
+    if (lastActiveTool) {
+        const targetBtn = document.querySelector(`[data-tool="${lastActiveTool}"]`);
+        const targetTool = document.getElementById('tool-' + lastActiveTool);
+        if (targetBtn && targetTool) {
+            switches.forEach(s => s.classList.remove('active'));
+            tools.forEach(t => t.classList.remove('active'));
+            targetBtn.classList.add('active');
+            targetTool.classList.add('active');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // 01: تحويل العملات المتقدم (مع زر عكس العملات)
+    // -------------------------------------------------------------
     const exchangeRates = {
-        USD: 1.0,
-        EUR: 0.92,
-        GBP: 0.78,
-        SAR: 3.75,
-        AED: 3.67,
-        JOD: 0.71,
-        EGP: 48.5,
-        ILS: 3.70
+        USD: 1.0, EUR: 0.92, GBP: 0.78, SAR: 3.75,
+        AED: 3.67, JOD: 0.71, EGP: 48.5, ILS: 3.70
     };
 
     const curAmount = document.getElementById('curAmount');
@@ -55,79 +77,97 @@ document.addEventListener('DOMContentLoaded', () => {
     const curResult = document.getElementById('curResult');
 
     function populateCurrencies() {
-        Object.keys(exchangeRates).forEach(c => {
-            curFrom.innerHTML += `<option value="${c}">${c}</option>`;
-            curTo.innerHTML += `<option value="${c}">${c}</option>`;
-        });
+        if (!curFrom || !curTo) return;
+        const optionsHTML = Object.keys(exchangeRates).map(c => `<option value="${c}">${c}</option>`).join('');
+        curFrom.innerHTML = optionsHTML;
+        curTo.innerHTML = optionsHTML;
         curFrom.value = "USD";
         curTo.value = "EGP";
     }
 
     function calculateCurrency() {
+        if (!curAmount || !curResult) return;
         const amount = parseFloat(curAmount.value) || 0;
         const fromRate = exchangeRates[curFrom.value] || 1;
         const toRate = exchangeRates[curTo.value] || 1;
         const converted = (amount / fromRate) * toRate;
-        curResult.textContent = `${converted.toFixed(2)} ${curTo.value}`;
+        curResult.textContent = `${converted.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${curTo.value}`;
     }
 
     populateCurrencies();
     calculateCurrency();
-    curAmount.addEventListener('input', calculateCurrency);
-    curFrom.addEventListener('change', calculateCurrency);
-    curTo.addEventListener('change', calculateCurrency);
+    curAmount?.addEventListener('input', calculateCurrency);
+    curFrom?.addEventListener('change', calculateCurrency);
+    curTo?.addEventListener('change', calculateCurrency);
 
-    // 02: مولد كلمات المرور
+    // -------------------------------------------------------------
+    // 02: مولد كلمات المرور (مع خيارات التخصيص والنسخ السريع)
+    // -------------------------------------------------------------
     const pwLen = document.getElementById('pwLen');
     const pwLenLabel = document.getElementById('pwLenLabel');
     const pwGo = document.getElementById('pwGo');
     const pwResult = document.getElementById('pwResult');
 
-    pwLen.addEventListener('input', () => {
-        pwLenLabel.textContent = pwLen.value;
+    pwLen?.addEventListener('input', () => {
+        if (pwLenLabel) pwLenLabel.textContent = pwLen.value;
     });
 
-    pwGo.addEventListener('click', () => {
+    pwGo?.addEventListener('click', () => {
         const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=";
         let password = "";
-        for (let i = 0; i < parseInt(pwLen.value); i++) {
+        const length = parseInt(pwLen.value) || 12;
+        for (let i = 0; i < length; i++) {
             password += charset.charAt(Math.floor(Math.random() * charset.length));
         }
-        pwResult.textContent = password;
+        if (pwResult) {
+            pwResult.textContent = password;
+            // إضافة خاصية النسخ التلقائي أو إشعار بسيط
+            navigator.clipboard?.writeText(password).catch(() => {});
+        }
     });
 
-    // 03: صانع QR Code
+    // -------------------------------------------------------------
+    // 03: صانع QR Code المحسن
+    // -------------------------------------------------------------
     const qrText = document.getElementById('qrText');
     const qrGo = document.getElementById('qrGo');
     const qrOut = document.getElementById('qrOut');
 
-    qrGo.addEventListener('click', () => {
+    qrGo?.addEventListener('click', () => {
         const val = qrText.value.trim();
-        if (val) {
-            qrOut.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(val)}" alt="QR Code" style="border-radius:8px; border:2px solid var(--accent)">`;
-        } else {
-            qrOut.innerHTML = `<p class="placeholder-text" style="color:var(--danger)">يرجى إدخال رابط أو نص أولاً!</p>`;
+        if (val && qrOut) {
+            qrOut.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(val)}" alt="QR Code" style="border-radius:12px; border:3px solid var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <span style="font-size: 12px; color: var(--text-muted);">تم التوليد بنجاح!</span>
+                </div>`;
+        } else if (qrOut) {
+            qrOut.innerHTML = `<p class="placeholder-text" style="color:var(--danger)">يرجى إدخال رابط أو نص صحيح أولاً!</p>`;
         }
     });
 
-    // 04: إحصائيات النص
+    // -------------------------------------------------------------
+    // 04: إحصائيات النص الفورية
+    // -------------------------------------------------------------
     const txtInput = document.getElementById('txtInput');
     const txtWords = document.getElementById('txtWords');
     const txtChars = document.getElementById('txtChars');
     const txtLines = document.getElementById('txtLines');
 
-    txtInput.addEventListener('input', () => {
+    txtInput?.addEventListener('input', () => {
         const val = txtInput.value;
         const words = val.trim() ? val.trim().split(/\s+/).length : 0;
         const chars = val.length;
         const lines = val ? val.split('\n').length : 0;
 
-        txtWords.textContent = words;
-        txtChars.textContent = chars;
-        txtLines.textContent = lines;
+        if (txtWords) txtWords.textContent = words;
+        if (txtChars) txtChars.textContent = chars;
+        if (txtLines) txtLines.textContent = lines;
     });
 
+    // -------------------------------------------------------------
     // 05: محول القياسات
+    // -------------------------------------------------------------
     const unitVal = document.getElementById('unitVal');
     const unitFrom = document.getElementById('unitFrom');
     const unitTo = document.getElementById('unitTo');
@@ -135,37 +175,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const unitResult = document.getElementById('unitResult');
 
     function convertUnits() {
+        if (!unitVal || !unitResult) return;
         const val = parseFloat(unitVal.value) || 0;
-        const fromFactor = parseFloat(unitFrom.value);
-        const toFactor = parseFloat(unitTo.value);
+        const fromFactor = parseFloat(unitFrom.value) || 1;
+        const toFactor = parseFloat(unitTo.value) || 1;
         const result = (val * fromFactor) / toFactor;
-        const toText = unitTo.options[unitTo.selectedIndex].text.split(' ')[0];
+        const toText = unitTo.options[unitTo.selectedIndex]?.text.split(' ')[0] || '';
         unitResult.textContent = `${result.toFixed(4)} ${toText}`;
     }
 
-    unitGo.addEventListener('click', convertUnits);
+    unitGo?.addEventListener('click', convertUnits);
 
-    // 06: حاسبة BMI
+    // -------------------------------------------------------------
+    // 06: حاسبة مؤشر كتلة الجسم (BMI) مع ألوان وتصنيفات تفاعلية
+    // -------------------------------------------------------------
     const bmiWeight = document.getElementById('bmiWeight');
     const bmiHeight = document.getElementById('bmiHeight');
     const bmiGo = document.getElementById('bmiGo');
     const bmiResult = document.getElementById('bmiResult');
     const bmiSub = document.getElementById('bmiSub');
 
-    bmiGo.addEventListener('click', () => {
+    bmiGo?.addEventListener('click', () => {
         const w = parseFloat(bmiWeight.value) || 0;
         const h = (parseFloat(bmiHeight.value) || 0) / 100;
-        if (w > 0 && h > 0) {
+        if (w > 0 && h > 0 && bmiResult && bmiSub) {
             const bmi = w / (h * h);
             bmiResult.textContent = bmi.toFixed(1);
-            if (bmi < 18.5) bmiSub.textContent = "وزن أقل من الطبيعي (نحافة)";
-            else if (bmi < 25) bmiSub.textContent = "وزن طبيعي وصحي جداً 👍";
-            else if (bmi < 30) bmiSub.textContent = "زيادة خفيفة في الوزن";
-            else bmiSub.textContent = "سمنة - يُنصح بممارسة الرياضة";
+            
+            if (bmi < 18.5) {
+                bmiSub.textContent = "وزن أقل من الطبيعي (نحافة) ⚠️";
+                bmiSub.style.color = "#3498db";
+            } else if (bmi < 25) {
+                bmiSub.textContent = "وزن مثالي وصحي جداً 👍";
+                bmiSub.style.color = "#2ecc71";
+            } else if (bmi < 30) {
+                bmiSub.textContent = "زيادة خفيفة في الوزن 💡";
+                bmiSub.style.color = "#f39c12";
+            } else {
+                bmiSub.textContent = "مستوى سمنة - يُنصح باستشارة مختص 🩺";
+                bmiSub.style.color = "#e74c3c";
+            }
         }
     });
 
-    // 07: مؤقت التركيز (Pomodoro)
+    // -------------------------------------------------------------
+    // 07: مؤقت التركيز (Pomodoro) الاحترافي
+    // -------------------------------------------------------------
     let timerInterval = null;
     let timeLeft = 25 * 60;
     const timerDisplay = document.getElementById('timerDisplay');
@@ -173,12 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerReset = document.getElementById('timerReset');
 
     function updateTimer() {
+        if (!timerDisplay) return;
         const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
         const secs = (timeLeft % 60).toString().padStart(2, '0');
         timerDisplay.textContent = `${mins}:${secs}`;
+        document.title = `(${mins}:${secs}) مؤقت التركيز`;
     }
 
-    timerStart.addEventListener('click', () => {
+    timerStart?.addEventListener('click', () => {
         if (timerInterval) {
             clearInterval(timerInterval);
             timerInterval = null;
@@ -192,22 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     clearInterval(timerInterval);
                     timerInterval = null;
-                    alert("انتهى وقت التركيز! خذ استراحة لمدة 5 دقائق ☕");
+                    alert("🎉 انتهى وقت التركيز! خذ استراحة لمدة 5 دقائق لترتاح.");
                     timerStart.textContent = "ابدأ الجلسة ⏱️";
+                    document.title = "موقع الأدوات الذكية";
                 }
             }, 1000);
         }
     });
 
-    timerReset.addEventListener('click', () => {
+    timerReset?.addEventListener('click', () => {
         clearInterval(timerInterval);
         timerInterval = null;
         timeLeft = 25 * 60;
         updateTimer();
-        timerStart.textContent = "ابدأ الجلسة ⏱️";
+        if (timerStart) timerStart.textContent = "ابدأ الجلسة ⏱️";
+        document.title = "موقع الأدوات الذكية";
     });
 
-    // 08: قائمة المهام اليومية
+    // -------------------------------------------------------------
+    // 08: قائمة المهام اليومية (مع ميزة الحذف وتحديث التخزين المحلي)
+    // -------------------------------------------------------------
     const taskInput = document.getElementById('taskInput');
     const addTaskBtn = document.getElementById('addTaskBtn');
     const taskList = document.getElementById('taskList');
@@ -215,20 +276,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let tasks = JSON.parse(localStorage.getItem('tb_tasks')) || [];
 
     function renderTasks() {
+        if (!taskList) return;
         taskList.innerHTML = '';
         if (tasks.length === 0) {
-            taskList.innerHTML = '<li class="placeholder-text" style="text-align:center; padding:15px;">لا توجد مهام حالياً. أضف مهمتك الأولى!</li>';
+            taskList.innerHTML = '<li class="placeholder-text" style="text-align:center; padding:15px; color:var(--text-muted);">لا توجد مهام حالياً. أضف مهمتك الأولى ونظم يومك! ✨</li>';
             return;
         }
         tasks.forEach((task, index) => {
             const li = document.createElement('li');
             li.className = 'task-item';
             li.innerHTML = `
-                <span>${task}</span>
-                <button class="del-btn" onclick="deleteTask(${index})">حذف</button>
+                <span>${escapeHTML(task)}</span>
+                <button class="del-btn" data-index="${index}">حذف</button>
             `;
             taskList.appendChild(li);
         });
+    }
+
+    // تأمين النصوص ضد الثغرات (XSS)
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
     }
 
     window.deleteTask = function(index) {
@@ -237,8 +306,15 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTasks();
     };
 
-    addTaskBtn.addEventListener('click', () => {
-        const val = taskInput.value.trim();
+    taskList?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('del-btn')) {
+            const index = parseInt(e.target.dataset.index);
+            deleteTask(index);
+        }
+    });
+
+    addTaskBtn?.addEventListener('click', () => {
+        const val = taskInput?.value.trim();
         if (val) {
             tasks.push(val);
             localStorage.setItem('tb_tasks', JSON.stringify(tasks));
@@ -247,20 +323,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    taskInput?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addTaskBtn?.click();
+        }
+    });
+
     renderTasks();
 
-    // 09: حاسبة العمر
+    // -------------------------------------------------------------
+    // 09: حاسبة العمر الدقيقة
+    // -------------------------------------------------------------
     const birthDateInput = document.getElementById('birthDate');
     const calcAgeBtn = document.getElementById('calcAgeBtn');
     const ageResult = document.getElementById('ageResult');
     const ageSub = document.getElementById('ageSub');
 
-    calcAgeBtn.addEventListener('click', () => {
-        const birthVal = birthDateInput.value;
-        if (!birthVal) return;
+    calcAgeBtn?.addEventListener('click', () => {
+        const birthVal = birthDateInput?.value;
+        if (!birthVal || !ageResult || !ageSub) return;
 
         const birthDate = new Date(birthVal);
         const today = new Date();
+
+        if (birthDate > today) {
+            ageResult.textContent = "خطأ!";
+            ageSub.textContent = "تاريخ الميلاد لا يمكن أن يكون في المستقبل!";
+            return;
+        }
 
         let years = today.getFullYear() - birthDate.getFullYear();
         let months = today.getMonth() - birthDate.getMonth();
@@ -276,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         ageResult.textContent = `${years} سنة`;
-        ageSub.textContent = `تحديداً: ${months} شهر، و ${days} يوم.`;
+        ageSub.textContent = `التفصيل الدقيق: ${months} شهر، و ${days} يوم من الإنجاز والتميز! 🌟`;
     });
 
 });
