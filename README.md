@@ -1,337 +1,453 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المنصة المتقدمة | الأخبار واللعبة 3D</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-<!-- مكتبة Three.js للألعاب ثلاثية الأبعاد الحديثة -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-  :root {
-    --bg: #090d16;
-    --panel: #111827;
-    --border: #1f2937;
-    --accent: #ff2a5f;
-    --cyan: #00f5d4;
-    --text: #e5e7eb;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نواة الذكاء الكمّي | AI NEXUS</title>
+    <!-- خطوط عصرية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
+    <!-- مكتبة Three.js للرسوميات 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ff003c;
+            --dark: #050510;
+            --glass: rgba(10, 15, 30, 0.6);
+            --border: rgba(0, 240, 255, 0.3);
+        }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Cairo', sans-serif;
-    padding: 20px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+        body, html {
+            width: 100%; height: 100%;
+            background-color: var(--dark);
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden; /* يمنع التمرير العادي */
+        }
 
-  header {
-    text-align: center;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 30px;
-  }
+        /* خلفية الـ 3D */
+        #webgl-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
 
-  header h1 {
-    color: #fff;
-    font-size: 32px;
-    font-weight: 900;
-  }
+        /* واجهة المستخدم الشفافة */
+        .ui-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 2;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            padding: 20px;
+            pointer-events: none; /* لتمرير اللمس للخلفية */
+        }
 
-  .status {
-    font-size: 13px;
-    color: #9ca3af;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 5px;
-  }
+        .hud-element {
+            pointer-events: auto; /* تفعيل اللمس للعناصر فقط */
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
 
-  .dot {
-    width: 8px;
-    height: 8px;
-    background: #10b981;
-    border-radius: 50%;
-    animation: pulse 1.5s infinite;
-  }
+        /* الهيدر */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+        }
 
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            letter-spacing: 3px;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .brand h1::before {
+            content: '';
+            width: 12px; height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--secondary);
+            animation: pulse 1s infinite;
+        }
 
-  .layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
+        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
 
-  @media(min-width: 850px) {
-    .layout {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
+        .sys-stats {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            color: #00ffaa;
+            text-align: left;
+        }
 
-  .section-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--cyan);
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+        /* منطقة المحادثة والذكاء الاصطناعي */
+        .ai-core {
+            align-self: center;
+            justify-self: center;
+            width: 100%;
+            max-width: 800px;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            position: relative;
+        }
 
-  /* قسم الأخبار */
-  .news-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-height: 550px;
-    overflow-y: auto;
-    padding-right: 5px;
-  }
+        .chat-box {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            /* Scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+        .chat-box::-webkit-scrollbar { width: 5px; }
+        .chat-box::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-  .news-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-    transition: 0.3s;
-  }
+        .message {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            animation: fadeIn 0.4s ease-out;
+        }
 
-  .news-card:hover {
-    border-color: var(--accent);
-  }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  .news-card h3 {
-    color: #fff;
-    font-size: 16px;
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
+        .msg-user {
+            background: rgba(0, 240, 255, 0.1);
+            border-right: 3px solid var(--primary);
+            align-self: flex-start;
+            border-bottom-right-radius: 0;
+        }
 
-  .news-card p {
-    font-size: 13px;
-    color: #9ca3af;
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
+        .msg-ai {
+            background: rgba(255, 0, 60, 0.1);
+            border-left: 3px solid var(--secondary);
+            align-self: flex-end;
+            border-bottom-left-radius: 0;
+            color: #ddd;
+        }
 
-  .news-card a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 12px;
-  }
+        /* لوحة الإدخال */
+        .input-panel {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.5);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
 
-  /* قسم اللعبة ثلاثية الأبعاد */
-  .game-wrapper {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 15px;
-    text-align: center;
-    position: relative;
-  }
+        input[type="text"] {
+            flex-grow: 1;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+        input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
 
-  #canvas-container {
-    width: 100%;
-    height: 400px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #000;
-    position: relative;
-  }
+        button {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 0 25px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background: #fff;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        button:active { transform: scale(0.95); }
 
-  .game-ui {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-    padding: 0 10px;
-  }
+        /* تأثيرات مسح البيانات */
+        .scanning-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+            animation: scan 3s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-  .score-board {
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--cyan);
-  }
-
-  .controls-hint {
-    font-size: 12px;
-    color: #6b7280;
-  }
-</style>
+        /* شاشة التحميل */
+        #loader {
+            position: fixed; inset: 0; background: var(--dark);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; color: var(--primary); font-family: 'Orbitron';
+            font-size: 24px; font-weight: 900; letter-spacing: 5px;
+            transition: opacity 1s;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <h1>الرصد الإخباري التفاعلي 3D</h1>
-  <div class="status">
-    <span class="dot"></span>
-    <span>تحديث أخبار مستمر + منطقة الترفيه 3D</span>
-  </div>
-</header>
+<!-- شاشة التحميل الأولية -->
+<div id="loader">INITIALIZING NEXUS CORE...</div>
 
-<div class="layout">
-  
-  <!-- قسم الأخبار التلقائية -->
-  <div>
-    <div class="section-title">📰 أحدث الأخبار المباشرة</div>
-    <div class="news-container" id="newsContainer">
-      <div style="text-align:center; padding: 40px; color:#6b7280;">جاري تحميل الأخبار...</div>
-    </div>
-  </div>
+<!-- الرسوميات ثلاثية الأبعاد -->
+<div id="webgl-container"></div>
 
-  <!-- قسم اللعبة المتطورة 3D -->
-  <div>
-    <div class="section-title">🎮 معركة الفضاء 3D (حرك الماوس للتوجيه)</div>
-    <div class="game-wrapper">
-      <div id="canvas-container"></div>
-      <div class="game-ui">
-        <div class="score-board" id="scoreDisplay">النقاط: 0</div>
-        <div class="controls-hint">وجه بالماوس للتصويب والتدمير</div>
-      </div>
+<!-- واجهة المستخدم -->
+<div class="ui-layer">
+    
+    <header class="hud-element">
+        <div class="brand">
+            <h1>AI.NEXUS_</h1>
+        </div>
+        <div class="sys-stats" id="stats">
+            CPU: 0%<br>RAM: 0GB<br>UPLINK: ONLINE
+        </div>
+    </header>
+
+    <div class="ai-core hud-element">
+        <div class="scanning-line"></div>
+        <div class="chat-box" id="chatBox">
+            <div class="message msg-ai">
+                <strong>الأنظمة تعمل بكفاءة 100% 🤖</strong><br>
+                مرحباً بك في واجهة الذكاء الكمّي. أنا متصل بقاعدة البيانات العالمية.<br>
+                اسألني عن أي شيء (مثال: الثقب الأسود، الذكاء الاصطناعي، فلسطين...).
+            </div>
+        </div>
+        
+        <div class="input-panel">
+            <input type="text" id="userInput" placeholder="أدخل استعلامك هنا للبحث في الشبكة..." autocomplete="off">
+            <button id="sendBtn" onclick="processQuery()">إرسال Data</button>
+        </div>
     </div>
-  </div>
 
 </div>
 
 <script>
-  /* --- 1. محرك الأخبار التلقائي --- */
-  const RSS_URL = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss/a8c6f800-2f50-4596-9f1e-f3f1e9444458/6c85e2e8-d6a4-4f81-80cf-f8c6b75f8263';
+    /* =========================================
+       1. إزالة شاشة التحميل
+    ========================================= */
+    window.onload = () => {
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 1000);
+        }, 1500);
+    };
 
-  async function fetchNews() {
-    try {
-      const res = await fetch(RSS_URL);
-      const data = await res.json();
-      const container = document.getElementById('newsContainer');
-      
-      if (data.status === 'ok') {
-        container.innerHTML = data.items.map(item => `
-          <div class="news-card">
-            <h3>${item.title}</h3>
-            <p>${item.description.replace(/<[^>]*>?/gm, '').substring(0, 130)}...</p>
-            <a href="${item.link}" target="_blank">قراءة التفاصيل ←</a>
-          </div>
-        `).join('');
-      }
-    } catch (e) {
-      console.log('جاري إعادة المحاولة...');
+    /* =========================================
+       2. نظام الإحصائيات الوهمي الاحترافي
+    ========================================= */
+    setInterval(() => {
+        const cpu = (Math.random() * 20 + 5).toFixed(1);
+        const ram = (Math.random() * 4 + 2).toFixed(2);
+        document.getElementById('stats').innerHTML = `CPU: ${cpu}%<br>RAM: ${ram} TB<br>UPLINK: SECURE`;
+    }, 1000);
+
+    /* =========================================
+       3. محرك الرسوميات الثلاثي الأبعاد (الشبكة العصبية)
+    ========================================= */
+    const container = document.getElementById('webgl-container');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x050510, 0.002);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.z = 400;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    // إنشاء الجسيمات (Particles)
+    const particleCount = 400;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = [];
+
+    for (let i = 0; i < particleCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 1000;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 1000;
+        velocities.push({
+            x: (Math.random() - 0.5) * 1,
+            y: (Math.random() - 0.5) * 1,
+            z: (Math.random() - 0.5) * 1
+        });
     }
-  }
 
-  fetchNews();
-  setInterval(fetchNews, 60000); // تحديث تلقائي كل 60 ثانية
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-  /* --- 2. محرك اللعبة ثلاثي الأبعاد 3D (Three.js) --- */
-  const container = document.getElementById('canvas-container');
-  const scoreDisplay = document.getElementById('scoreDisplay');
-  let score = 0;
-
-  // Scene, Camera, Renderer
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.z = 7;
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  container.appendChild(renderer.domElement);
-
-  // Lighting
-  const light = new THREE.PointLight(0x00f5d4, 2, 50);
-  light.position.set(0, 0, 5);
-  scene.add(light);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-
-  // Player Ship (3D Pyramid Mesh)
-  const shipGeo = new THREE.ConeGeometry(0.4, 1.2, 4);
-  const shipMat = new THREE.MeshPhongMaterial({ color: 0x00f5d4, wireframe: false });
-  const ship = new THREE.Mesh(shipGeo, shipMat);
-  ship.rotation.x = Math.PI / 2;
-  scene.add(ship);
-
-  // Targets (Enemies)
-  const enemies = [];
-  function spawnEnemy() {
-    const geo = new THREE.DodecahedronGeometry(0.4);
-    const mat = new THREE.MeshPhongMaterial({ color: 0xff2a5f, flatShading: true });
-    const enemy = new THREE.Mesh(geo, mat);
-    enemy.position.x = (Math.random() - 0.5) * 8;
-    enemy.position.y = (Math.random() - 0.5) * 5;
-    enemy.position.z = -15;
-    scene.add(enemy);
-    enemies.push(enemy);
-  }
-
-  // Starfield Background
-  const starsGeo = new THREE.BufferGeometry();
-  const starsCount = 400;
-  const starPos = new Float32Array(starsCount * 3);
-  for(let i=0; i<starsCount*3; i++) starPos[i] = (Math.random() - 0.5) * 40;
-  starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
-  const starField = new THREE.Points(starsGeo, starsMat);
-  scene.add(starField);
-
-  // Controls (Mouse Movement)
-  let mouse = { x: 0, y: 0 };
-  container.addEventListener('mousemove', (e) => {
-    const rect = container.getBoundingClientRect();
-    mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
-    mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
-  });
-
-  // Game Loop
-  let frame = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    frame++;
-
-    // Ship follow mouse
-    ship.position.x += (mouse.x * 4 - ship.position.x) * 0.1;
-    ship.position.y += (mouse.y * 3 - ship.position.y) * 0.1;
-    ship.rotation.z = -ship.position.x * 0.2;
-
-    // Spawn enemies
-    if(frame % 30 === 0) spawnEnemy();
-
-    // Move & Collision Check
-    enemies.forEach((enemy, index) => {
-      enemy.position.z += 0.25;
-      enemy.rotation.x += 0.02;
-      enemy.rotation.y += 0.02;
-
-      // Hit check
-      const dist = ship.position.distanceTo(enemy.position);
-      if(dist < 0.8) {
-        scene.remove(enemy);
-        enemies.splice(index, 1);
-        score += 10;
-        scoreDisplay.textContent = 'النقاط: ' + score;
-      } else if(enemy.position.z > 8) {
-        scene.remove(enemy);
-        enemies.splice(index, 1);
-      }
+    // مادة الجسيمات
+    const pMaterial = new THREE.PointsMaterial({
+        color: 0x00f0ff,
+        size: 3,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
     });
 
-    // Animate stars
-    starField.rotation.z += 0.001;
+    const particles = new THREE.Points(geometry, pMaterial);
+    scene.add(particles);
 
-    renderer.render(scene, camera);
-  }
+    // خطوط الربط بين الجسيمات
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x00f0ff,
+        transparent: true,
+        opacity: 0.15
+    });
 
-  animate();
+    // تفاعل الماوس / اللمس
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX - window.innerWidth / 2) * 0.5;
+        mouseY = (e.clientY - window.innerHeight / 2) * 0.5;
+    });
+    document.addEventListener('touchmove', (e) => {
+        mouseX = (e.touches[0].clientX - window.innerWidth / 2) * 0.5;
+        mouseY = (e.touches[0].clientY - window.innerHeight / 2) * 0.5;
+    });
 
-  // Responsive Canvas
-  window.addEventListener('resize', () => {
-    if(!container) return;
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-  });
+    // حلقة التحريك (Animation Loop)
+    function animate() {
+        requestAnimationFrame(animate);
+
+        camera.position.x += (mouseX - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        const positions = particles.geometry.attributes.position.array;
+        
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] += velocities[i].x;
+            positions[i * 3 + 1] += velocities[i].y;
+            positions[i * 3 + 2] += velocities[i].z;
+
+            // ارتداد عند الحواف
+            if (Math.abs(positions[i * 3]) > 500) velocities[i].x *= -1;
+            if (Math.abs(positions[i * 3 + 1]) > 500) velocities[i].y *= -1;
+            if (Math.abs(positions[i * 3 + 2]) > 500) velocities[i].z *= -1;
+        }
+        
+        particles.geometry.attributes.position.needsUpdate = true;
+        particles.rotation.y += 0.001;
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // توافقية الشاشة
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    /* =========================================
+       4. محرك الذكاء الاصطناعي والمحادثة
+    ========================================= */
+    const chatBox = document.getElementById('chatBox');
+    const userInput = document.getElementById('userInput');
+
+    // إرسال بالضغط على Enter
+    userInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') processQuery();
+    });
+
+    async function processQuery() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        // طباعة رسالة المستخدم
+        appendMessage(text, 'msg-user');
+        userInput.value = '';
+
+        // رسالة جارِ البحث
+        const loadingMsgId = 'loading-' + Date.now();
+        appendMessage('يتم فحص قواعد البيانات العالمية وبناء الاستجابة...', 'msg-ai', loadingMsgId);
+
+        try {
+            // جلب البيانات الحقيقية من ويكيبيديا (العربية)
+            const endpoint = `https://ar.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(text)}`;
+            const response = await fetch(endpoint);
+            
+            let reply = "";
+            if (response.ok) {
+                const data = await response.json();
+                if (data.extract) {
+                    reply = `<strong>تم العثور على تطابق:</strong><br>${data.extract}`;
+                } else {
+                    reply = "لا توجد بيانات دقيقة حول هذا الموضوع في السجلات الحالية. حاول مصطلحاً آخر.";
+                }
+            } else {
+                reply = "لم أتمكن من العثور على الموضوع. يرجى التأكد من الإملاء أو المحاولة بكلمات مفتاحية أخرى.";
+            }
+
+            // تحديث الرسالة بتأثير الكتابة
+            document.getElementById(loadingMsgId).innerHTML = '';
+            typeWriterEffect(reply, loadingMsgId);
+
+        } catch (error) {
+            document.getElementById(loadingMsgId).innerHTML = "⚠️ فشل الاتصال بالسيرفر. النظام يعاني من تداخل إشارات.";
+        }
+    }
+
+    function appendMessage(text, className, id = '') {
+        const div = document.createElement('div');
+        div.className = `message ${className}`;
+        if (id) div.id = id;
+        div.innerHTML = text;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // تأثير الآلة الكاتبة للذكاء الاصطناعي
+    function typeWriterEffect(htmlText, elementId) {
+        const el = document.getElementById(elementId);
+        let i = 0;
+        el.innerHTML = '';
+        
+        // نتعامل مع الـ HTML كطريقة بسيطة (عرض الكلمات وليس الحروف لتسريع العملية ومنع كسر الوسوم)
+        const tokens = htmlText.split(/(<[^>]+>| )/);
+        
+        function type() {
+            if (i < tokens.length) {
+                el.innerHTML += tokens[i];
+                i++;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                setTimeout(type, 15); // سرعة الكتابة
+            }
+        }
+        type();
+    }
 </script>
 
 </body>
