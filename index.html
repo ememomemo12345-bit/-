@@ -5,249 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toolbench — أدوات يومية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            var(--navy): #0F172A;
+            --navy-deep: #020617;
+            --amber: #F59E0B;
+            --text-main: #F8FAFC;
+            --text-dim: #94A3B8;
+            --border: #334155;
+            --bg: #0F172A;
+        }
 
-<header>
-    <div class="brand">
-        <div class="mark"><span>⌁</span></div>
-        <div>TOOLBENCH<small>أدوات يومية</small></div>
-    </div>
-</header>
+        * { box-sizing: border-box; }
 
-<div class="dispatch" id="story">
-    <div class="dispatch-inner">
-        <div class="dispatch-top">
-            <span class="verified-tag">رسالة · جباليا، غزة</span>
-            <div class="lang-toggle">
-                <button id="langAr" class="active">العربية</button>
-                <button id="langEn">English</button>
-            </div>
-        </div>
-        
-        <h2>قصة من قلب الحرب</h2>
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Cairo', 'Inter', sans-serif; 
+            font-size: 18px; 
+            line-height: 1.8;
+            min-height: 100vh;
+        }
 
-        <div class="story-text active" id="storyAr" dir="rtl">
-            <p>أنا علي، عمري عشرون سنة، من جباليا شمال قطاع غزة. قبل الحرب، كانت جباليا بالنسبة إليّ أكثر من مجرد مكان أعيش فيه...</p>
-            <p>في الأيام الأولى، كنا نسمع أصوات الانفجارات من كل مكان. كنا نجلس داخل البيت، نراقب بعضنا البعض، وننتظر أن يمر الليل...</p>
-            <p>في أحد الأيام خرجت من الخيمة أبحث عن الطعام لعائلتي. مشيت بين الشوارع التي كنت أعرفها جيدًا، لكنني لم أعد أعرفها...</p>
-            <p>لم يكن معنا ما يكفي من الطعام. الحطب كان صعبًا، والمياه أصعب، والغاز شبه مستحيل...</p>
-            <p>ثم جاءت أيام النزوح. تركنا المكان الذي عشنا فيه، وحمل كل شخص ما استطاع حمله. وبعد فترة، عدنا لنجد أن بيتنا تعرض للنهب...</p>
-            <p>أنا علي، من جباليا، عمري عشرون سنة، متزوج، وكنت أحلم بحياة بسيطة مثل أي شاب...</p>
-        </div>
+        header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+        }
 
-        <div class="story-text" id="storyEn" dir="ltr">
-            <p>My name is Ali. I am twenty years old, from Jabalia in northern Gaza...</p>
-            </div>
+        .brand { font-size: 1.2rem; font-weight: bold; color: var(--amber); display: flex; align-items: center; gap: 10px; }
+        .brand .mark { width: 30px; height: 30px; border: 2px solid var(--amber); display: flex; align-items: center; justify-content: center; font-size: 1rem; transform: rotate(45deg); }
+        .brand .mark span { transform: rotate(-45deg); }
+        .brand small { display: block; font-size: 0.8rem; color: var(--text-dim); font-weight: normal;}
 
-        <div class="story-sign">— Ali, Jabalia, Gaza</div>
-
-        <div class="donate-row">
-            <a class="donate-btn primary" href="https://www.paypal.me/LenaKasham570" target="_blank"><span class="ic">💳</span> تبرع عبر PayPal</a>
-            <a class="donate-btn" href="https://gofund.me/cb2c92fa1" target="_blank"><span class="ic">🤝</span> حملة GoFundMe</a>
-            <a class="donate-btn" href="https://wa.me/970566809988" target="_blank"><span class="ic">💬</span> تواصل عبر واتساب</a>
-        </div>
-    </div>
-</div>
-
-<div class="workbench">
-    <div class="switches" id="switches">
-        <button class="switch active" data-tool="currency"><span class="num">01</span> العملات</button>
-        <button class="switch" data-tool="password"><span class="num">02</span> كلمة المرور</button>
-        <button class="switch" data-tool="qr"><span class="num">03</span> رمز QR</button>
-        <button class="switch" data-tool="text"><span class="num">04</span> إحصائيات النص</button>
-    </div>
-
-    <div class="panel">
-        <div class="tool active" id="tool-currency">
-            <div class="panel-head"><h2>تحويل العملات</h2><span class="tag" id="rateStamp">جاري التحديث...</span></div>
-            <div class="row">
-                <div class="field"><label>المبلغ</label><input type="number" id="curAmount" value="100"></div>
-                <div class="field"><label>من</label><select id="curFrom"></select></div>
-                <div class="field"><label>إلى</label><select id="curTo"></select></div>
-            </div>
-            <div class="readout">
-                <div class="value" id="curResult">—</div>
-                <div class="sub" id="curSub">أسعار الصرف المباشرة</div>
-            </div>
-        </div>
-
-        <div class="tool" id="tool-password">
-            <div class="panel-head"><h2>مولد كلمات المرور</h2></div>
-            <div class="row">
-                <div class="field"><label>الطول: <span id="pwLenLabel">16</span></label><input type="range" id="pwLen" min="6" max="48" value="16"></div>
-                <button class="go" id="pwGo">توليد</button>
-            </div>
-            <div class="readout"><div class="value" id="pwResult">—</div></div>
-        </div>
-
-        <div class="tool" id="tool-qr">
-            <div class="panel-head"><h2>صانع رمز QR</h2></div>
-            <div class="row">
-                <div class="field"><label>النص أو الرابط</label><input type="text" id="qrText" value="https://example.com"></div>
-                <button class="go" id="qrGo">توليد الرمز</button>
-            </div>
-            <div id="qrOut"></div>
-        </div>
-
-        <div class="tool" id="tool-text">
-            <div class="panel-head"><h2>إحصائيات النصوص</h2></div>
-            <textarea id="txtInput" placeholder="اكتب أو الصق النص هنا..."></textarea>
-            <div class="stats">
-                <div><div class="n" id="txtWords">0</div><div class="l">كلمات</div></div>
-                <div><div class="n" id="txtChars">0</div><div class="l">حروف</div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="script.js"></script>
-</body>
-</html>
-:root {
-    /* ألوان حديثة ومريحة للعين */
-    --navy: #0F172A;
-    --navy-deep: #020617;
-    --amber: #F59E0B;
-    --text-main: #F8FAFC;
-    --text-dim: #94A3B8;
-    --border: #334155;
-}
-
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    background-color: var(--navy);
-    color: var(--text-main);
-    /* دمج الخط العربي والإنجليزي */
-    font-family: 'Cairo', 'Inter', sans-serif; 
-    font-size: 18px; /* خط كبير ومقروء */
-    line-height: 1.8;
-}
-
-/* تنسيق الهيدر */
-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-}
-
-.brand { font-size: 1.2rem; font-weight: bold; color: var(--amber); }
-
-/* تنسيق صندوق القصة */
-.dispatch {
-    background: var(--navy-deep);
-    border: 1px solid var(--border);
-    margin: 30px;
-    padding: 30px;
-    border-radius: 8px; /* حواف ناعمة حديثة */
-}
-
-.dispatch h2 { font-size: 2rem; color: var(--amber); }
-.story-text { display: none; font-size: 1.1rem; } /* حجم خط مريح للقراءة */
-.story-text.active { display: block; }
-
-.donate-btn {
-    background: var(--border);
-    color: var(--text-main);
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-    margin: 5px;
-}
-.donate-btn.primary { background: var(--amber); color: var(--navy-deep); font-weight: bold; }
-
-/* تنسيق الأدوات */
-.workbench { display: flex; margin: 30px; border: 1px solid var(--border); }
-.switches { width: 250px; border-right: 1px solid var(--border); }
-.switch {
-    width: 100%; padding: 15px; background: none; border: none;
-    color: var(--text-dim); text-align: right; cursor: pointer;
-    font-family: 'Cairo'; font-size: 1.1rem;
-}
-.switch.active { background: var(--navy-deep); color: var(--amber); border-right: 3px solid var(--amber); }
-
-.panel { padding: 30px; flex: 1; }
-.tool { display: none; }
-.tool.active { display: block; }
-
-/* الحقول والأزرار */
-input, select, textarea {
-    width: 100%; padding: 12px; font-size: 1rem;
-    background: var(--navy); color: var(--text-main);
-    border: 1px solid var(--border); border-radius: 5px;
-}
-button.go {
-    background: var(--amber); color: var(--navy-deep);
-    padding: 12px 24px; border: none; font-weight: bold;
-    cursor: pointer; border-radius: 5px; font-size: 1.1rem;
-}
-// 1. تبديل اللغات لقصة علي
-document.getElementById('langAr').addEventListener('click', () => {
-    document.getElementById('storyAr').classList.add('active');
-    document.getElementById('storyEn').classList.remove('active');
-});
-document.getElementById('langEn').addEventListener('click', () => {
-    document.getElementById('storyEn').classList.add('active');
-    document.getElementById('storyAr').classList.remove('active');
-});
-
-// 2. التنقل بين الأدوات
-document.querySelectorAll('.switch').forEach(btn => {
-    btn.addEventListener('click', () => {
-        // إخفاء كل الأدوات
-        document.querySelectorAll('.switch').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tool').forEach(t => t.classList.remove('active'));
-        
-        // إظهار الأداة المطلوبة فقط
-        btn.classList.add('active');
-        document.getElementById('tool-' + btn.dataset.tool).classList.add('active');
-    });
-});
-
-// 3. أداة تحويل العملات
-const currencies = ["USD", "EUR", "GBP", "SAR", "AED", "JOD", "EGP", "ILS"];
-const fromSelect = document.getElementById('curFrom');
-const toSelect = document.getElementById('curTo');
-
-// تعبئة القوائم بالعملات
-currencies.forEach(c => {
-    fromSelect.innerHTML += `<option value="${c}">${c}</option>`;
-    toSelect.innerHTML += `<option value="${c}">${c}</option>`;
-});
-fromSelect.value = "USD"; toSelect.value = "EGP";
-
-// 4. أداة كلمات المرور
-document.getElementById('pwGo').addEventListener('click', () => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-    let password = "";
-    let length = document.getElementById('pwLen').value;
-    for (let i = 0; i < length; i++) {
-        password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    document.getElementById('pwResult').textContent = password;
-});
-
-// 5. أداة QR Code
-document.getElementById('qrGo').addEventListener('click', () => {
-    const text = document.getElementById('qrText').value;
-    const qrOut = document.getElementById('qrOut');
-    if(text) {
-        qrOut.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}" alt="QR Code" style="margin-top:20px; border-radius:10px;">`;
-    }
-});
-
-// 6. أداة إحصائيات النصوص
-document.getElementById('txtInput').addEventListener('input', (e) => {
-    const text = e.target.value.trim();
-    document.getElementById('txtWords').textContent = text === '' ? 0 : text.split(/\s+/).length;
-    document.getElementById('txtChars').textContent = text.length;
-});
-        <button class="switch" data-tool="units"><span class="num">05</span> محول القياسات</button>
-        <button class="switch" data-tool="bmi"><span class="num">06</span> حاسبة الوزن (BMI)</button>
-        <button class="switch" data-tool="pomodoro"><span class="num">07</span> مؤقت التركيز</button>
+        .dispatch {
+            background: var(--navy-deep);
+            border: 1px solid var(--border);
+            margin
