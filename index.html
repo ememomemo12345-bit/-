@@ -1,352 +1,2776 @@
-document.addEventListener('DOMContentLoaded', function () {
-    'use strict';
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="ToolBox - مجموعة أدوات يومية مجانية">
+<title>ToolBox - أدواتك اليومية</title>
 
-    // ==========================================
-    // 1. LANGUAGE SWITCHER
-    // ==========================================
-    const langArBtn = document.getElementById('langAr');
-    const langEnBtn = document.getElementById('langEn');
-    const storyAr = document.getElementById('storyAr');
-    const storyEn = document.getElementById('storyEn');
+<style>
+:root{
+    --bg:#07111f;
+    --card:#0d1a2b;
+    --card2:#12233a;
+    --text:#f4f7fb;
+    --muted:#9eb0c7;
+    --primary:#4f8cff;
+    --primary2:#6366f1;
+    --success:#22c55e;
+    --danger:#ef4444;
+    --border:rgba(255,255,255,.09);
+    --shadow:0 20px 60px rgba(0,0,0,.3);
+    --radius:20px;
+}
 
-    function switchLang(lang) {
-        if (!langArBtn || !langEnBtn || !storyAr || !storyEn) return;
-        if (lang === 'ar') {
-            langArBtn.classList.add('active');
-            langEnBtn.classList.remove('active');
-            storyAr.classList.add('active');
-            storyEn.classList.remove('active');
-            document.documentElement.setAttribute('dir', 'rtl');
-            document.documentElement.setAttribute('lang', 'ar');
-        } else {
-            langEnBtn.classList.add('active');
-            langArBtn.classList.remove('active');
-            storyEn.classList.add('active');
-            storyAr.classList.remove('active');
-            document.documentElement.setAttribute('dir', 'ltr');
-            document.documentElement.setAttribute('lang', 'en');
-        }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(79,140,255,.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 100%,
+            rgba(99,102,241,.12),
+            transparent 30%
+        ),
+        var(--bg);
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.container{
+    width:min(1150px,calc(100% - 28px));
+    margin:auto;
+}
+
+/* ================= HEADER ================= */
+
+header{
+    padding:32px 0 20px;
+}
+
+.header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.logo{
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    font-size:25px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            #7c3aed
+        );
+    box-shadow:
+        0 12px 35px rgba(79,140,255,.3);
+}
+
+.brand h1{
+    font-size:clamp(26px,5vw,42px);
+    line-height:1;
+}
+
+.brand p{
+    color:var(--muted);
+    margin-top:7px;
+}
+
+/* ================= LANGUAGE ================= */
+
+.language-switch{
+    display:flex;
+    gap:4px;
+    padding:4px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:var(--card);
+}
+
+.language-switch button{
+    border:0;
+    color:var(--muted);
+    background:transparent;
+    padding:9px 13px;
+    border-radius:9px;
+}
+
+.language-switch button.active{
+    color:white;
+    background:var(--primary);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    margin:22px 0;
+    padding:27px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79,140,255,.13),
+            rgba(110,231,183,.05)
+        );
+    box-shadow:var(--shadow);
+}
+
+.hero h2{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.8;
+}
+
+/* ================= NAV ================= */
+
+.tools-navigation{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    padding:4px 2px 15px;
+    scrollbar-width:thin;
+}
+
+.tool-button{
+    flex-shrink:0;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--muted);
+    padding:11px 14px;
+    border-radius:13px;
+    transition:.2s;
+}
+
+.tool-button:hover{
+    transform:translateY(-2px);
+    color:white;
+    border-color:var(--primary);
+}
+
+.tool-button.active{
+    color:white;
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+    border-color:transparent;
+}
+
+/* ================= GRID ================= */
+
+.tools-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+    padding-bottom:40px;
+}
+
+/* ================= TOOL CARD ================= */
+
+.tool{
+    display:none;
+    padding:22px;
+    background:rgba(13,26,43,.94);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+}
+
+.tool.active{
+    display:block;
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
     }
 
-    if (langArBtn) langArBtn.addEventListener('click', () => switchLang('ar'));
-    if (langEnBtn) langEnBtn.addEventListener('click', () => switchLang('en'));
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 
-    // ==========================================
-    // 2. TOOLS NAVIGATION (9 Tools Switcher)
-    // ==========================================
-    const switches = document.querySelectorAll('.switch-btn');
-    const tools = document.querySelectorAll('.tool-panel');
+.tool-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+    margin-bottom:18px;
+}
 
-    switches.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const toolId = btn.getAttribute('data-tool');
-            if (!toolId) return;
+.tool-header h3{
+    font-size:21px;
+}
 
-            switches.forEach(s => s.classList.remove('active'));
-            tools.forEach(t => t.classList.remove('active'));
+.tool-header p{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+}
 
-            btn.classList.add('active');
-            const targetTool = document.getElementById('tool-' + toolId);
-            if (targetTool) {
-                targetTool.classList.add('active');
-                localStorage.setItem('active_tool_id', toolId);
+.tool-number{
+    background:rgba(79,140,255,.12);
+    color:#b9cdfc;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+}
+
+/* ================= FORM ================= */
+
+.form-group{
+    display:grid;
+    gap:7px;
+    margin-bottom:12px;
+}
+
+.form-group label{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    color:var(--text);
+    background:#091525;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(79,140,255,.12);
+}
+
+textarea{
+    min-height:145px;
+    resize:vertical;
+}
+
+/* ================= BUTTONS ================= */
+
+.buttons{
+    display:flex;
+    gap:9px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.btn{
+    border:0;
+    border-radius:12px;
+    padding:11px 15px;
+    color:white;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+}
+
+.btn-primary{
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+        );
+}
+
+.btn-secondary{
+    background:#1b2b42;
+}
+
+.btn-danger{
+    background:var(--danger);
+}
+
+.btn-success{
+    background:var(--success);
+}
+
+/* ================= RESULT ================= */
+
+.result{
+    margin-top:13px;
+    min-height:50px;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    word-break:break-word;
+    padding:14px;
+    border-radius:13px;
+    background:#091525;
+    border:1px dashed var(--border);
+    font-weight:700;
+}
+
+/* ================= PASSWORD ================= */
+
+.password-length{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.password-length input{
+    padding:0;
+    accent-color:var(--primary);
+}
+
+/* ================= QR ================= */
+
+.qr-result img{
+    max-width:200px;
+    width:100%;
+    border-radius:12px;
+}
+
+/* ================= TEXT STATS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.stat{
+    text-align:center;
+    padding:13px;
+    border-radius:12px;
+    background:#091525;
+    border:1px solid var(--border);
+}
+
+.stat strong{
+    display:block;
+    font-size:21px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* ================= BMI ================= */
+
+.bmi-number{
+    font-size:30px;
+}
+
+/* ================= TIMER ================= */
+
+.timer{
+    text-align:center;
+    font-size:58px;
+    font-weight:700;
+    letter-spacing:2px;
+    font-variant-numeric:tabular-nums;
+    padding:20px 0;
+}
+
+/* ================= TASKS ================= */
+
+.task-input{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+}
+
+.tasks{
+    list-style:none;
+    display:grid;
+    gap:8px;
+    margin-top:14px;
+}
+
+.task{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 12px;
+    border-radius:12px;
+    background:#091525;
+    border:1px solid var(--border);
+}
+
+.task span{
+    flex:1;
+    word-break:break-word;
+}
+
+.task.completed span{
+    text-decoration:line-through;
+    color:#71849b;
+}
+
+.delete-task{
+    border:0;
+    background:transparent;
+    color:#fb7185;
+    font-size:20px;
+}
+
+/* ================= STORY ================= */
+
+.story{
+    grid-column:1/-1;
+}
+
+.story-content{
+    line-height:2;
+    color:#d8e2ef;
+}
+
+.story-content p{
+    margin-bottom:17px;
+}
+
+.story-warning{
+    margin-top:20px;
+    padding:14px;
+    border-radius:12px;
+    background:rgba(251,191,36,.08);
+    border:1px solid rgba(251,191,36,.2);
+    color:#fbd38d;
+    font-size:13px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:10px 0 35px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:760px){
+
+    .header-top{
+        align-items:flex-start;
+    }
+
+    .brand h1{
+        font-size:28px;
+    }
+
+    .logo{
+        width:45px;
+        height:45px;
+    }
+
+    .tools-grid{
+        grid-template-columns:1fr;
+    }
+
+    .story{
+        grid-column:auto;
+    }
+
+    .row{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:20px;
+    }
+
+    .tool{
+        padding:18px;
+    }
+
+    .language-switch button{
+        padding:8px 10px;
+    }
+}
+
+@media(max-width:450px){
+
+    .header-top{
+        flex-direction:column;
+    }
+
+    .language-switch{
+        align-self:flex-end;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .timer{
+        font-size:48px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation:none!important;
+        transition:none!important;
+        scroll-behavior:auto!important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="container">
+
+    <div class="header-top">
+
+        <div class="brand">
+
+            <div class="logo">
+                ⚡
+            </div>
+
+            <div>
+                <h1 id="siteTitle">
+                    ToolBox
+                </h1>
+
+                <p id="siteSubtitle">
+                    أدواتك اليومية في مكان واحد
+                </p>
+            </div>
+
+        </div>
+
+        <div class="language-switch">
+
+            <button
+                id="arabicButton"
+                class="active">
+                العربية
+            </button>
+
+            <button
+                id="englishButton">
+                English
+            </button>
+
+        </div>
+
+    </div>
+
+    <section class="hero">
+
+        <h2 id="heroTitle">
+            أدوات سريعة وبسيطة
+        </h2>
+
+        <p id="heroDescription">
+            مجموعة أدوات مفيدة تعمل مباشرة من المتصفح.
+        </p>
+
+    </section>
+
+</header>
+
+
+<main class="container">
+
+<nav class="tools-navigation">
+
+    <button class="tool-button active" data-tool="currency">
+        💱 العملات
+    </button>
+
+    <button class="tool-button" data-tool="password">
+        🔐 كلمة مرور
+    </button>
+
+    <button class="tool-button" data-tool="qr">
+        ▣ QR
+    </button>
+
+    <button class="tool-button" data-tool="text">
+        📝 النص
+    </button>
+
+    <button class="tool-button" data-tool="units">
+        📏 الوحدات
+    </button>
+
+    <button class="tool-button" data-tool="bmi">
+        ⚖️ BMI
+    </button>
+
+    <button class="tool-button" data-tool="timer">
+        ⏱️ المؤقت
+    </button>
+
+    <button class="tool-button" data-tool="tasks">
+        ✅ المهام
+    </button>
+
+    <button class="tool-button" data-tool="age">
+        🎂 العمر
+    </button>
+
+</nav>
+
+
+<section class="tools-grid">
+
+
+<!-- ================= CURRENCY ================= -->
+
+<article
+    class="tool active"
+    id="tool-currency">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>💱 محول العملات</h3>
+
+            <p>
+                تحويل تقريبي بين العملات.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            01
+        </span>
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            المبلغ
+        </label>
+
+        <input
+            id="currencyAmount"
+            type="number"
+            value="100"
+            min="0"
+            step="any">
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+
+            <label>
+                من
+            </label>
+
+            <select id="currencyFrom"></select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                إلى
+            </label>
+
+            <select id="currencyTo"></select>
+
+        </div>
+
+    </div>
+
+    <div
+        class="result"
+        id="currencyResult">
+        —
+    </div>
+
+</article>
+
+
+<!-- ================= PASSWORD ================= -->
+
+<article
+    class="tool"
+    id="tool-password">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>🔐 مولد كلمات المرور</h3>
+
+            <p>
+                إنشاء كلمات مرور قوية وعشوائية.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            02
+        </span>
+
+    </div>
+
+    <div class="password-length">
+
+        <span>
+            الطول:
+        </span>
+
+        <strong id="passwordLengthLabel">
+            16
+        </strong>
+
+        <input
+            id="passwordLength"
+            type="range"
+            min="6"
+            max="64"
+            value="16">
+
+    </div>
+
+    <div class="buttons">
+
+        <button
+            class="btn btn-primary"
+            id="generatePassword">
+            توليد
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            id="copyPassword">
+            نسخ
+        </button>
+
+    </div>
+
+    <div
+        class="result"
+        id="passwordResult">
+        اضغط توليد
+    </div>
+
+</article>
+
+
+<!-- ================= QR ================= -->
+
+<article
+    class="tool"
+    id="tool-qr">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>▣ مولد QR</h3>
+
+            <p>
+                تحويل رابط أو نص إلى QR Code.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            03
+        </span>
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            النص أو الرابط
+        </label>
+
+        <textarea
+            id="qrInput"
+            placeholder="اكتب النص أو الرابط هنا..."></textarea>
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        id="generateQR">
+        إنشاء QR
+    </button>
+
+    <div
+        class="result qr-result"
+        id="qrResult">
+        —
+    </div>
+
+</article>
+
+
+<!-- ================= TEXT ================= -->
+
+<article
+    class="tool"
+    id="tool-text">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>📝 إحصائيات النص</h3>
+
+            <p>
+                حساب الكلمات والحروف والأسطر.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            04
+        </span>
+
+    </div>
+
+    <textarea
+        id="textInput"
+        placeholder="اكتب أو الصق النص هنا..."></textarea>
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <strong id="wordCount">
+                0
+            </strong>
+
+            <span>
+                الكلمات
+            </span>
+
+        </div>
+
+        <div class="stat">
+
+            <strong id="characterCount">
+                0
+            </strong>
+
+            <span>
+                الحروف
+            </span>
+
+        </div>
+
+        <div class="stat">
+
+            <strong id="lineCount">
+                0
+            </strong>
+
+            <span>
+                الأسطر
+            </span>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- ================= UNITS ================= -->
+
+<article
+    class="tool"
+    id="tool-units">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>📏 محول الوحدات</h3>
+
+            <p>
+                طول ووزن وحرارة.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            05
+        </span>
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+
+            <label>
+                القيمة
+            </label>
+
+            <input
+                id="unitValue"
+                type="number"
+                value="1"
+                step="any">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                النوع
+            </label>
+
+            <select id="unitCategory">
+
+                <option value="length">
+                    طول
+                </option>
+
+                <option value="weight">
+                    وزن
+                </option>
+
+                <option value="temperature">
+                    حرارة
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+
+            <label>
+                من
+            </label>
+
+            <select id="unitFrom"></select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                إلى
+            </label>
+
+            <select id="unitTo"></select>
+
+        </div>
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        id="convertUnit">
+        تحويل
+    </button>
+
+    <div
+        class="result"
+        id="unitResult">
+        —
+    </div>
+
+</article>
+
+
+<!-- ================= BMI ================= -->
+
+<article
+    class="tool"
+    id="tool-bmi">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>⚖️ حاسبة BMI</h3>
+
+            <p>
+                حساب مؤشر كتلة الجسم بشكل تقريبي.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            06
+        </span>
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+
+            <label>
+                الوزن بالكيلوغرام
+            </label>
+
+            <input
+                id="bmiWeight"
+                type="number"
+                min="1"
+                step="any">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                الطول بالسنتيمتر
+            </label>
+
+            <input
+                id="bmiHeight"
+                type="number"
+                min="1"
+                step="any">
+
+        </div>
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        id="calculateBMI">
+        احسب
+    </button>
+
+    <div class="result">
+
+        <div
+            class="bmi-number"
+            id="bmiValue">
+            —
+        </div>
+
+        <small id="bmiMessage">
+        </small>
+
+    </div>
+
+</article>
+
+
+<!-- ================= TIMER ================= -->
+
+<article
+    class="tool"
+    id="tool-timer">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>⏱️ مؤقت التركيز</h3>
+
+            <p>
+                جلسة تركيز لمدة 25 دقيقة.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            07
+        </span>
+
+    </div>
+
+    <div
+        class="timer"
+        id="timerDisplay">
+        25:00
+    </div>
+
+    <div class="buttons">
+
+        <button
+            class="btn btn-primary"
+            id="timerStart">
+            ابدأ الجلسة
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            id="timerReset">
+            إعادة
+        </button>
+
+    </div>
+
+</article>
+
+
+<!-- ================= TASKS ================= -->
+
+<article
+    class="tool"
+    id="tool-tasks">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>✅ قائمة المهام</h3>
+
+            <p>
+                المهام تحفظ تلقائيًا على جهازك.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            08
+        </span>
+
+    </div>
+
+    <div class="task-input">
+
+        <input
+            id="taskInput"
+            type="text"
+            placeholder="اكتب مهمة جديدة...">
+
+        <button
+            class="btn btn-primary"
+            id="addTask">
+            إضافة
+        </button>
+
+    </div>
+
+    <ul
+        class="tasks"
+        id="taskList">
+    </ul>
+
+</article>
+
+
+<!-- ================= AGE ================= -->
+
+<article
+    class="tool"
+    id="tool-age">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>🎂 حاسبة العمر</h3>
+
+            <p>
+                احسب العمر بالتفصيل.
+            </p>
+        </div>
+
+        <span class="tool-number">
+            09
+        </span>
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            تاريخ الميلاد
+        </label>
+
+        <input
+            id="birthDate"
+            type="date">
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        id="calculateAge">
+        احسب العمر
+    </button>
+
+    <div class="result">
+
+        <strong id="ageResult">
+            —
+        </strong>
+
+        <small id="ageDetails">
+        </small>
+
+    </div>
+
+</article>
+
+
+<!-- ================= STORY ================= -->
+
+<article
+    class="tool story"
+    id="tool-story">
+
+    <div class="tool-header">
+
+        <div>
+            <h3>
+                📖 قصة علي من جباليا
+            </h3>
+
+            <p>
+                قصة تجريبية يمكن تعديلها لاحقًا بتفاصيلك الحقيقية.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="story-content">
+
+        <p>
+            أنا علي، عمري عشرون سنة، من جباليا شمال قطاع غزة.
+            كنت أعيش حياة بسيطة، مثل أي شاب في عمري، وكانت لدي أحلام
+            وخطط للمستقبل.
+        </p>
+
+        <p>
+            ثم جاءت الحرب وتغيرت تفاصيل الحياة كلها.
+            أصبح الحصول على الطعام والماء والخبز أمرًا صعبًا،
+            وأصبحت الأيام تمر بين الخوف والنزوح والانتظار.
+        </p>
+
+        <p>
+            تركنا بيتنا، وعشنا في ظروف صعبة، وتحولت الخيمة إلى مكان
+            نحاول فيه أن نحمي ما تبقى من حياتنا.
+            وفي الوقت نفسه، تعرض بيتنا للنهب والدمار، وضاعت أشياء
+            كثيرة كانت جزءًا من حياتنا وذكرياتنا.
+        </p>
+
+        <p>
+            في جباليا، تغيرت الشوارع التي أعرفها.
+            أماكن كنت أمر منها كل يوم أصبحت مغطاة بالركام،
+            وأصبح البحث عن الطعام والماء جزءًا من يومنا.
+        </p>
+
+        <p>
+            أنا في العشرين من عمري، متزوج، لكن الحرب جعلتني أفكر
+            في أشياء أبسط بكثير من أحلام الشباب.
+            أصبحت أفكر في الطعام والماء، وفي سلامة عائلتي،
+            وفي أين سننام الليلة.
+        </p>
+
+        <div class="story-warning">
+            ⚠️ هذا النص نموذج قصصي خيالي. لا ينبغي استخدام أحداث مختلقة
+            على أنها شهادة شخصية حقيقية.
+        </div>
+
+    </div>
+
+</article>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    ToolBox © 2026 — جميع الحقوق محفوظة
+
+</footer>
+
+
+<script>
+
+"use strict";
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+const arabicButton =
+    document.getElementById("arabicButton");
+
+const englishButton =
+    document.getElementById("englishButton");
+
+const siteTitle =
+    document.getElementById("siteTitle");
+
+const siteSubtitle =
+    document.getElementById("siteSubtitle");
+
+const heroTitle =
+    document.getElementById("heroTitle");
+
+const heroDescription =
+    document.getElementById("heroDescription");
+
+
+function setLanguage(language){
+
+    if(language === "en"){
+
+        document.documentElement.lang = "en";
+        document.documentElement.dir = "ltr";
+
+        siteTitle.textContent =
+            "ToolBox";
+
+        siteSubtitle.textContent =
+            "Your everyday tools in one place";
+
+        heroTitle.textContent =
+            "Fast and simple tools";
+
+        heroDescription.textContent =
+            "A collection of useful browser-based tools.";
+
+        arabicButton.classList.remove("active");
+        englishButton.classList.add("active");
+
+        localStorage.setItem(
+            "toolbox-language",
+            "en"
+        );
+
+    }else{
+
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+
+        siteTitle.textContent =
+            "ToolBox";
+
+        siteSubtitle.textContent =
+            "أدواتك اليومية في مكان واحد";
+
+        heroTitle.textContent =
+            "أدوات سريعة وبسيطة";
+
+        heroDescription.textContent =
+            "مجموعة أدوات مفيدة تعمل مباشرة من المتصفح.";
+
+        englishButton.classList.remove("active");
+        arabicButton.classList.add("active");
+
+        localStorage.setItem(
+            "toolbox-language",
+            "ar"
+        );
+    }
+}
+
+
+arabicButton.addEventListener(
+    "click",
+    function(){
+        setLanguage("ar");
+    }
+);
+
+
+englishButton.addEventListener(
+    "click",
+    function(){
+        setLanguage("en");
+    }
+);
+
+
+setLanguage(
+    localStorage.getItem("toolbox-language")
+    || "ar"
+);
+
+
+/* =====================================================
+   TOOL NAVIGATION
+===================================================== */
+
+const toolButtons =
+    document.querySelectorAll(".tool-button");
+
+const tools =
+    document.querySelectorAll(".tool");
+
+
+function openTool(toolName){
+
+    toolButtons.forEach(
+        function(button){
+
+            button.classList.toggle(
+                "active",
+                button.dataset.tool === toolName
+            );
+
+        }
+    );
+
+
+    tools.forEach(
+        function(tool){
+
+            tool.classList.toggle(
+                "active",
+                tool.id === "tool-" + toolName
+            );
+
+        }
+    );
+
+
+    localStorage.setItem(
+        "active-tool",
+        toolName
+    );
+}
+
+
+toolButtons.forEach(
+    function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                openTool(
+                    button.dataset.tool
+                );
+
             }
-        });
+        );
+
+    }
+);
+
+
+openTool(
+    localStorage.getItem("active-tool")
+    || "currency"
+);
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+const currencies = {
+
+    USD:1,
+    EUR:.92,
+    GBP:.78,
+    SAR:3.75,
+    AED:3.67,
+    JOD:.71,
+    EGP:48.5,
+    ILS:3.70
+
+};
+
+
+const currencyNames = {
+
+    USD:"USD - دولار",
+    EUR:"EUR - يورو",
+    GBP:"GBP - جنيه إسترليني",
+    SAR:"SAR - ريال سعودي",
+    AED:"AED - درهم إماراتي",
+    JOD:"JOD - دينار أردني",
+    EGP:"EGP - جنيه مصري",
+    ILS:"ILS - شيكل"
+
+};
+
+
+const currencyFrom =
+    document.getElementById(
+        "currencyFrom"
+    );
+
+const currencyTo =
+    document.getElementById(
+        "currencyTo"
+    );
+
+
+Object.keys(currencies).forEach(
+    function(code){
+
+        currencyFrom.add(
+            new Option(
+                currencyNames[code],
+                code
+            )
+        );
+
+        currencyTo.add(
+            new Option(
+                currencyNames[code],
+                code
+            )
+        );
+
+    }
+);
+
+
+currencyFrom.value = "USD";
+currencyTo.value = "ILS";
+
+
+function convertCurrency(){
+
+    const amount =
+        Number(
+            document.getElementById(
+                "currencyAmount"
+            ).value
+        ) || 0;
+
+    const from =
+        currencyFrom.value;
+
+    const to =
+        currencyTo.value;
+
+    const result =
+        amount /
+        currencies[from] *
+        currencies[to];
+
+
+    document.getElementById(
+        "currencyResult"
+    ).textContent =
+        result.toFixed(2)
+        + " "
+        + to;
+}
+
+
+document.getElementById(
+    "currencyAmount"
+).addEventListener(
+    "input",
+    convertCurrency
+);
+
+
+currencyFrom.addEventListener(
+    "change",
+    convertCurrency
+);
+
+
+currencyTo.addEventListener(
+    "change",
+    convertCurrency
+);
+
+
+convertCurrency();
+
+
+/* =====================================================
+   PASSWORD GENERATOR
+===================================================== */
+
+const passwordLength =
+    document.getElementById(
+        "passwordLength"
+    );
+
+const passwordLengthLabel =
+    document.getElementById(
+        "passwordLengthLabel"
+    );
+
+
+passwordLength.addEventListener(
+    "input",
+    function(){
+
+        passwordLengthLabel.textContent =
+            passwordLength.value;
+
+    }
+);
+
+
+document.getElementById(
+    "generatePassword"
+).addEventListener(
+    "click",
+    function(){
+
+        const characters =
+            "ABCDEFGHJKLMNPQRSTUVWXYZ" +
+            "abcdefghijkmnopqrstuvwxyz" +
+            "23456789" +
+            "!@#$%^&*_-+=";
+
+
+        const length =
+            Number(
+                passwordLength.value
+            );
+
+
+        let password = "";
+
+
+        if(
+            window.crypto &&
+            window.crypto.getRandomValues
+        ){
+
+            const values =
+                new Uint32Array(length);
+
+            window.crypto.getRandomValues(
+                values
+            );
+
+
+            for(
+                let i=0;
+                i<length;
+                i++
+            ){
+
+                password +=
+                    characters[
+                        values[i] %
+                        characters.length
+                    ];
+
+            }
+
+        }else{
+
+            for(
+                let i=0;
+                i<length;
+                i++
+            ){
+
+                password +=
+                    characters[
+                        Math.floor(
+                            Math.random() *
+                            characters.length
+                        )
+                    ];
+
+            }
+
+        }
+
+
+        document.getElementById(
+            "passwordResult"
+        ).textContent =
+            password;
+
+    }
+);
+
+
+document.getElementById(
+    "copyPassword"
+).addEventListener(
+    "click",
+    async function(){
+
+        const password =
+            document.getElementById(
+                "passwordResult"
+            ).textContent;
+
+
+        if(
+            !password ||
+            password === "اضغط توليد"
+        ){
+
+            return;
+
+        }
+
+
+        try{
+
+            await navigator.clipboard.writeText(
+                password
+            );
+
+            this.textContent =
+                "تم النسخ ✓";
+
+
+            setTimeout(
+                ()=>{
+                    this.textContent =
+                        "نسخ";
+                },
+                1200
+            );
+
+        }catch(error){
+
+            alert(
+                "لم يتمكن المتصفح من النسخ."
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   QR
+===================================================== */
+
+document.getElementById(
+    "generateQR"
+).addEventListener(
+    "click",
+    function(){
+
+        const value =
+            document.getElementById(
+                "qrInput"
+            ).value.trim();
+
+
+        const output =
+            document.getElementById(
+                "qrResult"
+            );
+
+
+        if(!value){
+
+            output.textContent =
+                "اكتب نصًا أو رابطًا أولاً.";
+
+            return;
+
+        }
+
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.alt =
+            "QR Code";
+
+
+        image.src =
+            "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="
+            +
+            encodeURIComponent(value);
+
+
+        output.innerHTML = "";
+
+        output.appendChild(
+            image
+        );
+
+    }
+);
+
+
+/* =====================================================
+   TEXT STATISTICS
+===================================================== */
+
+document.getElementById(
+    "textInput"
+).addEventListener(
+    "input",
+    function(){
+
+        const text =
+            this.value;
+
+
+        const words =
+            text.trim()
+                ? text.trim()
+                    .split(/\s+/)
+                    .length
+                : 0;
+
+
+        const characters =
+            [...text].length;
+
+
+        const lines =
+            text
+                ? text.split(/\r?\n/).length
+                : 0;
+
+
+        document.getElementById(
+            "wordCount"
+        ).textContent =
+            words;
+
+
+        document.getElementById(
+            "characterCount"
+        ).textContent =
+            characters;
+
+
+        document.getElementById(
+            "lineCount"
+        ).textContent =
+            lines;
+
+    }
+);
+
+
+/* =====================================================
+   UNITS
+===================================================== */
+
+const units = {
+
+    length:{
+
+        mm:1,
+        cm:10,
+        m:1000,
+        km:1000000,
+        inch:25.4,
+        foot:304.8,
+        yard:914.4,
+        mile:1609344
+
+    },
+
+
+    weight:{
+
+        mg:1,
+        g:1000,
+        kg:1000000,
+        lb:453592.37,
+        oz:28349.523125
+
+    },
+
+
+    temperature:{
+
+        C:"C",
+        F:"F",
+        K:"K"
+
+    }
+
+};
+
+
+const unitLabels = {
+
+    mm:"ملليمتر",
+    cm:"سنتيمتر",
+    m:"متر",
+    km:"كيلومتر",
+    inch:"بوصة",
+    foot:"قدم",
+    yard:"ياردة",
+    mile:"ميل",
+
+    mg:"ملغ",
+    g:"غرام",
+    kg:"كيلوغرام",
+    lb:"رطل",
+    oz:"أونصة",
+
+    C:"°C",
+    F:"°F",
+    K:"كلفن"
+
+};
+
+
+const unitCategory =
+    document.getElementById(
+        "unitCategory"
+    );
+
+const unitFrom =
+    document.getElementById(
+        "unitFrom"
+    );
+
+const unitTo =
+    document.getElementById(
+        "unitTo"
+    );
+
+
+function loadUnits(){
+
+    const category =
+        unitCategory.value;
+
+
+    unitFrom.innerHTML = "";
+
+    unitTo.innerHTML = "";
+
+
+    Object.keys(
+        units[category]
+    ).forEach(
+        function(key){
+
+            unitFrom.add(
+                new Option(
+                    unitLabels[key],
+                    key
+                )
+            );
+
+            unitTo.add(
+                new Option(
+                    unitLabels[key],
+                    key
+                )
+            );
+
+        }
+    );
+
+
+    if(unitTo.options.length > 1){
+
+        unitTo.selectedIndex = 1;
+
+    }
+
+}
+
+
+function convertUnit(){
+
+    const category =
+        unitCategory.value;
+
+    const value =
+        Number(
+            document.getElementById(
+                "unitValue"
+            ).value
+        ) || 0;
+
+    const from =
+        unitFrom.value;
+
+    const to =
+        unitTo.value;
+
+
+    let result;
+
+
+    if(
+        category ===
+        "temperature"
+    ){
+
+        let celsius;
+
+
+        if(from === "C"){
+
+            celsius = value;
+
+        }else if(from === "F"){
+
+            celsius =
+                (value - 32) *
+                5/9;
+
+        }else{
+
+            celsius =
+                value - 273.15;
+
+        }
+
+
+        if(to === "C"){
+
+            result = celsius;
+
+        }else if(to === "F"){
+
+            result =
+                celsius *
+                9/5 +
+                32;
+
+        }else{
+
+            result =
+                celsius +
+                273.15;
+
+        }
+
+    }else{
+
+        result =
+            value *
+            units[category][from] /
+            units[category][to];
+
+    }
+
+
+    document.getElementById(
+        "unitResult"
+    ).textContent =
+        result.toFixed(4)
+        +
+        " "
+        +
+        unitLabels[to];
+
+}
+
+
+unitCategory.addEventListener(
+    "change",
+    function(){
+
+        loadUnits();
+        convertUnit();
+
+    }
+);
+
+
+unitFrom.addEventListener(
+    "change",
+    convertUnit
+);
+
+
+unitTo.addEventListener(
+    "change",
+    convertUnit
+);
+
+
+document.getElementById(
+    "unitValue"
+).addEventListener(
+    "input",
+    convertUnit
+);
+
+
+loadUnits();
+convertUnit();
+
+
+/* =====================================================
+   BMI
+===================================================== */
+
+document.getElementById(
+    "calculateBMI"
+).addEventListener(
+    "click",
+    function(){
+
+        const weight =
+            Number(
+                document.getElementById(
+                    "bmiWeight"
+                ).value
+            );
+
+
+        const height =
+            Number(
+                document.getElementById(
+                    "bmiHeight"
+                ).value
+            ) / 100;
+
+
+        const result =
+            document.getElementById(
+                "bmiValue"
+            );
+
+
+        const message =
+            document.getElementById(
+                "bmiMessage"
+            );
+
+
+        if(
+            weight <= 0 ||
+            height <= 0
+        ){
+
+            result.textContent =
+                "أدخل البيانات";
+
+            message.textContent =
+                "";
+
+            return;
+
+        }
+
+
+        const bmi =
+            weight /
+            (height * height);
+
+
+        result.textContent =
+            bmi.toFixed(1);
+
+
+        if(bmi < 18.5){
+
+            message.textContent =
+                "أقل من الوزن الطبيعي.";
+
+        }else if(bmi < 25){
+
+            message.textContent =
+                "ضمن النطاق الطبيعي.";
+
+        }else if(bmi < 30){
+
+            message.textContent =
+                "زيادة في الوزن.";
+
+        }else{
+
+            message.textContent =
+                "ضمن نطاق السمنة.";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   POMODORO TIMER
+===================================================== */
+
+let remainingSeconds =
+    25 * 60;
+
+let timerInterval =
+    null;
+
+
+const timerDisplay =
+    document.getElementById(
+        "timerDisplay"
+    );
+
+
+const timerStart =
+    document.getElementById(
+        "timerStart"
+    );
+
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(
+            remainingSeconds / 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    const seconds =
+        (
+            remainingSeconds % 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    timerDisplay.textContent =
+        minutes
+        +
+        ":"
+        +
+        seconds;
+
+}
+
+
+timerStart.addEventListener(
+    "click",
+    function(){
+
+        if(timerInterval){
+
+            clearInterval(
+                timerInterval
+            );
+
+            timerInterval = null;
+
+            timerStart.textContent =
+                "استئناف ⏱️";
+
+            return;
+
+        }
+
+
+        timerStart.textContent =
+            "إيقاف مؤقت ⏸️";
+
+
+        timerInterval =
+            setInterval(
+                function(){
+
+                    if(
+                        remainingSeconds > 0
+                    ){
+
+                        remainingSeconds--;
+
+                        updateTimer();
+
+                    }else{
+
+                        clearInterval(
+                            timerInterval
+                        );
+
+                        timerInterval = null;
+
+                        timerStart.textContent =
+                            "ابدأ الجلسة";
+
+                        alert(
+                            "انتهت جلسة التركيز!"
+                        );
+
+                    }
+
+                },
+                1000
+            );
+
+    }
+);
+
+
+document.getElementById(
+    "timerReset"
+).addEventListener(
+    "click",
+    function(){
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval = null;
+
+        remainingSeconds =
+            25 * 60;
+
+        updateTimer();
+
+        timerStart.textContent =
+            "ابدأ الجلسة";
+
+    }
+);
+
+
+updateTimer();
+
+
+/* =====================================================
+   TASKS
+===================================================== */
+
+let tasks = [];
+
+
+try{
+
+    tasks =
+        JSON.parse(
+            localStorage.getItem(
+                "toolbox-tasks"
+            )
+        ) || [];
+
+}catch(error){
+
+    tasks = [];
+
+}
+
+
+function saveTasks(){
+
+    localStorage.setItem(
+        "toolbox-tasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+
+function renderTasks(){
+
+    const list =
+        document.getElementById(
+            "taskList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if(tasks.length === 0){
+
+        const empty =
+            document.createElement(
+                "li"
+            );
+
+        empty.className =
+            "task";
+
+        empty.style.justifyContent =
+            "center";
+
+        empty.style.color =
+            "#8193aa";
+
+        empty.textContent =
+            "لا توجد مهام حاليًا.";
+
+        list.appendChild(
+            empty
+        );
+
+        return;
+
+    }
+
+
+    tasks.forEach(
+        function(task,index){
+
+            const item =
+                document.createElement(
+                    "li"
+                );
+
+
+            item.className =
+                "task";
+
+
+            if(task.completed){
+
+                item.classList.add(
+                    "completed"
+                );
+
+            }
+
+
+            const checkbox =
+                document.createElement(
+                    "input"
+                );
+
+
+            checkbox.type =
+                "checkbox";
+
+            checkbox.checked =
+                task.completed;
+
+
+            checkbox.addEventListener(
+                "change",
+                function(){
+
+                    task.completed =
+                        checkbox.checked;
+
+                    saveTasks();
+
+                    renderTasks();
+
+                }
+            );
+
+
+            const text =
+                document.createElement(
+                    "span"
+                );
+
+
+            text.textContent =
+                task.text;
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            deleteButton.className =
+                "delete-task";
+
+            deleteButton.textContent =
+                "×";
+
+            deleteButton.title =
+                "حذف";
+
+
+            deleteButton.addEventListener(
+                "click",
+                function(){
+
+                    tasks.splice(
+                        index,
+                        1
+                    );
+
+                    saveTasks();
+
+                    renderTasks();
+
+                }
+            );
+
+
+            item.appendChild(
+                checkbox
+            );
+
+            item.appendChild(
+                text
+            );
+
+            item.appendChild(
+                deleteButton
+            );
+
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+document.getElementById(
+    "addTask"
+).addEventListener(
+    "click",
+    addTask
+);
+
+
+document.getElementById(
+    "taskInput"
+).addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            addTask();
+
+        }
+
+    }
+);
+
+
+function addTask(){
+
+    const input =
+        document.getElementById(
+            "taskInput"
+        );
+
+
+    const text =
+        input.value.trim();
+
+
+    if(!text){
+
+        return;
+
+    }
+
+
+    tasks.push({
+
+        text:text,
+
+        completed:false
+
     });
 
-    // Restore last active tool
-    const savedTool = localStorage.getItem('active_tool_id');
-    if (savedTool) {
-        const targetBtn = document.querySelector(`[data-tool="${savedTool}"]`);
-        const targetTool = document.getElementById('tool-' + savedTool);
-        if (targetBtn && targetTool) {
-            switches.forEach(s => s.classList.remove('active'));
-            tools.forEach(t => t.classList.remove('active'));
-            targetBtn.classList.add('active');
-            targetTool.classList.add('active');
-        }
-    }
 
-    // ==========================================
-    // 01. CURRENCY CONVERTER
-    // ==========================================
-    const rates = { USD: 1.0, EUR: 0.92, GBP: 0.78, SAR: 3.75, AED: 3.67, JOD: 0.71, EGP: 48.5, ILS: 3.70 };
-    const curAmount = document.getElementById('curAmount');
-    const curFrom = document.getElementById('curFrom');
-    const curTo = document.getElementById('curTo');
-    const curResult = document.getElementById('curResult');
+    saveTasks();
 
-    function initCurrencies() {
-        if (!curFrom || !curTo) return;
-        let html = '';
-        Object.keys(rates).forEach(code => {
-            html += `<option value="${code}">${code}</option>`;
-        });
-        curFrom.innerHTML = html;
-        curTo.innerHTML = html;
-        curFrom.value = "USD";
-        curTo.value = "EGP";
-    }
-
-    function convertCurrency() {
-        if (!curAmount || !curResult || !curFrom || !curTo) return;
-        const amount = parseFloat(curAmount.value) || 0;
-        const fromRate = rates[curFrom.value] || 1;
-        const toRate = rates[curTo.value] || 1;
-        const result = (amount / fromRate) * toRate;
-        curResult.textContent = `${result.toFixed(2)} ${curTo.value}`;
-    }
-
-    initCurrencies();
-    convertCurrency();
-    if (curAmount) curAmount.addEventListener('input', convertCurrency);
-    if (curFrom) curFrom.addEventListener('change', convertCurrency);
-    if (curTo) curTo.addEventListener('change', convertCurrency);
-
-    // ==========================================
-    // 02. PASSWORD GENERATOR
-    // ==========================================
-    const pwLen = document.getElementById('pwLen');
-    const pwLenLabel = document.getElementById('pwLenLabel');
-    const pwGo = document.getElementById('pwGo');
-    const pwResult = document.getElementById('pwResult');
-
-    if (pwLen && pwLenLabel) {
-        pwLen.addEventListener('input', () => {
-            pwLenLabel.textContent = pwLen.value;
-        });
-    }
-
-    if (pwGo && pwResult && pwLen) {
-        pwGo.addEventListener('click', () => {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=";
-            let pass = "";
-            const length = parseInt(pwLen.value) || 12;
-            for (let i = 0; i < length; i++) {
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            pwResult.textContent = pass;
-        });
-    }
-
-    // ==========================================
-    // 03. QR CODE GENERATOR
-    // ==========================================
-    const qrText = document.getElementById('qrText');
-    const qrGo = document.getElementById('qrGo');
-    const qrOut = document.getElementById('qrOut');
-
-    if (qrGo && qrText && qrOut) {
-        qrGo.addEventListener('click', () => {
-            const val = qrText.value.trim();
-            if (val) {
-                qrOut.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(val)}" alt="QR Code" style="border-radius:8px; border:2px solid var(--accent, #3b82f6);">`;
-            } else {
-                qrOut.innerHTML = `<p style="color:red; font-size:14px;">يرجى إدخال نص أو رابط أولاً!</p>`;
-            }
-        });
-    }
-
-    // ==========================================
-    // 04. TEXT STATISTICS
-    // ==========================================
-    const txtInput = document.getElementById('txtInput');
-    const txtWords = document.getElementById('txtWords');
-    const txtChars = document.getElementById('txtChars');
-    const txtLines = document.getElementById('txtLines');
-
-    if (txtInput) {
-        txtInput.addEventListener('input', () => {
-            const val = txtInput.value;
-            const words = val.trim() ? val.trim().split(/\s+/).length : 0;
-            const chars = val.length;
-            const lines = val ? val.split('\n').length : 0;
-
-            if (txtWords) txtWords.textContent = words;
-            if (txtChars) txtChars.textContent = chars;
-            if (txtLines) txtLines.textContent = lines;
-        });
-    }
-
-    // ==========================================
-    // 05. UNIT CONVERTER
-    // ==========================================
-    const unitVal = document.getElementById('unitVal');
-    const unitFrom = document.getElementById('unitFrom');
-    const unitTo = document.getElementById('unitTo');
-    const unitGo = document.getElementById('unitGo');
-    const unitResult = document.getElementById('unitResult');
-
-    if (unitGo && unitVal && unitFrom && unitTo && unitResult) {
-        unitGo.addEventListener('click', () => {
-            const val = parseFloat(unitVal.value) || 0;
-            const fromFactor = parseFloat(unitFrom.value) || 1;
-            const toFactor = parseFloat(unitTo.value) || 1;
-            const res = (val * fromFactor) / toFactor;
-            const textTo = unitTo.options[unitTo.selectedIndex]?.text.split(' ')[0] || '';
-            unitResult.textContent = `${res.toFixed(4)} ${textTo}`;
-        });
-    }
-
-    // ==========================================
-    // 06. BMI CALCULATOR
-    // ==========================================
-    const bmiWeight = document.getElementById('bmiWeight');
-    const bmiHeight = document.getElementById('bmiHeight');
-    const bmiGo = document.getElementById('bmiGo');
-    const bmiResult = document.getElementById('bmiResult');
-    const bmiSub = document.getElementById('bmiSub');
-
-    if (bmiGo && bmiWeight && bmiHeight && bmiResult && bmiSub) {
-        bmiGo.addEventListener('click', () => {
-            const w = parseFloat(bmiWeight.value) || 0;
-            const h = (parseFloat(bmiHeight.value) || 0) / 100;
-            if (w > 0 && h > 0) {
-                const bmi = w / (h * h);
-                bmiResult.textContent = bmi.toFixed(1);
-                if (bmi < 18.5) bmiSub.textContent = "وزن أقل من الطبيعي (نحافة)";
-                else if (bmi < 25) bmiSub.textContent = "وزن طبيعي وصحي جداً 👍";
-                else if (bmi < 30) bmiSub.textContent = "زيادة خفيفة في الوزن";
-                else bmiSub.textContent = "سمنة - يُنصح بممارسة الرياضة";
-            }
-        });
-    }
-
-    // ==========================================
-    // 07. POMODORO TIMER
-    // ==========================================
-    let timerInterval = null;
-    let timeLeft = 25 * 60;
-    const timerDisplay = document.getElementById('timerDisplay');
-    const timerStart = document.getElementById('timerStart');
-    const timerReset = document.getElementById('timerReset');
-
-    function updateTimerDisplay() {
-        if (!timerDisplay) return;
-        const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-        const secs = (timeLeft % 60).toString().padStart(2, '0');
-        timerDisplay.textContent = `${mins}:${secs}`;
-    }
-
-    if (timerStart) {
-        timerStart.addEventListener('click', () => {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                timerStart.textContent = "استئناف ⏱️";
-            } else {
-                timerStart.textContent = "إيقاف مؤقت ⏸️";
-                timerInterval = setInterval(() => {
-                    if (timeLeft > 0) {
-                        timeLeft--;
-                        updateTimerDisplay();
-                    } else {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                        alert("انتهى وقت التركيز! خذ استراحة لمدة 5 دقائق ☕");
-                        timerStart.textContent = "ابدأ الجلسة ⏱️";
-                    }
-                }, 1000);
-            }
-        });
-    }
-
-    if (timerReset) {
-        timerReset.addEventListener('click', () => {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            timeLeft = 25 * 60;
-            updateTimerDisplay();
-            if (timerStart) timerStart.textContent = "ابدأ الجلسة ⏱️";
-        });
-    }
-
-    // ==========================================
-    // 08. TODO LIST (TASKS)
-    // ==========================================
-    const taskInput = document.getElementById('taskInput');
-    const addTaskBtn = document.getElementById('addTaskBtn');
-    const taskList = document.getElementById('taskList');
-
-    let tasks = [];
-    try {
-        tasks = JSON.parse(localStorage.getItem('saved_tasks_list')) || [];
-    } catch (e) {
-        tasks = [];
-    }
-
-    function renderTasks() {
-        if (!taskList) return;
-        taskList.innerHTML = '';
-        if (tasks.length === 0) {
-            taskList.innerHTML = '<li style="text-align:center; padding:15px; color:#888;">لا توجد مهام حالياً. أضف مهمتك الأولى!</li>';
-            return;
-        }
-        tasks.forEach((task, index) => {
-            const li = document.createElement('li');
-            li.className = 'task-item';
-            li.innerHTML = `<span>${task}</span><button class="del-btn" data-index="${index}">حذف</button>`;
-            taskList.appendChild(li);
-        });
-    }
-
-    if (taskList) {
-        taskList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('del-btn')) {
-                const idx = parseInt(e.target.getAttribute('data-index'));
-                tasks.splice(idx, 1);
-                localStorage.setItem('saved_tasks_list', JSON.stringify(tasks));
-                renderTasks();
-            }
-        });
-    }
-
-    if (addTaskBtn && taskInput) {
-        addTaskBtn.addEventListener('click', () => {
-            const val = taskInput.value.trim();
-            if (val) {
-                tasks.push(val);
-                localStorage.setItem('saved_tasks_list', JSON.stringify(tasks));
-                taskInput.value = '';
-                renderTasks();
-            }
-        });
-    }
+    input.value = "";
 
     renderTasks();
 
-    // ==========================================
-    // 09. AGE CALCULATOR
-    // ==========================================
-    const birthDateInput = document.getElementById('birthDate');
-    const calcAgeBtn = document.getElementById('calcAgeBtn');
-    const ageResult = document.getElementById('ageResult');
-    const ageSub = document.getElementById('ageSub');
+}
 
-    if (calcAgeBtn && birthDateInput && ageResult && ageSub) {
-        calcAgeBtn.addEventListener('click', () => {
-            const birthVal = birthDateInput.value;
-            if (!birthVal) return;
 
-            const birthDate = new Date(birthVal);
-            const today = new Date();
+renderTasks();
 
-            let years = today.getFullYear() - birthDate.getFullYear();
-            let months = today.getMonth() - birthDate.getMonth();
-            let days = today.getDate() - birthDate.getDate();
 
-            if (days < 0) {
-                months--;
-                days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-            }
-            if (months < 0) {
-                years--;
-                months += 12;
-            }
+/* =====================================================
+   AGE CALCULATOR
+===================================================== */
 
-            ageResult.textContent = `${years} سنة`;
-            ageSub.textContent = `تحديداً: ${months} شهر، و ${days} يوم.`;
-        });
+document.getElementById(
+    "calculateAge"
+).addEventListener(
+    "click",
+    function(){
+
+        const value =
+            document.getElementById(
+                "birthDate"
+            ).value;
+
+
+        const result =
+            document.getElementById(
+                "ageResult"
+            );
+
+
+        const details =
+            document.getElementById(
+                "ageDetails"
+            );
+
+
+        if(!value){
+
+            result.textContent =
+                "اختر تاريخ الميلاد";
+
+            details.textContent =
+                "";
+
+            return;
+
+        }
+
+
+        const birth =
+            new Date(
+                value + "T00:00:00"
+            );
+
+
+        const today =
+            new Date();
+
+
+        if(birth > today){
+
+            result.textContent =
+                "التاريخ غير صحيح";
+
+            details.textContent =
+                "";
+
+            return;
+
+        }
+
+
+        let years =
+            today.getFullYear()
+            -
+            birth.getFullYear();
+
+
+        let months =
+            today.getMonth()
+            -
+            birth.getMonth();
+
+
+        let days =
+            today.getDate()
+            -
+            birth.getDate();
+
+
+        if(days < 0){
+
+            months--;
+
+            days +=
+                new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    0
+                ).getDate();
+
+        }
+
+
+        if(months < 0){
+
+            years--;
+
+            months += 12;
+
+        }
+
+
+        result.textContent =
+            years
+            +
+            " سنة";
+
+
+        details.textContent =
+            months
+            +
+            " شهر، "
+            +
+            days
+            +
+            " يوم";
+
     }
+);
 
-});
+
+/* =====================================================
+   END
+===================================================== */
+
+    }
+);
+
+</script>
+
+</body>
+</html>
